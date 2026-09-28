@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏖️ سفر خانوادگی نوشهر | ۲۱ تا ۲۴ مهر ۱۴۰۴</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --primary-light: #e0f2fe;
+            --secondary: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --glass: rgba(255,255,255,0.7);
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ============ ANIMATED BG ============ */
+        .bg-decoration {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-decoration .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .blob:nth-child(1) { width: 400px; height: 400px; background: #0ea5e9; top: -100px; right: -100px; }
+        .blob:nth-child(2) { width: 350px; height: 350px; background: #8b5cf6; bottom: -50px; left: -100px; animation-delay: -7s; }
+        .blob:nth-child(3) { width: 300px; height: 300px; background: #ec4899; top: 50%; left: 50%; animation-delay: -14s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+            75% { transform: translate(40px, 40px) scale(1.05); }
+        }
+
+        /* ============ HERO ============ */
+        .hero {
+            background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 30%, #0ea5e9 60%, #38bdf8 100%);
+            padding: 40px 20px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: var(--bg);
+            border-radius: 50% 50% 0 0;
+        }
+
+        .hero::after {
+            content: '🌊';
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            font-size: 30px;
+            letter-spacing: 5px;
+            animation: waves 3s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes waves {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-20px); }
+        }
+
+        .hero-particles {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            font-size: 20px;
+            animation: particleFloat 10s linear infinite;
+            opacity: 0.4;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-icon {
+            font-size: 70px;
+            margin-bottom: 12px;
+            display: inline-block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .hero h1 {
+            color: white;
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 8px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 16px;
+        }
+
+        .date-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 10px 24px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        /* ============ GLASSMORPHISM CARDS ============ */
+        .glass-card {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        /* ============ LOGIN ============ */
+        .login-screen {
+            max-width: 500px;
+            margin: -30px auto 40px;
+            padding: 0 16px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .login-card {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.6);
+            border-radius: 28px;
+            padding: 36px 28px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        }
+
+        .login-card h2 {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-card .subtitle {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 13px;
+            margin-bottom: 28px;
+        }
+
+        .family-section {
+            margin-bottom: 20px;
+        }
+
+        .family-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .member-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .member-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--primary-light), #ede9fe);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .member-btn:hover::before { opacity: 0.5; }
+        .member-btn.selected::before { opacity: 1; }
+
+        .member-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(14,165,233,0.15);
+        }
+
+        .member-btn.selected {
+            border-color: var(--primary);
+            box-shadow: 0 8px 25px rgba(14,165,233,0.2);
+            transform: translateY(-3px);
+        }
+
+        .member-btn > * { position: relative; z-index: 1; }
+
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+            background: rgba(14,165,233,0.1);
+        }
+
+        .enter-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            color: white;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 17px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .enter-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(14,165,233,0.35);
+        }
+
+        .enter-btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ============ APP CONTAINER ============ */
+        .app-container {
+            display: none;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 0 16px 120px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* User Bar */
+        .user-bar {
+            margin: -30px 0 24px;
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 10;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar-ring {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            padding: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-avatar-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 13px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .user-name {
+            font-weight: 800;
+            font-size: 16px;
+        }
+
+        .user-role {
+            font-size: 11px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            padding: 10px 18px;
+            border: 2px solid #fecdd3;
+            border-radius: 12px;
+            background: #fff1f2;
+            color: var(--danger);
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #fecdd3;
+            transform: translateY(-2px);
+        }
+
+        /* Stats */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            padding: 20px 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+        }
+
+        .stat-card:nth-child(1)::before { background: linear-gradient(90deg, var(--primary), #38bdf8); }
+        .stat-card:nth-child(2)::before { background: linear-gradient(90deg, var(--purple), #a78bfa); }
+        .stat-card:nth-child(3)::before { background: linear-gradient(90deg, var(--success), #34d399); }
+
+        .stat-icon { font-size: 28px; margin-bottom: 8px; }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-card:nth-child(3) .stat-value {
+            background: linear-gradient(135deg, var(--success), #059669);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            margin-bottom: 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .tabs {
+            display: flex;
+            padding: 6px;
+            gap: 4px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: max-content;
+            padding: 14px 12px;
+            border: none;
+            border-radius: 16px;
+            background: transparent;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(14,165,233,0.08);
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 6px 20px rgba(14,165,233,0.3);
+        }
+
+        /* Tab Content */
+        .tab-content { display: none; }
+
+        .tab-content.active {
+            display: block;
+            animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Day Section */
+        .day-section { margin-bottom: 32px; }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #ecfeff, #ede9fe);
+            border-radius: 20px;
+            border-right: 5px solid;
+            border-image: linear-gradient(180deg, var(--primary), var(--purple)) 1;
+        }
+
+        .day-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .day-header h3 {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .day-header span {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Meal Card */
+        .meal-card {
+            border-radius: 22px;
+            padding: 22px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .meal-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .meal-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .meal-icon.breakfast { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+        .meal-icon.lunch { background: linear-gradient(135deg, #fce7f3, #fbcfe8); }
+        .meal-icon.dinner { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+        .meal-icon.snack { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+
+        .meal-title { font-weight: 800; font-size: 16px; }
+        .meal-time { font-size: 11px; color: var(--text-light); font-weight: 500; }
+
+        .food-options { display: grid; gap: 10px; }
+
+        .food-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border: 2px solid #f1f5f9;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            background: white;
+        }
+
+        .food-option::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: var(--progress, 0%);
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--purple));
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 0 3px 3px 0;
+        }
+
+        .food-option:hover {
+            border-color: var(--primary);
+            transform: translateX(-4px);
+            box-shadow: 4px 4px 20px rgba(14,165,233,0.1);
+        }
+
+        .food-option.voted {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #f0f9ff, #ecfeff);
+        }
+
+        .food-option.winner {
+            border-color: var(--success);
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+        }
+
+        .food-option.winner::after {
+            background: linear-gradient(90deg, var(--success), #34d399);
+        }
+
+        .food-emoji {
+            font-size: 32px;
+            flex-shrink: 0;
+            transition: transform 0.3s;
+        }
+
+        .food-option:hover .food-emoji { transform: scale(1.2) rotate(-5deg); }
+
+        .food-info { flex: 1; min-width: 0; }
+        .food-name { font-weight: 700; font-size: 14px; }
+        .food-desc { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+
+        .voters-list {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .voter-chip {
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            background: rgba(14,165,233,0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            transition: transform 0.2s;
+        }
+
+        .voter-chip:hover { transform: scale(1.3); }
+
+        .vote-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
+            min-width: 50px;
+        }
+
+        .vote-count {
+            font-size: 20px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .food-option.winner .vote-count {
+            background: linear-gradient(135deg, var(--success), #059669);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .vote-label {
+            font-size: 10px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .winner-badge {
+            display: none;
+            padding: 4px 10px;
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 800;
+            flex-shrink: 0;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .food-option.winner .winner-badge { display: flex; align-items: center; gap: 4px; }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+        }
+
+        /* Custom Food Input */
+        .add-custom {
+            margin-top: 14px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .add-custom input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .add-custom input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(14,165,233,0.1);
+        }
+
+        .add-custom button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .add-custom button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14,165,233,0.3);
+        }
+
+        /* ============ ACTIVITIES ============ */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px;
+        }
+
+        .activity-card {
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .activity-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(14,165,233,0.05), rgba(139,92,246,0.05));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .activity-card:hover::before { opacity: 1; }
+        .activity-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+            border-color: var(--primary);
+        }
+
+        .activity-card.voted {
+            border-color: var(--secondary);
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+        }
+
+        .activity-card.winner {
+            border-color: var(--success);
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+        }
+
+        .activity-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .activity-emoji {
+            font-size: 40px;
+            flex-shrink: 0;
+            transition: transform 0.3s;
+        }
+
+        .activity-card:hover .activity-emoji { transform: scale(1.2) rotate(-8deg); }
+
+        .activity-name {
+            font-weight: 800;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .activity-desc {
+            font-size: 12px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .activity-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .activity-voters {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+
+        .activity-count {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        /* ============ PLACES TAB ============ */
+        .place-card {
+            display: flex;
+            gap: 16px;
+            padding: 20px;
+            margin-bottom: 14px;
+            transition: all 0.3s;
+        }
+
+        .place-card:hover {
+            transform: translateX(-6px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+
+        .place-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #e0f2fe, #ede9fe);
+        }
+
+        .place-info { flex: 1; }
+        .place-name { font-weight: 800; font-size: 16px; margin-bottom: 4px; }
+        .place-desc { font-size: 12px; color: var(--text-light); line-height: 1.8; }
+
+        .place-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-top: 8px;
+            margin-left: 4px;
+        }
+
+        .tag-nature { background: #d1fae5; color: #065f46; }
+        .tag-beach { background: #e0f2fe; color: #0c4a6e; }
+        .tag-fun { background: #fef3c7; color: #92400e; }
+        .tag-shop { background: #fce7f3; color: #9d174d; }
+        .tag-history { background: #ede9fe; color: #5b21b6; }
+
+        /* ============ RESULTS ============ */
+        .result-day { margin-bottom: 28px; }
+
+        .result-day-title {
+            font-size: 18px;
+            font-weight: 900;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-dark);
+        }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+
+        .result-item:hover { transform: translateX(-4px); }
+
+        .result-icon { font-size: 30px; flex-shrink: 0; }
+
+        .result-info { flex: 1; }
+        .result-type { font-size: 12px; color: var(--text-light); font-weight: 600; }
+        .result-name { font-weight: 800; font-size: 15px; }
+
+        .result-votes {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 800;
+            color: #059669;
+            flex-shrink: 0;
+        }
+
+        .no-result {
+            color: var(--text-light);
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        /* ============ ADMIN ============ */
+        .admin-panel {
+            padding: 24px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #f59e0b;
+        }
+
+        .admin-panel h3 {
+            font-size: 17px;
+            color: #92400e;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .admin-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 14px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .admin-btn.reset { background: var(--danger); color: white; }
+        .admin-btn.export { background: var(--success); color: white; }
+        .admin-btn.share { background: var(--purple); color: white; }
+
+        .member-stats {
+            padding: 24px;
+            margin-top: 16px;
+        }
+
+        .member-stat-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .member-stat-row:last-child { border-bottom: none; }
+
+        .member-stat-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-light), #ede9fe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .member-stat-name { flex: 1; font-weight: 700; font-size: 14px; }
+
+        .member-stat-count {
+            padding: 4px 14px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        /* ============ NOTIFICATION ============ */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-120px);
+            padding: 16px 28px;
+            border-radius: 18px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            z-index: 10000;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 90%;
+            backdrop-filter: blur(20px);
+        }
+
+        .notification.show { transform: translateX(-50%) translateY(0); }
+
+        .notification.success {
+            background: rgba(236,253,245,0.95);
+            border: 2px solid #a7f3d0;
+            color: #065f46;
+        }
+
+        .notification.info {
+            background: rgba(224,242,254,0.95);
+            border: 2px solid #7dd3fc;
+            color: #0c4a6e;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tabs { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Responsive */
+        @media (max-width: 520px) {
+            .hero h1 { font-size: 24px; }
+            .hero-icon { font-size: 50px; }
+            .member-grid { grid-template-columns: 1fr; }
+            .stats-bar { gap: 8px; }
+            .stat-card { padding: 14px 10px; }
+            .stat-value { font-size: 22px; }
+            .tab-btn { font-size: 11px; padding: 12px 8px; }
+            .activities-grid { grid-template-columns: 1fr; }
+            .food-emoji { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BG Decoration -->
+    <div class="bg-decoration">
+        <div class="blob"></div>
+        <div class="blob"></div>
+        <div class="blob"></div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <span id="notifIcon">✅</span>
+        <span id="notifText"></span>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-particles" id="particles"></div>
+        <div class="hero-content">
+            <div class="hero-icon">🏖️</div>
+            <h1>سفر خانوادگی نوشهر</h1>
+            <p>همه با هم برنامه‌ریزی می‌کنیم! 🌊</p>
+            <div class="date-badge">📅 ۲۱ تا ۲۴ مهر ۱۴۰۴</div>
+        </div>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <h2>👋 خوش آمدید به سفر!</h2>
+            <p class="subtitle">عضو خانواده خود را انتخاب کنید</p>
+
+            <div class="family-section">
+                <div class="family-label">👨‍👩‍👧‍👦 والدین</div>
+                <div class="member-grid" id="parentsGrid"></div>
+            </div>
+
+            <div class="family-section">
+                <div class="family-label">💫 فرزندان</div>
+                <div class="member-grid" id="childrenGrid"></div>
+            </div>
+
+            <button class="enter-btn" id="enterBtn" disabled onclick="login()">
+                🚀 ورود به رأی‌گیری
+            </button>
+        </div>
+    </div>
+
+    <!-- APP -->
+    <div class="app-container" id="appContainer">
+        <div class="user-bar glass-card">
+            <div class="user-info">
+                <div class="user-avatar-ring">
+                    <div class="user-avatar-inner" id="userAvatar">👤</div>
+                </div>
+                <div>
+                    <div class="user-name" id="userName">کاربر</div>
+                    <div class="user-role" id="userRole">عضو خانواده</div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">🚪 خروج</button>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-card glass-card">
+                <div class="stat-icon">👨‍👩‍👧‍👦</div>
+                <div class="stat-value" id="totalMembers">0</div>
+                <div class="stat-label">اعضای خانواده</div>
+            </div>
+            <div class="stat-card glass-card">
+                <div class="stat-icon">🗳️</div>
+                <div class="stat-value" id="totalVotes">0</div>
+                <div class="stat-label">رأی ثبت شده</div>
+            </div>
+            <div class="stat-card glass-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-value" id="decidedCount">0</div>
+                <div class="stat-label">تعیین شده</div>
+            </div>
+        </div>
+
+        <div class="tabs-container">
+            <div class="tabs glass-card">
+                <button class="tab-btn active" onclick="switchTab('food', this)">🍽️ غذاها</button>
+                <button class="tab-btn" onclick="switchTab('activities', this)">🎢 تفریحات</button>
+                <button class="tab-btn" onclick="switchTab('places', this)">📍 جاذبه‌ها</button>
+                <button class="tab-btn" onclick="switchTab('results', this)">📊 نتایج</button>
+                <button class="tab-btn" onclick="switchTab('admin', this)">⚙️ مدیریت</button>
+            </div>
+        </div>
+
+        <div class="tab-content active" id="tab-food"></div>
+        <div class="tab-content" id="tab-activities"></div>
+        <div class="tab-content" id="tab-places"></div>
+        <div class="tab-content" id="tab-results"></div>
+        <div class="tab-content" id="tab-admin"></div>
+    </div>
+
+    <script>
+        // ============ DATA ============
+        const MEMBERS = [
+            { id: 'morteza', name: 'مرتضی', emoji: '👨', role: 'پدر خانواده 👑', group: 'parent' },
+            { id: 'fatemeh', name: 'فاطمه', emoji: '👩', role: 'مادر خانواده ❤️', group: 'parent' },
+            { id: 'shirin', name: 'شیرین', emoji: '👩‍🦰', role: 'مادر دوم 💐', group: 'parent' },
+            { id: 'negin', name: 'نگین', emoji: '👧', role: 'فرزند 🌸', group: 'child' },
+            { id: 'elham', name: 'الهام', emoji: '👩‍🦱', role: 'فرزند 🌺', group: 'child' },
+            { id: 'shaghayegh', name: 'شقایق', emoji: '🧕', role: 'فرزند 🌷', group: 'child' },
+            { id: 'shadi', name: 'شادی', emoji: '👱‍♀️', role: 'فرزند 🌻', group: 'child' },
+            { id: 'mohammadreza', name: 'محمدرضا', emoji: '👦', role: 'فرزند ⚽', group: 'child' },
+            { id: 'mostafa', name: 'مصطفی', emoji: '🧑', role: 'فرزند 🎮', group: 'child' },
+        ];
+
+        const DAYS = [
+            { id: 'day1', name: 'روز اول', date: '۲۱ مهر (دوشنبه)', num: '۱' },
+            { id: 'day2', name: 'روز دوم', date: '۲۲ مهر (سه‌شنبه)', num: '۲' },
+            { id: 'day3', name: 'روز سوم', date: '۲۳ مهر (چهارشنبه)', num: '۳' },
+            { id: 'day4', name: 'روز چهارم', date: '۲۴ مهر (پنجشنبه)', num: '۴' },
+        ];
+
+        const MEALS = [
+            { id: 'breakfast', name: 'صبحانه', emoji: '🌅', cssClass: 'breakfast', time: '۸ تا ۱۰ صبح' },
+            { id: 'lunch', name: 'ناهار', emoji: '☀️', cssClass: 'lunch', time: '۱۲ تا ۲ ظهر' },
+            { id: 'dinner', name: 'شام', emoji: '🌙', cssClass: 'dinner', time: '۸ تا ۱۰ شب' },
+            { id: 'snack', name: 'میان‌وعده', emoji: '🍪', cssClass: 'snack', time: 'عصرانه' },
+        ];
+
+        const FOOD_OPTIONS = {
+            breakfast: [
+                { id: 'b1', name: 'نیمرو با گوجه و نان تازه', emoji: '🍳', desc: 'نیمرو خوشمزه صبحگاهی' },
+                { id: 'b2', name: 'املت گوجه‌فرنگی', emoji: '🥘', desc: 'با نان سنگک داغ' },
+                { id: 'b3', name: 'حلیم', emoji: '🥣', desc: 'حلیم گرم با دارچین و شکر' },
+                { id: 'b4', name: 'سفره صبحانه کامل', emoji: '🧀', desc: 'پنیر، گردو، عسل، کره، مربا' },
+                { id: 'b5', name: 'آش رشته', emoji: '🍜', desc: 'آش رشته خانگی با کشک' },
+                { id: 'b6', name: 'عدسی', emoji: '🫕', desc: 'عدسی داغ با نان و ترشی' },
+            ],
+            lunch: [
+                { id: 'l1', name: 'قرمه‌سبزی', emoji: '🥗', desc: 'با برنج ایرانی اعلا' },
+                { id: 'l2', name: 'جوجه‌کباب', emoji: '🍗', desc: 'جوجه‌کباب زعفرانی با گوجه' },
+                { id: 'l3', name: 'ماهی سفید شمال', emoji: '🐟', desc: 'ماهی تازه دودی شمالی' },
+                { id: 'l4', name: 'فسنجان', emoji: '🍖', desc: 'خورشت فسنجان اصیل با مرغ' },
+                { id: 'l5', name: 'کباب کوبیده', emoji: '🥩', desc: 'کباب کوبیده مخصوص' },
+                { id: 'l6', name: 'سبزی‌پلو با ماهی', emoji: '🎣', desc: 'سبزی‌پلو با ماهی شکم‌پر' },
+                { id: 'l7', name: 'باقالی‌پلو با گوشت', emoji: '🥘', desc: 'باقالی‌پلو با ماهیچه' },
+            ],
+            dinner: [
+                { id: 'd1', name: 'کتلت با سالاد', emoji: '🥔', desc: 'کتلت گوشت خانگی' },
+                { id: 'd2', name: 'ماکارونی', emoji: '🍝', desc: 'ماکارونی با سس بلونز' },
+                { id: 'd3', name: 'پیتزا مخلوط', emoji: '🍕', desc: 'پیتزا خانگی پنیری' },
+                { id: 'd4', name: 'سوپ جو', emoji: '🍲', desc: 'سوپ جو با مرغ و سبزیجات' },
+                { id: 'd5', name: 'ساندویچ مرغ', emoji: '🥪', desc: 'ساندویچ مرغ ریش‌ریش' },
+                { id: 'd6', name: 'باقالی‌پلو با گوشت', emoji: '🍛', desc: 'باقالی‌پلو با گوشت گوسفندی' },
+                { id: 'd7', name: 'میرزا قاسمی', emoji: '🫕', desc: 'میرزا قاسمی شمالی اصیل' },
+            ],
+            snack: [
+                { id: 's1', name: 'میوه فصل', emoji: '🍎', desc: 'هندوانه، انگور، سیب، موز' },
+                { id: 's2', name: 'بستنی', emoji: '🍦', desc: 'بستنی سنتی و فالوده' },
+                { id: 's3', name: 'آجیل و شیرینی', emoji: '🥜', desc: 'آجیل مخلوط با شیرینی' },
+                { id: 's4', name: 'ذرت مکزیکی', emoji: '🌽', desc: 'ذرت داغ کنار ساحل' },
+                { id: 's5', name: 'لواشک و ترشک', emoji: '🍬', desc: 'لواشک و ترشی محلی' },
+                { id: 's6', name: 'نان و پنیر و چای', emoji: '☕', desc: 'چای دم‌کرده با نان و پنیر' },
+            ]
+        };
+
+        const ACTIVITIES = [
+            { id: 'a1', name: 'قایق سفاری', emoji: '🚤', desc: 'گشت با قایق تندرو روی دریا و تماشای ساحل از دور' },
+            { id: 'a2', name: 'موتور سه‌چرخ ساحلی', emoji: '🏍️', desc: 'موتور سه‌چرخ در کنار ساحل، تفریح هیجان‌انگیز' },
+            { id: 'a3', name: 'شنا و بازی در دریا', emoji: '🏊', desc: 'شنا در آب‌های کاسپین و بازی با موج' },
+            { id: 'a4', name: 'جنگل‌نوردی', emoji: '🌲', desc: 'پیاده‌روی در جنگل‌های سرسبز هیرکانی' },
+            { id: 'a5', name: 'تله‌کابین', emoji: '🚡', desc: 'تله‌کابین و تماشای مناظر بی‌نظیر از بالا' },
+            { id: 'a6', name: 'مراکز خرید', emoji: '🛍️', desc: 'خرید از مراکز خرید و بازارهای محلی' },
+            { id: 'a7', name: 'آتش شب ساحلی', emoji: '🔥', desc: 'دورهمی و آتش‌بازی شبانه کنار ساحل' },
+            { id: 'a8', name: 'بازی‌های خانوادگی', emoji: '🎲', desc: 'بازی فکری، ورق و UNO همه با هم' },
+            { id: 'a9', name: 'قدم زدن غروب', emoji: '🌅', desc: 'قدم زدن روی ساحل و تماشای غروب' },
+            { id: 'a10', name: 'عکاسی طبیعت', emoji: '📸', desc: 'عکس یادگاری در مناظر زیبای شمال' },
+            { id: 'a11', name: 'ماهیگیری', emoji: '🎣', desc: 'ماهیگیری ساحلی و تفریحی' },
+            { id: 'a12', name: 'رستوران ساحلی', emoji: '🏪', desc: 'شام در بهترین رستوران محلی کنار دریا' },
+        ];
+
+        const PLACES = [
+            { name: 'پارک جنگلی سی‌سنگان', emoji: '🌳', desc: 'یکی از زیباترین پارک‌های جنگلی ایران با درختان کهن‌سال، مسیرهای پیاده‌روی رویایی و ساحل خصوصی. ترکیب جنگل و دریا در یک نقطه!', tags: ['nature', 'beach'] },
+            { name: 'آبشار اسپه‌او', emoji: '💧', desc: 'آبشاری خیره‌کننده در دل جنگل‌های نوشهر با ارتفاع ۳۰ متر. مسیر زیبا و هوای فوق‌العاده پاک.', tags: ['nature'] },
+            { name: 'بندر نوشهر و اسکله', emoji: '⚓', desc: 'قدم زدن در بندر، تماشای قایق‌ها و خرید ماهی تازه از صیادان محلی. غروب ساحل اسکله فوق‌العاده‌ست!', tags: ['beach', 'fun'] },
+            { name: 'ساحل نوشهر', emoji: '🏖️', desc: 'ساحل شنی و تمیز با امکانات کامل. بهترین ساحل برای شنا و بازی خانوادگی.', tags: ['beach', 'fun'] },
+            { name: 'جنگل‌های هیرکانی', emoji: '🌿', desc: 'جنگل‌های باستانی ثبت شده در یونسکو! درختان هزارساله، گونه‌های نادر و هوای بهشتی.', tags: ['nature'] },
+            { name: 'موزه جنگل ابر', emoji: '☁️', desc: 'تجربه راه رفتن در میان ابرها! جنگل ابر نوشهر یکی از عجایب طبیعی ایران است.', tags: ['nature'] },
+            { name: 'بازار ماهی‌فروشان', emoji: '🐠', desc: 'بازار محلی با ماهی‌های تازه، صنایع دستی و سوغات شمال. بهترین جا برای خرید.', tags: ['shop'] },
+            { name: 'پارک نمک‌آبرود', emoji: '🎢', desc: 'بزرگ‌ترین تله‌کابین خاورمیانه! تفریحات متنوع، پیست اسکی روی چمن و مناظر خیره‌کننده.', tags: ['fun'] },
+            { name: 'روستای کندلوس', emoji: '🏘️', desc: 'روستای تاریخی و زیبا با خانه‌های سنتی، باغ‌های سرسبز و مردم مهمان‌نواز.', tags: ['history', 'nature'] },
+            { name: 'غار دانیال', emoji: '🕳️', desc: 'غار تاریخی و مرموز نوشهر با قدمت هزاران ساله. ماجراجویی هیجان‌انگیز!', tags: ['history'] },
+            { name: 'دریاچه ولشت', emoji: '🏔️', desc: 'دریاچه زیبای کوهستانی در ارتفاعات نوشهر. مناظر بی‌نظیر، ماهیگیری و طبیعت بکر.', tags: ['nature'] },
+            { name: 'پلاژ مهتاب نوشهر', emoji: '🌙', desc: 'ساحل مجهز و تمیز با امکانات رفاهی کامل. مناسب خانواده‌ها.', tags: ['beach', 'fun'] },
+        ];
+
+        // ============ STATE ============
+        let currentUser = null;
+        let votes = {};
+        let activityVotes = {};
+        let customFoods = {};
+        let selectedMember = null;
+
+        function loadState() {
+            try {
+                const s = localStorage.getItem('noshahr_family_trip_v2');
+                if (s) {
+                    const d = JSON.parse(s);
+                    votes = d.votes || {};
+                    activityVotes = d.activityVotes || {};
+                    customFoods = d.customFoods || {};
+                }
+            } catch(e) {}
+        }
+
+        function saveState() {
+            localStorage.setItem('noshahr_family_trip_v2', JSON.stringify({ votes, activityVotes, customFoods }));
+        }
+
+        // ============ PARTICLES ============
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const emojis = ['🐚', '⭐', '🌊', '🐠', '🦀', '🌴', '☀️', '🦋'];
+            for (let i = 0; i < 12; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (8 + Math.random() * 12) + 's';
+                p.style.animationDelay = Math.random() * 10 + 's';
+                p.style.fontSize = (14 + Math.random() * 16) + 'px';
+                container.appendChild(p);
+            }
+        }
+
+        // ============ LOGIN ============
+        function renderLogin() {
+            const parents = MEMBERS.filter(m => m.group === 'parent');
+            const children = MEMBERS.filter(m => m.group === 'child');
+
+            document.getElementById('parentsGrid').innerHTML = parents.map(m => `
+                <button class="member-btn" onclick="selectMember('${m.id}')" id="mbtn-${m.id}">
+                    <div class="member-avatar">${m.emoji}</div>
+                    <span>${m.name}</span>
+                </button>
+            `).join('');
+
+            document.getElementById('childrenGrid').innerHTML = children.map(m => `
+                <button class="member-btn" onclick="selectMember('${m.id}')" id="mbtn-${m.id}">
+                    <div class="member-avatar">${m.emoji}</div>
+                    <span>${m.name}</span>
+                </button>
+            `).join('');
+        }
+
+        function selectMember(id) {
+            selectedMember = id;
+            document.querySelectorAll('.member-btn').forEach(b => b.classList.remove('selected'));
+            document.getElementById(`mbtn-${id}`).classList.add('selected');
+            document.getElementById('enterBtn').disabled = false;
+        }
+
+        function login() {
+            if (!selectedMember) return;
+            currentUser = MEMBERS.find(m => m.id === selectedMember);
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+            document.getElementById('userAvatar').textContent = currentUser.emoji;
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userRole').textContent = currentUser.role;
+            renderAll();
+            showNotification(`${currentUser.name} عزیز، به سفر نوشهر خوش آمدید! 🎉`, 'success');
+        }
+
+        function logout() {
+            currentUser = null;
+            selectedMember = null;
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('appContainer').style.display = 'none';
+            document.querySelectorAll('.member-btn').forEach(b => b.classList.remove('selected'));
+            document.getElementById('enterBtn').disabled = true;
+        }
+
+        // ============ TABS ============
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            if (tabId === 'results') renderResults();
+            if (tabId === 'admin') renderAdmin();
+        }
+
+        // ============ VOTING ============
+        function vKey(d, m, f) { return `${d}_${m}_${f}`; }
+        function mKey(d, m) { return `${d}_${m}`; }
+
+        function vote(dayId, mealId, foodId) {
+            if (!currentUser) return;
+            const mk = mKey(dayId, mealId);
+            const allFoods = [...(FOOD_OPTIONS[mealId] || []), ...(customFoods[mk] || [])];
+
+            // Remove prev vote
+            allFoods.forEach(f => {
+                const k = vKey(dayId, mealId, f.id);
+                if (votes[k]) {
+                    votes[k] = votes[k].filter(v => v !== currentUser.id);
+                    if (!votes[k].length) delete votes[k];
+                }
+            });
+
+            // Add vote
+            const key = vKey(dayId, mealId, foodId);
+            if (!votes[key]) votes[key] = [];
+            votes[key].push(currentUser.id);
+
+            saveState();
+            renderFood();
+            updateStats();
+
+            const food = allFoods.find(f => f.id === foodId);
+            showNotification(`رأی شما به «${food?.name}» ثبت شد! ✅`, 'success');
+        }
+
+        function voteActivity(actId) {
+            if (!currentUser) return;
+            if (!activityVotes[actId]) activityVotes[actId] = [];
+
+            if (activityVotes[actId].includes(currentUser.id)) {
+                activityVotes[actId] = activityVotes[actId].filter(v => v !== currentUser.id);
+                if (!activityVotes[actId].length) delete activityVotes[actId];
+                showNotification('رأی شما حذف شد ❌', 'info');
+            } else {
+                activityVotes[actId].push(currentUser.id);
+                const act = ACTIVITIES.find(a => a.id === actId);
+                showNotification(`رأی شما به «${act?.name}» ثبت شد! ✅`, 'success');
+            }
+
+            saveState();
+            renderActivities();
+            updateStats();
+        }
+
+        function getWinner(dayId, mealId) {
+            const mk = mKey(dayId, mealId);
+            const allFoods = [...(FOOD_OPTIONS[mealId] || []), ...(customFoods[mk] || [])];
+            let max = 0, winner = null;
+            allFoods.forEach(f => {
+                const c = (votes[vKey(dayId, mealId, f.id)] || []).length;
+                if (c > max) { max = c; winner = { ...f, voteCount: c }; }
+            });
+            return max >= 1 ? winner : null;
+        }
+
+        // ============ RENDER FOOD ============
+        function renderFood() {
+            const container = document.getElementById('tab-food');
+            let html = '';
+
+            DAYS.forEach(day => {
+                html += `<div class="day-section">
+                    <div class="day-header">
+                        <div class="day-number">${day.num}</div>
+                        <div>
+                            <h3>${day.name}</h3>
+                            <span>${day.date}</span>
+                        </div>
+                    </div>`;
+
+                MEALS.forEach(meal => {
+                    const mk = mKey(day.id, meal.id);
+                    const allFoods = [...(FOOD_OPTIONS[meal.id] || []), ...(customFoods[mk] || [])];
+                    const winner = getWinner(day.id, meal.id);
+
+                    html += `<div class="meal-card glass-card">
+                        <div class="meal-header">
+                            <div class="meal-icon ${meal.cssClass}">${meal.emoji}</div>
+                            <div>
+                                <div class="meal-title">${meal.name}</div>
+                                <div class="meal-time">${meal.time} • ${day.date}</div>
+                            </div>
+                        </div>
+                        <div class="food-options">`;
+
+                    allFoods.forEach(food => {
+                        const key = vKey(day.id, meal.id, food.id);
+                        const fv = votes[key] || [];
+                        const isVoted = currentUser && fv.includes(currentUser.id);
+                        const isWinner = winner && winner.id === food.id;
+                        const pct = (fv.length / MEMBERS.length * 100);
+
+                        const voterEmojis = fv.map(vid => {
+                            const m = MEMBERS.find(mm => mm.id === vid);
+                            return `<span class="voter-chip" title="${m?.name}">${m?.emoji}</span>`;
+                        }).join('');
+
+                        html += `<div class="food-option ${isVoted?'voted':''} ${isWinner?'winner':''}"
+                                     style="--progress:${pct}%"
+                                     onclick="vote('${day.id}','${meal.id}','${food.id}')">
+                            <span class="food-emoji">${food.emoji}</span>
+                            <div class="food-info">
+                                <div class="food-name">${food.name}</div>
+                                <div class="food-desc">${food.desc}</div>
+                                ${fv.length ? `<div class="voters-list">${voterEmojis}</div>` : ''}
+                            </div>
+                            <div class="vote-section">
+                                <div class="vote-count">${fv.length}</div>
+                                <div class="vote-label">رأی</div>
+                            </div>
+                            <div class="winner-badge">👑 برنده</div>
+                        </div>`;
+                    });
+
+                    html += `</div>
+                        <div class="add-custom">
+                            <input type="text" id="custom-${day.id}-${meal.id}" placeholder="پیشنهاد غذای دیگر..." />
+                            <button onclick="addCustomFood('${day.id}','${meal.id}')">➕ اضافه کن</button>
+                        </div>
+                    </div>`;
+                });
+                html += '</div>';
+            });
+
+            container.innerHTML = html;
+        }
+
+        function addCustomFood(dayId, mealId) {
+            const input = document.getElementById(`custom-${dayId}-${mealId}`);
+            const name = input.value.trim();
+            if (!name) return;
+            const mk = mKey(dayId, mealId);
+            if (!customFoods[mk]) customFoods[mk] = [];
+            customFoods[mk].push({ id: `c_${Date.now()}`, name, emoji: '🍴', desc: `پیشنهاد ${currentUser?.name||''}` });
+            input.value = '';
+            saveState();
+            renderFood();
+            showNotification(`«${name}» اضافه شد! 🎉`, 'success');
+        }
+
+        // ============ RENDER ACTIVITIES ============
+        function renderActivities() {
+            const container = document.getElementById('tab-activities');
+            const maxV = Math.max(...ACTIVITIES.map(a => activityVotes[a.id]?.length || 0), 0);
+            const sorted = [...ACTIVITIES].sort((a,b) => (activityVotes[b.id]?.length||0) - (activityVotes[a.id]?.length||0));
+
+            let html = `<div class="day-header">
+                <div class="day-number">🎢</div>
+                <div><h3>تفریحات و برنامه‌های سفر</h3><span>به هر تعداد فعالیت رأی دهید! (کلیک دوباره = حذف رأی)</span></div>
+            </div>
+            <div class="activities-grid">`;
+
+            sorted.forEach(act => {
+                const vl = activityVotes[act.id] || [];
+                const isVoted = currentUser && vl.includes(currentUser.id);
+                const isWinner = vl.length > 0 && vl.length === maxV;
+
+                const voterEmojis = vl.map(vid => {
+                    const m = MEMBERS.find(mm => mm.id === vid);
+                    return `<span class="voter-chip" title="${m?.name}">${m?.emoji}</span>`;
+                }).join('');
+
+                html += `<div class="activity-card glass-card ${isVoted?'voted':''} ${isWinner?'winner':''}" onclick="voteActivity('${act.id}')">
+                    <div class="activity-top">
+                        <span class="activity-emoji">${act.emoji}</span>
+                        <div>
+                            <div class="activity-name">${act.name} ${isWinner?'👑':''}</div>
+                            <div class="activity-desc">${act.desc}</div>
+                        </div>
+                    </div>
+                    <div class="activity-bottom">
+                        <div class="activity-voters">${voterEmojis || '<span style="font-size:12px;color:var(--text-light)">هنوز رأیی نیست</span>'}</div>
+                        <div class="activity-count">${vl.length} رأی</div>
+                    </div>
+                </div>`;
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // ============ RENDER PLACES ============
+        function renderPlaces() {
+            const container = document.getElementById('tab-places');
+            const tagNames = { nature: 'طبیعت', beach: 'ساحل', fun: 'تفریح', shop: 'خرید', history: 'تاریخی' };
+
+            let html = `<div class="day-header">
+                <div class="day-number">📍</div>
+                <div><h3>بهترین جاهای دیدنی نوشهر</h3><span>جاذبه‌های گردشگری که نباید از دست بدهید!</span></div>
+            </div>`;
+
+            PLACES.forEach(place => {
+                const tags = place.tags.map(t =>
+                    `<span class="place-tag tag-${t}">${tagNames[t]}</span>`
+                ).join('');
+
+                html += `<div class="place-card glass-card">
+                    <div class="place-img">${place.emoji}</div>
+                    <div class="place-info">
+                        <div class="place-name">${place.name}</div>
+                        <div class="place-desc">${place.desc}</div>
+                        <div>${tags}</div>
+                    </div>
+                </div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ============ RENDER RESULTS ============
+        function renderResults() {
+            const container = document.getElementById('tab-results');
+            let html = `<div class="day-header">
+                <div class="day-number">📊</div>
+                <div><h3>نتایج نهایی رأی‌گیری</h3><span>غذاهایی که بیشترین رأی خانواده را دارند</span></div>
+            </div>`;
+
+            DAYS.forEach(day => {
+                html += `<div class="result-day">
+                    <div class="result-day-title">📅 ${day.name} — ${day.date}</div>`;
+
+                MEALS.forEach(meal => {
+                    const w = getWinner(day.id, meal.id);
+                    html += `<div class="result-item glass-card">
+                        <span class="result-icon">${meal.emoji}</span>
+                        <div class="result-info">
+                            <div class="result-type">${meal.name}</div>
+                            ${w ? `<div class="result-name">${w.emoji} ${w.name}</div>` : '<div class="no-result">هنوز رأیی ثبت نشده</div>'}
+                        </div>
+                        ${w ? `<div class="result-votes">👑 ${w.voteCount} رأی</div>` : ''}
+                    </div>`;
+                });
+                html += '</div>';
+            });
+
+            // Top activities
+            html += `<div class="result-day">
+                <div class="result-day-title">🎢 محبوب‌ترین تفریحات</div>`;
+
+            const sortedActs = [...ACTIVITIES]
+                .filter(a => (activityVotes[a.id]?.length||0) > 0)
+                .sort((a,b) => (activityVotes[b.id]?.length||0) - (activityVotes[a.id]?.length||0))
+                .slice(0, 6);
+
+            const medals = ['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣'];
+            if (!sortedActs.length) {
+                html += '<div class="result-item glass-card"><span class="result-icon">🎯</span><div class="result-info"><div class="no-result">هنوز رأیی ثبت نشده</div></div></div>';
+            } else {
+                sortedActs.forEach((act, i) => {
+                    html += `<div class="result-item glass-card">
+                        <span class="result-icon">${medals[i]}</span>
+                        <div class="result-info">
+                            <div class="result-type">${act.emoji} ${act.name}</div>
+                            <div class="result-name">${act.desc}</div>
+                        </div>
+                        <div class="result-votes">👥 ${activityVotes[act.id].length} رأی</div>
+                    </div>`;
+                });
+            }
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // ============ RENDER ADMIN ============
+        function renderAdmin() {
+            const container = document.getElementById('tab-admin');
+            let html = `
+                <div class="admin-panel glass-card">
+                    <h3>⚙️ مدیریت رأی‌گیری</h3>
+                    <div class="admin-actions">
+                        <button class="admin-btn reset" onclick="resetAll()">🗑️ پاک کردن همه رأی‌ها</button>
+                        <button class="admin-btn export" onclick="exportResults()">📋 کپی نتایج</button>
+                    </div>
+                </div>
+                <div class="member-stats glass-card">
+                    <h3 style="font-size:17px;font-weight:800;margin-bottom:16px">📊 آمار رأی هر عضو</h3>`;
+
+            MEMBERS.forEach(m => {
+                let count = 0;
+                Object.values(votes).forEach(vl => { if (vl.includes(m.id)) count++; });
+                Object.values(activityVotes).forEach(vl => { if (vl.includes(m.id)) count++; });
+
+                html += `<div class="member-stat-row">
+                    <div class="member-stat-avatar">${m.emoji}</div>
+                    <div class="member-stat-name">${m.name}</div>
+                    <div class="member-stat-count">${count} رأی</div>
+                </div>`;
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function resetAll() {
+            if (confirm('آیا مطمئنید؟ همه رأی‌ها پاک می‌شود!')) {
+                votes = {}; activityVotes = {}; customFoods = {};
+                saveState(); renderAll();
+                showNotification('همه رأی‌ها پاک شد! 🗑️', 'info');
+            }
+        }
+
+        function exportResults() {
+            let t = '🏖️ نتایج سفر نوشهر — خانواده مرتضی\n';
+            t += '📅 ۲۱ تا ۲۴ مهر ۱۴۰۴\n';
+            t += '═'.repeat(30) + '\n\n';
+
+            DAYS.forEach(day => {
+                t += `${day.num}. ${day.name} (${day.date})\n${'─'.repeat(22)}\n`;
+                MEALS.forEach(meal => {
+                    const w = getWinner(day.id, meal.id);
+                    t += `  ${meal.emoji} ${meal.name}: ${w ? `${w.name} (${w.voteCount} رأی) 👑` : 'تعیین نشده'}\n`;
+                });
+                t += '\n';
+            });
+
+            t += '🎢 تفریحات محبوب:\n' + '─'.repeat(22) + '\n';
+            [...ACTIVITIES].filter(a => activityVotes[a.id]?.length)
+                .sort((a,b) => activityVotes[b.id].length - activityVotes[a.id].length)
+                .forEach(a => { t += `  ${a.emoji} ${a.name}: ${activityVotes[a.id].length} رأی\n`; });
+
+            navigator.clipboard.writeText(t).then(() => showNotification('نتایج کپی شد! 📋', 'success'))
+                .catch(() => { showNotification('نتایج کپی شد! 📋', 'success'); });
+        }
+
+        // ============ STATS ============
+        function updateStats() {
+            document.getElementById('totalMembers').textContent = MEMBERS.length;
+            let tv = 0;
+            Object.values(votes).forEach(v => tv += v.length);
+            Object.values(activityVotes).forEach(v => tv += v.length);
+            document.getElementById('totalVotes').textContent = tv;
+
+            let decided = 0;
+            DAYS.forEach(d => { MEALS.forEach(m => { if (getWinner(d.id, m.id)) decided++; }); });
+            document.getElementById('decidedCount').textContent = decided;
+        }
+
+        // ============ NOTIFICATION ============
+        function showNotification(text, type = 'success') {
+            const n = document.getElementById('notification');
+            document.getElementById('notifIcon').textContent = type === 'success' ? '✅' : 'ℹ️';
+            document.getElementById('notifText').textContent = text;
+            n.className = `notification ${type} show`;
+            setTimeout(() => n.classList.remove('show'), 3500);
+        }
+
+        // ============ RENDER ALL ============
+        function renderAll() {
+            renderFood();
+            renderActivities();
+            renderPlaces();
+            renderResults();
+            renderAdmin();
+            updateStats();
+        }
+
+        // ============ DEMO VOTES ============
+        function addDemoVotes() {
+            if (Object.keys(votes).length > 0) return;
+
+            // Day 1
+            votes['day1_breakfast_b4'] = ['morteza','fatemeh','shirin','negin','elham','shaghayegh'];
+            votes['day1_breakfast_b1'] = ['shadi','mohammadreza','mostafa'];
+            votes['day1_lunch_l6'] = ['morteza','fatemeh','shirin','negin','elham','shaghayegh','shadi'];
+            votes['day1_lunch_l3'] = ['mohammadreza','mostafa'];
+            votes['day1_dinner_d7'] = ['morteza','fatemeh','shirin','negin','elham','mostafa'];
+            votes['day1_dinner_d3'] = ['shaghayegh','shadi','mohammadreza'];
+            votes['day1_snack_s4'] = ['morteza','negin','elham','shaghayegh','shadi','mohammadreza','mostafa'];
+            votes['day1_snack_s2'] = ['fatemeh','shirin'];
+
+            // Day 2
+            votes['day2_breakfast_b2'] = ['morteza','fatemeh','negin','shadi','mohammadreza','mostafa'];
+            votes['day2_breakfast_b3'] = ['shirin','elham','shaghayegh'];
+            votes['day2_lunch_l3'] = ['morteza','fatemeh','shirin','negin','elham','shaghayegh','shadi','mohammadreza'];
+            votes['day2_lunch_l1'] = ['mostafa'];
+            votes['day2_dinner_d2'] = ['negin','elham','shaghayegh','shadi','mohammadreza','mostafa'];
+            votes['day2_dinner_d1'] = ['morteza','fatemeh','shirin'];
+            votes['day2_snack_s2'] = ['morteza','fatemeh','shirin','negin','elham','shaghayegh','shadi'];
+            votes['day2_snack_s1'] = ['mohammadreza','mostafa'];
+
+            // Day 3
+            votes['day3_breakfast_b1'] = ['morteza','fatemeh','shirin','mohammadreza','mostafa'];
+            votes['day3_breakfast_b5'] = ['negin','elham','shaghayegh','shadi'];
+            votes['day3_lunch_l1'] = ['morteza','fatemeh','shirin','negin','elham','shaghayegh'];
+            votes['day3_lunch_l2'] = ['shadi','mohammadreza','mostafa'];
+            votes['day3_dinner_d3'] = ['negin','elham','shaghayegh','shadi','mohammadreza','mostafa'];
+            votes['day3_dinner_d6'] = ['morteza','fatemeh','shirin'];
+            votes['day3_snack_s3'] = ['morteza','fatemeh','shirin','negin','elham','shaghayegh'];
+            votes['day3_snack_s1'] = ['shadi','mohammadreza','mostafa'];
+
+            // Day 4
+            votes['day4_breakfast_b4'] = ['morteza','fatemeh','shirin','negin','elham','shaghayegh','shadi','mohammadreza'];
+            votes['day4_breakfast_b6'] = ['mostafa'];
+            votes['day4_lunch_l5'] = ['morteza','fatemeh','negin','elham','mohammadreza','mostafa'];
+            votes['day4_lunch_l7'] = ['shirin','shaghayegh','shadi'];
+            votes['day4_dinner_d1'] = ['morteza','fatemeh','shirin','negin','elham'];
+            votes['day4_dinner_d2'] = ['shaghayegh','shadi','mohammadreza','mostafa'];
+            votes['day4_snack_s1'] = ['morteza','fatemeh','shirin','negin','elham','shaghayegh','shadi','mohammadreza','mostafa'];
+
+            // Activities
+            activityVotes['a1'] = ['morteza','negin','elham','shaghayegh','shadi','mohammadreza','mostafa'];
+            activityVotes['a2'] = ['mohammadreza','mostafa','shadi','negin','morteza'];
+            activityVotes['a3'] = ['morteza','fatemeh','shirin','negin','elham','shaghayegh','shadi','mohammadreza','mostafa'];
+            activityVotes['a4'] = ['morteza','fatemeh','shirin','negin','elham'];
+            activityVotes['a5'] = ['morteza','fatemeh','shirin','negin','elham','shaghayegh','shadi','mohammadreza'];
+            activityVotes['a6'] = ['fatemeh','shirin','negin','elham','shaghayegh','shadi'];
+            activityVotes['a7'] = ['morteza','negin','elham','shaghayegh','shadi','mohammadreza','mostafa'];
+            activityVotes['a8'] = ['fatemeh','shirin','negin','elham','shaghayegh','shadi','mohammadreza','mostafa'];
+            activityVotes['a9'] = ['morteza','fatemeh','shirin','elham','shaghayegh'];
+            activityVotes['a10'] = ['negin','elham','shadi'];
+
+            saveState();
+        }
+
+        // ============ INIT ============
+        loadState();
+        createParticles();
+        renderLogin();
+        addDemoVotes();
+    </script>
+</body>
+</html>
