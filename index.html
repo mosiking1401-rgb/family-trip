@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🌊 سفر نوشهر | ۲۱ تا ۲۴ مهر</title>
+<title>🌊 سفر خانوادگی نوشهر | ۲۱ تا ۲۴ مهر</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
@@ -12,236 +12,255 @@
 --b1:#0e7490;--b2:#0891b2;--b3:#06b6d4;--b4:#67e8f9;
 --gold:#f59e0b;--gold2:#fbbf24;
 --bg:#f0fdf4;--card:#fff;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;
---r:20px;
 }
 body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
 /* ===== HERO ===== */
 .hero{
 background:linear-gradient(160deg,#064e3b 0%,#065f46 20%,#047857 40%,#0e7490 70%,#0891b2 100%);
-padding:50px 20px 80px;text-align:center;position:relative;overflow:hidden;
+padding:40px 20px 70px;text-align:center;position:relative;overflow:hidden;
 }
 .hero::after{
-content:'';position:absolute;bottom:-2px;left:0;width:100%;height:80px;
+content:'';position:absolute;bottom:-2px;left:0;width:100%;height:70px;
 background:var(--bg);border-radius:50% 50% 0 0;
 }
-.hero-waves{position:absolute;bottom:60px;left:0;width:200%;height:60px;opacity:.15;animation:waveMove 6s linear infinite}
+.hero-waves{position:absolute;bottom:40px;left:0;width:200%;height:50px;opacity:.15;animation:waveMove 6s linear infinite}
 @keyframes waveMove{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.hero h1{color:#fff;font-size:34px;font-weight:900;margin:10px 0 6px;text-shadow:0 3px 20px rgba(0,0,0,.3)}
-.hero p{color:rgba(255,255,255,.85);font-size:15px}
+.hero h1{color:#fff;font-size:30px;font-weight:900;margin:8px 0 4px;text-shadow:0 3px 20px rgba(0,0,0,.3)}
+.hero p{color:rgba(255,255,255,.85);font-size:14px}
 .hero-badge{
-display:inline-flex;align-items:center;gap:8px;margin-top:16px;
+display:inline-flex;align-items:center;gap:8px;margin-top:12px;
 background:rgba(255,255,255,.15);backdrop-filter:blur(10px);
-border:1px solid rgba(255,255,255,.2);padding:10px 24px;border-radius:50px;
-color:#fff;font-weight:700;font-size:14px;
+border:1px solid rgba(255,255,255,.2);padding:8px 20px;border-radius:50px;
+color:#fff;font-weight:700;font-size:13px;
 }
-.hero-emoji{font-size:64px;display:inline-block;animation:float 3s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-12px) rotate(5deg)}}
+.hero-emoji{font-size:56px;display:inline-block;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(5deg)}}
 
 /* ===== LOGIN ===== */
-.login-wrap{max-width:520px;margin:-40px auto 30px;padding:0 16px;position:relative;z-index:10}
+.login-wrap{max-width:540px;margin:-35px auto 30px;padding:0 16px;position:relative;z-index:10}
 .login-box{
-background:#fff;border-radius:28px;padding:32px 24px;
+background:#fff;border-radius:26px;padding:28px 22px;
 box-shadow:0 20px 60px rgba(6,95,70,.1),0 4px 12px rgba(0,0,0,.04);
 border:1px solid rgba(6,95,70,.06);
 }
-.login-box h2{text-align:center;font-size:22px;font-weight:900;color:var(--g1);margin-bottom:4px}
-.login-box .sub{text-align:center;color:var(--muted);font-size:13px;margin-bottom:24px}
-.grp-label{font-size:11px;font-weight:800;color:var(--g3);margin:16px 0 8px;letter-spacing:1px;display:flex;align-items:center;gap:6px}
+.login-box h2{text-align:center;font-size:20px;font-weight:900;color:var(--g1);margin-bottom:4px}
+.login-box .sub{text-align:center;color:var(--muted);font-size:12px;margin-bottom:20px}
+.grp-label{font-size:11px;font-weight:800;color:var(--g3);margin:14px 0 8px;display:flex;align-items:center;justify-content:space-between}
 .m-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .m-btn{
-display:flex;flex-direction:column;align-items:center;gap:6px;
-padding:14px 8px;border:2px solid var(--border);border-radius:16px;
-background:#fff;cursor:pointer;transition:all .3s;font-family:'Vazirmatn';
-font-size:13px;font-weight:700;color:var(--text);
+display:flex;flex-direction:column;align-items:center;gap:4px;
+padding:12px 6px;border:2px solid var(--border);border-radius:14px;
+background:#fff;cursor:pointer;transition:all .25s;font-family:'Vazirmatn';
+font-size:12px;font-weight:700;color:var(--text);position:relative;
 }
-.m-btn:hover{border-color:var(--g3);background:var(--g6);transform:translateY(-3px);box-shadow:0 8px 20px rgba(5,150,105,.12)}
-.m-btn.sel{border-color:var(--g3);background:linear-gradient(135deg,var(--g6),#ccfbf1);box-shadow:0 8px 20px rgba(5,150,105,.15)}
-.m-btn .av{font-size:32px}
+.m-btn:hover{border-color:var(--g3);background:var(--g6);transform:translateY(-2px)}
+.m-btn.sel{border-color:var(--g3);background:linear-gradient(135deg,var(--g6),#ccfbf1);box-shadow:0 6px 16px rgba(5,150,105,.15)}
+.m-btn .av{font-size:28px}
 .go-btn{
-width:100%;padding:16px;border:none;border-radius:16px;margin-top:20px;
+width:100%;padding:15px;border:none;border-radius:15px;margin-top:16px;
 background:linear-gradient(135deg,var(--g2),var(--b1));color:#fff;
-font-family:'Vazirmatn';font-size:17px;font-weight:900;cursor:pointer;
-transition:all .3s;letter-spacing:.5px;
+font-family:'Vazirmatn';font-size:16px;font-weight:900;cursor:pointer;
+transition:all .3s;
 }
-.go-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 12px 30px rgba(6,95,70,.3)}
+.go-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 25px rgba(6,95,70,.3)}
 .go-btn:disabled{background:#cbd5e1;cursor:not-allowed}
+
+.add-member-trigger{
+width:100%;padding:10px;border:2px dashed var(--g3);border-radius:12px;
+background:var(--g6);color:var(--g2);font-family:'Vazirmatn';font-size:12px;
+font-weight:800;cursor:pointer;margin-top:14px;transition:all .2s;
+display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.add-member-trigger:hover{background:#ccfbf1;border-color:var(--g2)}
+
+/* ===== MODAL ===== */
+.modal-overlay{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,.5);backdrop-filter:blur(5px);
+display:none;align-items:center;justify-content:center;z-index:99999;padding:16px;
+}
+.modal-overlay.active{display:flex}
+.modal-box{
+background:#fff;border-radius:24px;padding:26px;width:100%;max-width:420px;
+box-shadow:0 25px 50px -12px rgba(0,0,0,.25);animation:popIn .3s ease;
+}
+@keyframes popIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.modal-box h3{font-size:18px;font-weight:900;color:var(--g1);margin-bottom:14px}
+.modal-form{display:flex;flex-direction:column;gap:12px}
+.modal-form label{font-size:12px;font-weight:700;color:var(--muted)}
+.modal-form input, .modal-form select{
+padding:12px;border:2px solid var(--border);border-radius:12px;
+font-family:'Vazirmatn';font-size:13px;outline:none;
+}
+.modal-form input:focus, .modal-form select:focus{border-color:var(--g3)}
+.modal-btns{display:flex;gap:8px;margin-top:8px}
+.modal-btn{
+flex:1;padding:12px;border:none;border-radius:12px;font-family:'Vazirmatn';
+font-size:13px;font-weight:800;cursor:pointer;
+}
+.modal-btn.save{background:var(--g3);color:#fff}
+.modal-btn.cancel{background:#f1f5f9;color:var(--muted)}
 
 /* ===== APP ===== */
 .app{display:none;max-width:860px;margin:0 auto;padding:0 16px 120px;position:relative;z-index:1}
-
-/* User Bar */
 .ubar{
-margin:-40px 0 20px;padding:16px 20px;background:#fff;border-radius:22px;
-box-shadow:0 8px 30px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;
+margin:-35px 0 20px;padding:14px 18px;background:#fff;border-radius:20px;
+box-shadow:0 8px 25px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;
 border:1px solid rgba(6,95,70,.06);
 }
-.ubar-info{display:flex;align-items:center;gap:12px}
+.ubar-info{display:flex;align-items:center;gap:10px}
 .ubar-av{
-width:46px;height:46px;border-radius:14px;
+width:42px;height:42px;border-radius:12px;
 background:linear-gradient(135deg,var(--g3),var(--b2));
-display:flex;align-items:center;justify-content:center;font-size:24px;
+display:flex;align-items:center;justify-content:center;font-size:22px;
 }
-.ubar-name{font-weight:800;font-size:15px}
+.ubar-name{font-weight:800;font-size:14px}
 .ubar-role{font-size:11px;color:var(--muted)}
 .out-btn{
-padding:8px 16px;border:2px solid #fecdd3;border-radius:12px;
-background:#fff1f2;color:#ef4444;font-family:'Vazirmatn';font-size:12px;
-font-weight:700;cursor:pointer;transition:all .2s;
+padding:7px 14px;border:2px solid #fecdd3;border-radius:10px;
+background:#fff1f2;color:#ef4444;font-family:'Vazirmatn';font-size:11px;
+font-weight:700;cursor:pointer;
 }
-.out-btn:hover{background:#fecdd3}
 
 /* Stats */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
 .st{
-background:#fff;border-radius:18px;padding:18px 12px;text-align:center;
-box-shadow:0 4px 16px rgba(0,0,0,.04);border:1px solid rgba(6,95,70,.05);
-position:relative;overflow:hidden;
+background:#fff;border-radius:16px;padding:14px 8px;text-align:center;
+box-shadow:0 4px 14px rgba(0,0,0,.04);border:1px solid rgba(6,95,70,.05);position:relative;overflow:hidden;
 }
 .st::before{content:'';position:absolute;top:0;right:0;width:100%;height:3px}
 .st:nth-child(1)::before{background:linear-gradient(90deg,var(--g3),var(--b3))}
 .st:nth-child(2)::before{background:linear-gradient(90deg,var(--b2),var(--b4))}
 .st:nth-child(3)::before{background:linear-gradient(90deg,var(--gold),var(--gold2))}
-.st-i{font-size:26px;margin-bottom:6px}
-.st-v{font-size:26px;font-weight:900;color:var(--g1)}
-.st-l{font-size:11px;color:var(--muted);font-weight:600;margin-top:2px}
+.st-i{font-size:22px;margin-bottom:4px}
+.st-v{font-size:22px;font-weight:900;color:var(--g1)}
+.st-l{font-size:10px;color:var(--muted);font-weight:600}
 
 /* Tabs */
-.tabs-wrap{position:sticky;top:0;z-index:100;margin-bottom:20px}
+.tabs-wrap{position:sticky;top:0;z-index:100;margin-bottom:18px}
 .tabs{
-display:flex;gap:4px;padding:5px;background:#fff;border-radius:18px;
-box-shadow:0 4px 20px rgba(0,0,0,.06);overflow-x:auto;border:1px solid rgba(6,95,70,.05);
+display:flex;gap:4px;padding:4px;background:#fff;border-radius:16px;
+box-shadow:0 4px 16px rgba(0,0,0,.06);overflow-x:auto;border:1px solid rgba(6,95,70,.05);
 }
 .tabs::-webkit-scrollbar{display:none}
 .tb{
-flex:1;min-width:max-content;padding:12px 10px;border:none;border-radius:14px;
+flex:1;min-width:max-content;padding:10px 8px;border:none;border-radius:12px;
 background:transparent;font-family:'Vazirmatn';font-size:12px;font-weight:700;
-color:var(--muted);cursor:pointer;transition:all .3s;white-space:nowrap;
+color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .2s;
 }
-.tb:hover:not(.on){background:var(--g6);color:var(--g2)}
-.tb.on{background:linear-gradient(135deg,var(--g2),var(--b1));color:#fff;box-shadow:0 4px 16px rgba(6,95,70,.25)}
+.tb.on{background:linear-gradient(135deg,var(--g2),var(--b1));color:#fff;box-shadow:0 4px 12px rgba(6,95,70,.2)}
 
 .tc{display:none}
-.tc.on{display:block;animation:fadeUp .4s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.tc.on{display:block;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
-/* Day Header */
+/* Day & Meals */
 .dh{
-display:flex;align-items:center;gap:14px;margin-bottom:16px;
-padding:16px 20px;background:linear-gradient(135deg,var(--g6),#ccfbf1);
-border-radius:18px;border-right:5px solid var(--g3);
+display:flex;align-items:center;gap:12px;margin-bottom:14px;
+padding:14px 18px;background:linear-gradient(135deg,var(--g6),#ccfbf1);
+border-radius:16px;border-right:4px solid var(--g3);
 }
 .dh-num{
-width:44px;height:44px;border-radius:12px;
+width:38px;height:38px;border-radius:10px;
 background:linear-gradient(135deg,var(--g2),var(--b1));
 color:#fff;display:flex;align-items:center;justify-content:center;
-font-size:18px;font-weight:900;flex-shrink:0;
+font-size:16px;font-weight:900;flex-shrink:0;
 }
-.dh h3{font-size:16px;font-weight:800}
-.dh span{font-size:12px;color:var(--muted)}
+.dh h3{font-size:15px;font-weight:800}
+.dh span{font-size:11px;color:var(--muted)}
 
-/* Meal Card */
 .mc{
-background:#fff;border-radius:20px;padding:20px;margin-bottom:14px;
-box-shadow:0 4px 16px rgba(0,0,0,.04);border:1px solid rgba(6,95,70,.04);
+background:#fff;border-radius:18px;padding:18px;margin-bottom:14px;
+box-shadow:0 4px 14px rgba(0,0,0,.04);border:1px solid rgba(6,95,70,.04);
 }
-.mc-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.mc-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .mc-icon{
-width:44px;height:44px;border-radius:12px;display:flex;align-items:center;
-justify-content:center;font-size:22px;flex-shrink:0;
+width:40px;height:40px;border-radius:10px;display:flex;align-items:center;
+justify-content:center;font-size:20px;flex-shrink:0;
 }
 .mc-icon.bk{background:linear-gradient(135deg,#fef3c7,#fde68a)}
 .mc-icon.lu{background:linear-gradient(135deg,#fce7f3,#fbcfe8)}
 .mc-icon.di{background:linear-gradient(135deg,#dbeafe,#bfdbfe)}
 .mc-icon.sn{background:linear-gradient(135deg,#d1fae5,#a7f3d0)}
-.mc-title{font-weight:800;font-size:15px}
-.mc-time{font-size:11px;color:var(--muted)}
+.mc-title{font-weight:800;font-size:14px}
+.mc-time{font-size:10px;color:var(--muted)}
 
-/* Food Option */
 .fo{
-display:flex;align-items:center;gap:12px;padding:12px 14px;
-border:2px solid #f1f5f9;border-radius:14px;cursor:pointer;
-transition:all .3s;position:relative;overflow:hidden;background:#fff;margin-bottom:8px;
+display:flex;align-items:center;gap:10px;padding:10px 12px;
+border:2px solid #f1f5f9;border-radius:12px;cursor:pointer;
+transition:all .2s;position:relative;overflow:hidden;background:#fff;margin-bottom:6px;
 }
 .fo::after{
 content:'';position:absolute;bottom:0;left:0;height:3px;
 width:var(--pct,0%);background:linear-gradient(90deg,var(--g3),var(--b3));
-transition:width .5s;border-radius:0 3px 3px 0;
+transition:width .4s;border-radius:0 3px 3px 0;
 }
-.fo:hover{border-color:var(--g4);transform:translateX(-3px);box-shadow:3px 3px 16px rgba(5,150,105,.08)}
+.fo:hover{border-color:var(--g4);transform:translateX(-2px)}
 .fo.voted{border-color:var(--g3);background:linear-gradient(135deg,#f0fdf4,#ecfdf5)}
 .fo.winner{border-color:var(--gold);background:linear-gradient(135deg,#fffbeb,#fef3c7)}
 .fo.winner::after{background:linear-gradient(90deg,var(--gold),var(--gold2))}
-.fo-em{font-size:30px;flex-shrink:0;transition:transform .3s}
-.fo:hover .fo-em{transform:scale(1.15) rotate(-5deg)}
+.fo-em{font-size:26px;flex-shrink:0}
 .fo-info{flex:1;min-width:0}
 .fo-name{font-weight:700;font-size:13px}
-.fo-desc{font-size:11px;color:var(--muted);margin-top:2px}
-.fo-voters{display:flex;gap:2px;flex-wrap:wrap;margin-top:5px}
+.fo-desc{font-size:10px;color:var(--muted);margin-top:1px}
+.fo-voters{display:flex;gap:2px;flex-wrap:wrap;margin-top:4px}
 .vc{
-width:22px;height:22px;border-radius:6px;background:rgba(5,150,105,.1);
-display:inline-flex;align-items:center;justify-content:center;font-size:12px;
+width:20px;height:20px;border-radius:6px;background:rgba(5,150,105,.1);
+display:inline-flex;align-items:center;justify-content:center;font-size:11px;
 }
-.fo-count{text-align:center;flex-shrink:0;min-width:44px}
-.fo-num{font-size:18px;font-weight:900;color:var(--g2)}
+.fo-count{text-align:center;flex-shrink:0;min-width:40px}
+.fo-num{font-size:16px;font-weight:900;color:var(--g2)}
 .fo.winner .fo-num{color:var(--gold)}
 .fo-lbl{font-size:9px;color:var(--muted);font-weight:600}
 .w-badge{
-display:none;padding:3px 8px;background:linear-gradient(135deg,var(--gold),#d97706);
-color:#fff;border-radius:6px;font-size:9px;font-weight:800;flex-shrink:0;
+display:none;padding:2px 6px;background:linear-gradient(135deg,var(--gold),#d97706);
+color:#fff;border-radius:5px;font-size:9px;font-weight:800;flex-shrink:0;
 }
-.fo.winner .w-badge{display:flex;align-items:center;gap:3px}
+.fo.winner .w-badge{display:flex;align-items:center;gap:2px}
 
-/* Custom Add */
-.add-row{display:flex;gap:8px;margin-top:10px}
+.add-row{display:flex;gap:6px;margin-top:8px}
 .add-row input{
-flex:1;padding:10px 14px;border:2px solid var(--border);border-radius:12px;
-font-family:'Vazirmatn';font-size:13px;outline:none;transition:all .3s;
+flex:1;padding:8px 12px;border:2px solid var(--border);border-radius:10px;
+font-family:'Vazirmatn';font-size:12px;outline:none;
 }
-.add-row input:focus{border-color:var(--g3);box-shadow:0 0 0 3px rgba(5,150,105,.1)}
+.add-row input:focus{border-color:var(--g3)}
 .add-row button{
-padding:10px 16px;border:none;border-radius:12px;
+padding:8px 14px;border:none;border-radius:10px;
 background:linear-gradient(135deg,var(--g3),var(--g2));color:#fff;
-font-family:'Vazirmatn';font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;
+font-family:'Vazirmatn';font-size:11px;font-weight:700;cursor:pointer;
 }
 
 /* Activities */
-.act-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.act-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
 .ac{
-background:#fff;border-radius:18px;padding:18px;cursor:pointer;
-transition:all .3s;border:2px solid transparent;
-box-shadow:0 4px 16px rgba(0,0,0,.04);position:relative;overflow:hidden;
+background:#fff;border-radius:16px;padding:16px;cursor:pointer;
+transition:all .2s;border:2px solid transparent;box-shadow:0 4px 14px rgba(0,0,0,.04);
 }
-.ac:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.08);border-color:var(--g4)}
+.ac:hover{transform:translateY(-3px);border-color:var(--g4)}
 .ac.voted{border-color:var(--b3);background:linear-gradient(135deg,#ecfeff,#e0f7ff)}
 .ac.winner{border-color:var(--gold);background:linear-gradient(135deg,#fffbeb,#fef3c7)}
-.ac-top{display:flex;gap:12px;margin-bottom:10px}
-.ac-em{font-size:36px;flex-shrink:0;transition:transform .3s}
-.ac:hover .ac-em{transform:scale(1.15) rotate(-8deg)}
-.ac-name{font-weight:800;font-size:14px}
-.ac-desc{font-size:11px;color:var(--muted);line-height:1.7;margin-top:3px}
-.ac-bot{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border)}
+.ac-top{display:flex;gap:10px;margin-bottom:8px}
+.ac-em{font-size:32px;flex-shrink:0}
+.ac-name{font-weight:800;font-size:13px}
+.ac-desc{font-size:10px;color:var(--muted);line-height:1.6;margin-top:2px}
+.ac-bot{display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid var(--border)}
 .ac-voters{display:flex;gap:2px;flex-wrap:wrap}
-.ac-cnt{font-size:16px;font-weight:900;color:var(--g2)}
+.ac-cnt{font-size:15px;font-weight:900;color:var(--g2)}
 
 /* Places */
 .pl{
-display:flex;gap:14px;padding:18px;background:#fff;border-radius:18px;
-margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,.04);transition:all .3s;
-border:1px solid rgba(6,95,70,.04);
+display:flex;gap:12px;padding:16px;background:#fff;border-radius:16px;
+margin-bottom:10px;box-shadow:0 4px 14px rgba(0,0,0,.04);
 }
-.pl:hover{transform:translateX(-5px);box-shadow:0 8px 24px rgba(0,0,0,.07)}
 .pl-img{
-width:72px;height:72px;border-radius:14px;
+width:64px;height:64px;border-radius:12px;
 background:linear-gradient(135deg,var(--g6),#ccfbf1);
-display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;
+display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;
 }
-.pl-name{font-weight:800;font-size:15px;margin-bottom:4px}
-.pl-desc{font-size:12px;color:var(--muted);line-height:1.8}
-.pl-tag{
-display:inline-block;padding:3px 10px;border-radius:8px;
-font-size:10px;font-weight:700;margin-top:6px;margin-left:4px;
-}
+.pl-name{font-weight:800;font-size:14px;margin-bottom:2px}
+.pl-desc{font-size:11px;color:var(--muted);line-height:1.7}
+.pl-tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:9px;font-weight:700;margin-top:4px;margin-left:3px}
 .t-n{background:#d1fae5;color:#065f46}
 .t-b{background:#e0f2fe;color:#0c4a6e}
 .t-f{background:#fef3c7;color:#92400e}
@@ -250,103 +269,70 @@ font-size:10px;font-weight:700;margin-top:6px;margin-left:4px;
 
 /* Results */
 .ri{
-display:flex;align-items:center;gap:12px;padding:14px 16px;
-background:#fff;border-radius:16px;margin-bottom:8px;
-box-shadow:0 3px 12px rgba(0,0,0,.03);transition:all .3s;
+display:flex;align-items:center;gap:10px;padding:12px 14px;
+background:#fff;border-radius:14px;margin-bottom:6px;box-shadow:0 3px 10px rgba(0,0,0,.03);
 }
-.ri:hover{transform:translateX(-3px)}
-.ri-em{font-size:28px;flex-shrink:0}
+.ri-em{font-size:24px;flex-shrink:0}
 .ri-info{flex:1}
-.ri-type{font-size:11px;color:var(--muted);font-weight:600}
-.ri-name{font-weight:800;font-size:14px}
+.ri-type{font-size:10px;color:var(--muted);font-weight:600}
+.ri-name{font-weight:800;font-size:13px}
 .ri-votes{
-padding:5px 12px;background:linear-gradient(135deg,#ecfdf5,#d1fae5);
-border-radius:8px;font-size:12px;font-weight:800;color:#059669;flex-shrink:0;
+padding:4px 10px;background:linear-gradient(135deg,#ecfdf5,#d1fae5);
+border-radius:6px;font-size:11px;font-weight:800;color:#059669;flex-shrink:0;
 }
-.no-r{color:var(--muted);font-size:12px;font-style:italic}
+.no-r{color:var(--muted);font-size:11px;font-style:italic}
 
-/* Upload/Download Section */
+/* Sync Box */
 .sync-box{
-background:#fff;border-radius:22px;padding:28px 24px;margin-bottom:20px;
-box-shadow:0 6px 24px rgba(0,0,0,.05);border:2px dashed var(--g4);text-align:center;
+background:#fff;border-radius:20px;padding:24px 20px;margin-bottom:16px;
+box-shadow:0 4px 20px rgba(0,0,0,.04);border:2px dashed var(--g4);text-align:center;
 }
-.sync-box h3{font-size:18px;font-weight:800;color:var(--g1);margin-bottom:8px}
-.sync-box p{font-size:13px;color:var(--muted);line-height:2;margin-bottom:16px}
-.sync-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.sync-box h3{font-size:16px;font-weight:800;color:var(--g1);margin-bottom:6px}
+.sync-box p{font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:14px}
+.sync-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .sync-btn{
-padding:14px 28px;border:none;border-radius:14px;
-font-family:'Vazirmatn';font-size:14px;font-weight:800;cursor:pointer;
-transition:all .3s;display:flex;align-items:center;gap:8px;
+padding:12px 20px;border:none;border-radius:12px;
+font-family:'Vazirmatn';font-size:13px;font-weight:800;cursor:pointer;
+transition:all .2s;display:flex;align-items:center;gap:6px;
 }
-.sync-btn:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.sync-btn:hover{transform:translateY(-2px)}
 .sync-btn.dl{background:linear-gradient(135deg,var(--g3),var(--g2));color:#fff}
 .sync-btn.ul{background:linear-gradient(135deg,var(--b2),var(--b1));color:#fff}
 .sync-btn.pr{background:linear-gradient(135deg,var(--gold),#d97706);color:#fff}
 .sync-btn.rst{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
 
 .upload-zone{
-margin-top:16px;padding:30px;border:3px dashed var(--border);border-radius:16px;
-background:var(--g6);cursor:pointer;transition:all .3s;
+margin-top:14px;padding:24px;border:2px dashed var(--border);border-radius:14px;
+background:var(--g6);cursor:pointer;
 }
-.upload-zone:hover{border-color:var(--g3);background:#ccfbf1}
-.upload-zone.drag{border-color:var(--g3);background:#ccfbf1;transform:scale(1.02)}
-
-/* Admin */
-.admin-box{
-padding:24px;background:linear-gradient(135deg,#fef3c7,#fde68a);
-border-radius:20px;border:2px solid var(--gold);margin-bottom:16px;
+.file-list{margin-top:10px;text-align:right}
+.file-item{
+display:flex;align-items:center;gap:8px;padding:8px 12px;
+background:#fff;border-radius:10px;margin-bottom:4px;border:1px solid var(--border);font-size:12px;
 }
-.admin-box h3{font-size:16px;color:#92400e;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.m-stat{
-display:flex;align-items:center;gap:12px;padding:10px 0;
-border-bottom:1px solid var(--border);
-}
-.m-stat:last-child{border:none}
-.m-stat-av{
-width:36px;height:36px;border-radius:10px;background:var(--g6);
-display:flex;align-items:center;justify-content:center;font-size:18px;
-}
-.m-stat-name{flex:1;font-weight:700;font-size:13px}
-.m-stat-cnt{
-padding:4px 12px;border-radius:8px;
-background:linear-gradient(135deg,var(--g3),var(--b2));
-color:#fff;font-size:12px;font-weight:800;
+.file-item .fi-name{flex:1;font-weight:700}
+.file-item .fi-status{color:var(--g3);font-weight:700}
+.file-item .fi-del{
+padding:3px 8px;border:none;border-radius:6px;background:#fee2e2;
+color:#ef4444;font-family:'Vazirmatn';font-size:10px;font-weight:700;cursor:pointer;
 }
 
 /* Notification */
 .notif{
 position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-120px);
-padding:14px 24px;border-radius:16px;z-index:10000;
-transition:transform .5s cubic-bezier(.34,1.56,.64,1);
-font-weight:700;font-size:13px;display:flex;align-items:center;gap:10px;
+padding:12px 20px;border-radius:14px;z-index:100000;
+transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+font-weight:700;font-size:12px;display:flex;align-items:center;gap:8px;
 max-width:90%;backdrop-filter:blur(20px);
 }
 .notif.show{transform:translateX(-50%) translateY(0)}
 .notif.ok{background:rgba(236,253,245,.95);border:2px solid #a7f3d0;color:#065f46}
 .notif.info{background:rgba(224,242,254,.95);border:2px solid #7dd3fc;color:#0c4a6e}
 
-/* File list */
-.file-list{margin-top:12px;text-align:right}
-.file-item{
-display:flex;align-items:center;gap:10px;padding:10px 14px;
-background:#fff;border-radius:12px;margin-bottom:6px;
-border:1px solid var(--border);font-size:13px;
-}
-.file-item .fi-name{flex:1;font-weight:700}
-.file-item .fi-status{color:var(--g3);font-weight:700;font-size:12px}
-.file-item .fi-del{
-padding:4px 10px;border:none;border-radius:8px;background:#fee2e2;
-color:#ef4444;font-family:'Vazirmatn';font-size:11px;font-weight:700;cursor:pointer;
-}
-
 @media(max-width:520px){
-.hero h1{font-size:24px}
+.hero h1{font-size:22px}
 .m-grid{grid-template-columns:repeat(2,1fr)}
-.stats{gap:6px}
-.st{padding:12px 8px}
-.st-v{font-size:20px}
-.tb{font-size:10px;padding:10px 6px}
-.act-grid{grid-template-columns:1fr}
+.tb{font-size:10px;padding:8px 4px}
 .sync-btns{flex-direction:column}
 .sync-btn{justify-content:center}
 }
@@ -365,20 +351,27 @@ color:#ef4444;font-family:'Vazirmatn';font-size:11px;font-weight:700;cursor:poin
 <div style="position:relative;z-index:2">
 <div class="hero-emoji">🌊</div>
 <h1>سفر خانوادگی نوشهر</h1>
-<p>همه با هم برنامه‌ریزی می‌کنیم</p>
+<p>همه با هم برای هر وعده و تفریح رأی می‌دهیم</p>
 <div class="hero-badge">📅 ۲۱ تا ۲۴ مهر ۱۴۰۴</div>
 </div>
 </div>
 
-<!-- LOGIN -->
+<!-- LOGIN SCREEN -->
 <div class="login-wrap" id="loginWrap">
 <div class="login-box">
 <h2>🌿 به سفر خوش آمدید!</h2>
-<p class="sub">اسم خودتان را انتخاب کنید</p>
-<div class="grp-label">👨‍👩‍👧 والدین</div>
+<p class="sub">اسم خود را انتخاب کنید</p>
+
+<div class="grp-label"><span>👨‍👩‍👧 والدین</span></div>
 <div class="m-grid" id="gParents"></div>
-<div class="grp-label">💫 فرزندان</div>
+
+<div class="grp-label" style="margin-top:16px"><span>💫 فرزندان و همراهان</span></div>
 <div class="m-grid" id="gChildren"></div>
+
+<button class="add-member-trigger" onclick="openAddMemberModal()">
+➕ افزودن عضو جدید به خانواده
+</button>
+
 <button class="go-btn" id="goBtn" disabled onclick="login()">🚀 ورود به رأی‌گیری</button>
 </div>
 </div>
@@ -395,8 +388,8 @@ color:#ef4444;font-family:'Vazirmatn';font-size:11px;font-weight:700;cursor:poin
 
 <div class="stats">
 <div class="st"><div class="st-i">👨‍👩‍👧‍👦</div><div class="st-v" id="sM">0</div><div class="st-l">اعضا</div></div>
-<div class="st"><div class="st-i">🗳️</div><div class="st-v" id="sV">0</div><div class="st-l">رأی</div></div>
-<div class="st"><div class="st-i">✅</div><div class="st-v" id="sD">0</div><div class="st-l">تعیین‌شده</div></div>
+<div class="st"><div class="st-i">🗳️</div><div class="st-v" id="sV">0</div><div class="st-l">رأی ثبت شده</div></div>
+<div class="st"><div class="st-i">✅</div><div class="st-v" id="sD">0</div><div class="st-l">وعده تعیین‌شده</div></div>
 </div>
 
 <div class="tabs-wrap">
@@ -416,11 +409,52 @@ color:#ef4444;font-family:'Vazirmatn';font-size:11px;font-weight:700;cursor:poin
 <div class="tc" id="t-result"></div>
 </div>
 
+<!-- MODAL ADD MEMBER -->
+<div class="modal-overlay" id="addMemberModal">
+<div class="modal-box">
+<h3>➕ افزودن عضو جدید</h3>
+<div class="modal-form">
+<div>
+<label>نام و نام خانوادگی:</label>
+<input type="text" id="newMemberName" placeholder="مثلاً: علیرضا، خاله سارا..." />
+</div>
+<div>
+<label>نقش / عنوان:</label>
+<input type="text" id="newMemberRole" placeholder="مثلاً: فرزند، مهمان ویژه..." />
+</div>
+<div>
+<label>دسته:</label>
+<select id="newMemberGroup">
+<option value="c">فرزندان و همراهان</option>
+<option value="p">والدین و بزرگترها</option>
+</select>
+</div>
+<div>
+<label>ایموجی چهره:</label>
+<select id="newMemberEmoji">
+<option value="🧑">🧑 آقا</option>
+<option value="👩">👩 خانم</option>
+<option value="👦">👦 پسر</option>
+<option value="👧">👧 دختر</option>
+<option value="👴">👴 پدربزرگ</option>
+<option value="👵">👵 مادربزرگ</option>
+<option value="👶">👶 کودک</option>
+<option value="🌟">🌟 ستاره</option>
+</select>
+</div>
+<div class="modal-btns">
+<button class="modal-btn save" onclick="saveNewMember()">✅ ثبت و افزودن</button>
+<button class="modal-btn cancel" onclick="closeAddMemberModal()">انصراف</button>
+</div>
+</div>
+</div>
+</div>
+
 <input type="file" id="fileInput" multiple accept=".json" style="display:none" onchange="handleFiles(this.files)">
 
 <script>
-// ===== DATA =====
-const M=[
+// ===== INITIAL MEMBERS =====
+const DEFAULT_MEMBERS = [
 {id:'morteza',name:'مرتضی',em:'👨',role:'پدر خانواده 👑',g:'p',admin:true},
 {id:'fatemeh',name:'فاطمه',em:'👩',role:'مادر خانواده ❤️',g:'p'},
 {id:'shirin',name:'شیرین',em:'👩‍🦰',role:'مادر دوم 💐',g:'p'},
@@ -431,6 +465,8 @@ const M=[
 {id:'mohammadreza',name:'محمدرضا',em:'👦',role:'فرزند ⚽',g:'c'},
 {id:'mostafa',name:'مصطفی',em:'🧑',role:'فرزند 🎮',g:'c'},
 ];
+
+let M = [...DEFAULT_MEMBERS];
 
 const DAYS=[
 {id:'d1',name:'روز اول',date:'۲۱ مهر',n:'۱'},
@@ -518,28 +554,62 @@ const TAG_C={n:'t-n',b:'t-b',f:'t-f',s:'t-s',h:'t-h'};
 
 // ===== STATE =====
 let CU=null, selM=null;
-let myVotes={};      // local votes of current user
-let allVotes={};     // merged votes from all uploaded files
+let myVotes={};
+let allVotes={};
 let customFoods={};
-let uploadedFiles=[]; // list of uploaded file data
+let uploadedFiles=[];
 
 function loadLocal(){
 try{
-const s=localStorage.getItem('noshahr_v3_'+(CU?.id||'guest'));
+const storedMembers = localStorage.getItem('noshahr_v4_members');
+if(storedMembers) M = JSON.parse(storedMembers);
+
+const s=localStorage.getItem('noshahr_v4_'+(CU?.id||'guest'));
 if(s) myVotes=JSON.parse(s);
-const a=localStorage.getItem('noshahr_v3_all');
+const a=localStorage.getItem('noshahr_v4_all');
 if(a) allVotes=JSON.parse(a);
-const c=localStorage.getItem('noshahr_v3_custom');
+const c=localStorage.getItem('noshahr_v4_custom');
 if(c) customFoods=JSON.parse(c);
-const u=localStorage.getItem('noshahr_v3_uploads');
+const u=localStorage.getItem('noshahr_v4_uploads');
 if(u) uploadedFiles=JSON.parse(u);
 }catch(e){}
 }
+
 function saveLocal(){
-if(CU) localStorage.setItem('noshahr_v3_'+CU.id, JSON.stringify(myVotes));
-localStorage.setItem('noshahr_v3_all', JSON.stringify(allVotes));
-localStorage.setItem('noshahr_v3_custom', JSON.stringify(customFoods));
-localStorage.setItem('noshahr_v3_uploads', JSON.stringify(uploadedFiles));
+localStorage.setItem('noshahr_v4_members', JSON.stringify(M));
+if(CU) localStorage.setItem('noshahr_v4_'+CU.id, JSON.stringify(myVotes));
+localStorage.setItem('noshahr_v4_all', JSON.stringify(allVotes));
+localStorage.setItem('noshahr_v4_custom', JSON.stringify(customFoods));
+localStorage.setItem('noshahr_v4_uploads', JSON.stringify(uploadedFiles));
+}
+
+// ===== ADD NEW MEMBER MODAL =====
+function openAddMemberModal(){
+document.getElementById('addMemberModal').classList.add('active');
+}
+function closeAddMemberModal(){
+document.getElementById('addMemberModal').classList.remove('active');
+document.getElementById('newMemberName').value = '';
+document.getElementById('newMemberRole').value = '';
+}
+function saveNewMember(){
+const name = document.getElementById('newMemberName').value.trim();
+const role = document.getElementById('newMemberRole').value.trim() || 'عضو خانواده';
+const g = document.getElementById('newMemberGroup').value;
+const em = document.getElementById('newMemberEmoji').value;
+
+if(!name){
+notify('لطفاً نام را وارد کنید! ⚠️', 'info');
+return;
+}
+
+const id = 'm_' + Date.now();
+const newM = { id, name, em, role, g, custom: true };
+M.push(newM);
+saveLocal();
+renderLogin();
+closeAddMemberModal();
+notify(`«${name}» به لیست اعضا اضافه شد! 🎉`, 'ok');
 }
 
 // ===== LOGIN =====
@@ -547,16 +617,19 @@ function renderLogin(){
 document.getElementById('gParents').innerHTML=M.filter(m=>m.g==='p').map(m=>
 `<button class="m-btn" onclick="selMember('${m.id}')" id="mb-${m.id}"><span class="av">${m.em}</span>${m.name}</button>`
 ).join('');
+
 document.getElementById('gChildren').innerHTML=M.filter(m=>m.g==='c').map(m=>
 `<button class="m-btn" onclick="selMember('${m.id}')" id="mb-${m.id}"><span class="av">${m.em}</span>${m.name}</button>`
 ).join('');
 }
+
 function selMember(id){
 selM=id;
 document.querySelectorAll('.m-btn').forEach(b=>b.classList.remove('sel'));
 document.getElementById('mb-'+id).classList.add('sel');
 document.getElementById('goBtn').disabled=false;
 }
+
 function login(){
 if(!selM)return;
 CU=M.find(m=>m.id===selM);
@@ -569,6 +642,7 @@ document.getElementById('uRole').textContent=CU.role;
 renderAll();
 notify(`${CU.name} عزیز، خوش آمدید! 🎉`,'ok');
 }
+
 function logout(){
 CU=null;selM=null;myVotes={};
 document.getElementById('loginWrap').style.display='block';
@@ -595,9 +669,7 @@ function vote(dayId,mealId,foodId){
 if(!CU)return;
 const k=mk(dayId,mealId);
 const all=[...(FOODS[mealId]||[]),...(customFoods[k]||[])];
-// Remove prev
 all.forEach(f=>{ delete myVotes[vk(dayId,mealId,f.id)]; });
-// Add
 myVotes[vk(dayId,mealId,foodId)]=true;
 saveLocal(); renderFood(); updateStats();
 const food=all.find(f=>f.id===foodId);
@@ -612,13 +684,10 @@ else{myVotes[k]=true; const a=ACTS.find(x=>x.id===actId); notify(`رأی به «
 saveLocal(); renderAct(); updateStats();
 }
 
-// Get merged votes for a food
 function getFoodVoteCount(dayId,mealId,foodId){
 const k=vk(dayId,mealId,foodId);
 let count=0;
-// From allVotes (uploaded)
 Object.values(allVotes).forEach(uv=>{ if(uv[k]) count++; });
-// From current user local (if not yet uploaded)
 if(myVotes[k] && !allVotes[CU.id]?.[k]) count++;
 return count;
 }
@@ -663,7 +732,7 @@ function renderFood(){
 const el=document.getElementById('t-food');
 let h='';
 DAYS.forEach(day=>{
-h+=`<div style="margin-bottom:28px">
+h+=`<div style="margin-bottom:24px">
 <div class="dh"><div class="dh-num">${day.n}</div><div><h3>${day.name}</h3><span>${day.date}</span></div></div>`;
 MEALS.forEach(meal=>{
 const k=mk(day.id,meal.id);
@@ -718,7 +787,7 @@ const vhtml=voters.map(e=>`<span class="vc">${e}</span>`).join('');
 h+=`<div class="ac ${isV?'voted':''} ${isW?'winner':''}" onclick="voteAct('${a.id}')">
 <div class="ac-top"><span class="ac-em">${a.em}</span><div>
 <div class="ac-name">${a.name} ${isW?'👑':''}</div><div class="ac-desc">${a.d}</div></div></div>
-<div class="ac-bot"><div class="ac-voters">${vhtml||'<span style="font-size:11px;color:var(--muted)">هنوز رأیی نیست</span>'}</div>
+<div class="ac-bot"><div class="ac-voters">${vhtml||'<span style="font-size:10px;color:var(--muted)">هنوز رأیی نیست</span>'}</div>
 <div class="ac-cnt">${cnt} رأی</div></div></div>`;
 });
 h+='</div>';el.innerHTML=h;
@@ -736,7 +805,7 @@ h+=`<div class="pl"><div class="pl-img">${p.em}</div><div>
 el.innerHTML=h;
 }
 
-// ===== SYNC (Upload/Download) =====
+// ===== SYNC =====
 function renderSync(){
 const el=document.getElementById('t-sync');
 const isAdmin=CU?.admin;
@@ -744,37 +813,32 @@ const voteCount=Object.keys(myVotes).length;
 
 let h=`<div class="dh"><div class="dh-num">📤</div><div><h3>ارسال و دریافت رأی‌ها</h3><span>رأی‌هایتان را دانلود و برای مدیر بفرستید</span></div></div>`;
 
-// Download section
 h+=`<div class="sync-box">
-<h3>📥 مرحله ۱: دانلود رأی‌های من</h3>
-<p>بعد از رأی‌گیری، فایل رأی‌هایتان را دانلود کنید و برای <b>مرتضی</b> (مدیر سفر) بفرستید.<br>
+<h3>📥 مرحله ۱: دانلود فایل رأی من</h3>
+<p>بعد از اتمام رأی‌گیری، فایل را دانلود کنید و در واتساپ یا تلگرام برای <b>مرتضی</b> (مدیر سفر) بفرستید.<br>
 شما تا الان <b>${voteCount}</b> رأی ثبت کرده‌اید.</p>
 <div class="sync-btns">
-<button class="sync-btn dl" onclick="downloadMyVotes()">📥 دانلود فایل رأی من</button>
+<button class="sync-btn dl" onclick="downloadMyVotes()">📥 دانلود فایل رأی من (${CU.name})</button>
 </div></div>`;
 
-// Upload section (admin only)
 if(isAdmin){
 h+=`<div class="sync-box" style="border-color:var(--b3)">
-<h3>📤 مرحله ۲: بارگذاری رأی اعضا (فقط مدیر)</h3>
-<p>فایل‌های JSON ارسالی اعضا را اینجا بارگذاری کنید تا نتایج نهایی محاسبه شود.<br>
-می‌توانید چند فایل را همزمان انتخاب کنید.</p>
+<h3>📤 مرحله ۲: بارگذاری رأی اعضا (مخصوص مدیر)</h3>
+<p>فایل‌های JSON ارسالی اعضا را اینجا بارگذاری کنید تا نتایج نهایی بلافاصله محاسبه شوند.</p>
 <div class="sync-btns">
-<button class="sync-btn ul" onclick="document.getElementById('fileInput').click()">📤 بارگذاری فایل‌ها</button>
-<button class="sync-btn pr" onclick="printResults()">🖨️ پرینت نتایج</button>
+<button class="sync-btn ul" onclick="document.getElementById('fileInput').click()">📤 انتخاب فایل‌ها از گوشی/کامپیوتر</button>
+<button class="sync-btn pr" onclick="printResults()">🖨️ پرینت / خروجی PDF نتایج</button>
 <button class="sync-btn rst" onclick="resetAll()">🗑️ پاک کردن همه</button>
 </div>
 <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()"
-ondragover="event.preventDefault();this.classList.add('drag')"
-ondragleave="this.classList.remove('drag')"
-ondrop="event.preventDefault();this.classList.remove('drag');handleFiles(event.dataTransfer.files)">
-<div style="font-size:40px;margin-bottom:8px">📁</div>
-<div style="font-weight:700;color:var(--g1)">فایل‌ها را اینجا بکشید یا کلیک کنید</div>
-<div style="font-size:12px;color:var(--muted);margin-top:4px">فقط فایل‌های .json</div>
+ondragover="event.preventDefault();"
+ondrop="event.preventDefault();handleFiles(event.dataTransfer.files)">
+<div style="font-size:36px;margin-bottom:6px">📁</div>
+<div style="font-weight:700;color:var(--g1);font-size:13px">کلیک کنید یا فایل‌ها را اینجا رها کنید</div>
 </div>`;
 
 if(uploadedFiles.length>0){
-h+=`<div class="file-list"><h4 style="margin-bottom:8px;font-size:14px">📋 فایل‌های بارگذاری شده (${uploadedFiles.length})</h4>`;
+h+=`<div class="file-list"><h4 style="margin:12px 0 6px;font-size:13px">📋 اعضایی که رأی‌شان بارگذاری شده (${uploadedFiles.length} نفر):</h4>`;
 uploadedFiles.forEach((f,i)=>{
 const m=M.find(x=>x.id===f.memberId);
 h+=`<div class="file-item"><span>${m?.em||'👤'}</span>
@@ -787,9 +851,9 @@ h+='</div>';
 h+='</div>';
 } else {
 h+=`<div class="sync-box" style="border-color:var(--gold);background:linear-gradient(135deg,#fffbeb,#fef3c7)">
-<h3>⚠️ فقط مدیر می‌تواند بارگذاری کند</h3>
-<p>فایل رأی خود را دانلود کنید و در واتساپ/تلگرام برای <b>مرتضی</b> بفرستید.<br>
-او فایل‌ها را بارگذاری و نتایج نهایی را اعلام می‌کند.</p></div>`;
+<h3>ℹ️ راهنمایی برای اعضا</h3>
+<p>فایل رأی خود را از دکمه بالا دانلود کرده و برای <b>مرتضی</b> ارسال کنید.<br>
+پس از بارگذاری تمام آرا، نتایج نهایی در تب «📊 نتایج» نمایش داده می‌شود.</p></div>`;
 }
 
 el.innerHTML=h;
@@ -802,16 +866,16 @@ memberId:CU.id,
 memberName:CU.name,
 votes:myVotes,
 timestamp:new Date().toISOString(),
-trip:'نوشهر ۲۱ تا ۲۴ مهر ۱۴۰۴'
+trip:'سفر نوشهر ۲۱ تا ۲۴ مهر ۱۴۰۴'
 };
 const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
 const url=URL.createObjectURL(blob);
 const a=document.createElement('a');
 a.href=url;
-a.download=`vote_${CU.name}_${Date.now()}.json`;
+a.download=`vote_${CU.name}.json`;
 a.click();
 URL.revokeObjectURL(url);
-notify('فایل رأی شما دانلود شد! 📥','ok');
+notify('فایل رأی شما با موفقیت دانلود شد! 📥','ok');
 }
 
 function handleFiles(files){
@@ -822,13 +886,17 @@ const reader=new FileReader();
 reader.onload=function(e){
 try{
 const data=JSON.parse(e.target.result);
-if(!data.memberId||!data.votes){notify('فایل نامعتبر! ❌','info');return;}
-// Check if already uploaded
+if(!data.memberId||!data.votes){notify('فایل نامعتبر است! ❌','info');return;}
+
+// If this member was added dynamically, ensure they exist in M
+if(!M.some(m => m.id === data.memberId)){
+M.push({ id: data.memberId, name: data.memberName || 'عضو جدید', em: '👤', role: 'عضو خانواده', g: 'c' });
+}
+
 const idx=uploadedFiles.findIndex(f=>f.memberId===data.memberId);
 if(idx>=0) uploadedFiles[idx]=data;
 else uploadedFiles.push(data);
 
-// Merge into allVotes
 allVotes[data.memberId]=data.votes;
 saveLocal();
 renderSync();renderAll();
@@ -849,14 +917,14 @@ notify('فایل حذف شد','info');
 }
 
 function resetAll(){
-if(!confirm('همه رأی‌های بارگذاری شده پاک شود؟'))return;
+if(!confirm('همه اطلاعات و رأی‌های بارگذاری شده پاک شوند؟'))return;
 allVotes={};uploadedFiles=[];myVotes={};
 saveLocal();renderAll();renderSync();
 notify('همه داده‌ها پاک شد! 🗑️','info');
 }
 
 function printResults(){
-let t=`🏖️ نتایج سفر نوشهر — خانواده مرتضی\n📅 ۲۱ تا ۲۴ مهر ۱۴۰۴\n${'═'.repeat(35)}\n\n`;
+let t=`🏖️ نتایج برنامه و وعده‌های سفر نوشهر\n📅 ۲۱ تا ۲۴ مهر ۱۴۰۴\n${'═'.repeat(35)}\n\n`;
 DAYS.forEach(day=>{
 t+=`📅 ${day.name} (${day.date})\n${'─'.repeat(25)}\n`;
 MEALS.forEach(meal=>{
@@ -865,15 +933,15 @@ t+=`  ${meal.em} ${meal.name}: ${w?`${w.name} (${w.vc} رأی) 👑`:'تعیین
 });
 t+='\n';
 });
-t+=`🎢 تفریحات محبوب:\n${'─'.repeat(25)}\n`;
+t+=`🎢 تفریحات برتر انتخابی خانواده:\n${'─'.repeat(25)}\n`;
 [...ACTS].sort((a,b)=>getActVoteCount(b.id)-getActVoteCount(a.id)).slice(0,6).forEach((a,i)=>{
 const c=getActVoteCount(a.id);if(c>0)t+=`  ${['🥇','🥈','🥉','4','5','6'][i]}. ${a.em} ${a.name}: ${c} رأی\n`;
 });
 
 const w=window.open('','_blank');
-w.document.write(`<html dir="rtl"><head><meta charset="utf-8"><title>نتایج سفر</title>
-<style>body{font-family:Vazirmatn,Tahoma,sans-serif;padding:40px;direction:rtl;white-space:pre-wrap;font-size:16px;line-height:2}
-h1{color:#065f46;text-align:center}</style></head><body><h1>🏖️ نتایج سفر نوشهر</h1>${t.replace(/\n/g,'<br>')}</body></html>`);
+w.document.write(`<html dir="rtl"><head><meta charset="utf-8"><title>نتایج نهایی سفر نوشهر</title>
+<style>body{font-family:Vazirmatn,Tahoma,sans-serif;padding:30px;direction:rtl;white-space:pre-wrap;font-size:15px;line-height:2}
+h1{color:#065f46;text-align:center}</style></head><body><h1>🏖️ نتایج نهایی سفر نوشهر</h1>${t.replace(/\n/g,'<br>')}</body></html>`);
 w.document.close();
 w.print();
 }
@@ -881,9 +949,9 @@ w.print();
 // ===== RENDER RESULT =====
 function renderResult(){
 const el=document.getElementById('t-result');
-let h=`<div class="dh"><div class="dh-num">📊</div><div><h3>نتایج نهایی</h3><span>بر اساس رأی همه اعضا</span></div></div>`;
+let h=`<div class="dh"><div class="dh-num">📊</div><div><h3>نتایج نهایی آرا</h3><span>محاسبه شده از روی تمام فایل‌های ارسالی</span></div></div>`;
 DAYS.forEach(day=>{
-h+=`<div style="margin-bottom:24px"><div style="font-size:17px;font-weight:900;color:var(--g1);margin-bottom:12px;display:flex;align-items:center;gap:8px">📅 ${day.name} — ${day.date}</div>`;
+h+=`<div style="margin-bottom:20px"><div style="font-size:15px;font-weight:900;color:var(--g1);margin-bottom:10px">📅 ${day.name} — ${day.date}</div>`;
 MEALS.forEach(meal=>{
 const w=getWinner(day.id,meal.id);
 h+=`<div class="ri"><span class="ri-em">${meal.em}</span><div class="ri-info">
@@ -893,7 +961,7 @@ ${w?`<div class="ri-name">${w.em} ${w.name}</div>`:'<div class="no-r">هنوز �
 });
 h+='</div>';
 });
-h+=`<div style="margin-bottom:24px"><div style="font-size:17px;font-weight:900;color:var(--g1);margin-bottom:12px">🎢 محبوب‌ترین تفریحات</div>`;
+h+=`<div style="margin-bottom:20px"><div style="font-size:15px;font-weight:900;color:var(--g1);margin-bottom:10px">🎢 تفریحات برگزیده</div>`;
 const sorted=[...ACTS].sort((a,b)=>getActVoteCount(b.id)-getActVoteCount(a.id)).slice(0,6);
 const medals=['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣'];
 sorted.forEach((a,i)=>{
@@ -918,19 +986,20 @@ DAYS.forEach(d=>{MEALS.forEach(m=>{if(getWinner(d.id,m.id))dc++})});
 document.getElementById('sD').textContent=dc;
 }
 
-// ===== NOTIFY =====
+// ===== NOTIFICATION =====
 function notify(text,type='ok'){
 const n=document.getElementById('notif');
 document.getElementById('nI').textContent=type==='ok'?'✅':'ℹ️';
 document.getElementById('nT').textContent=text;
 n.className=`notif ${type} show`;
-setTimeout(()=>n.classList.remove('show'),3500);
+setTimeout(()=>n.classList.remove('show'),3200);
 }
 
 // ===== RENDER ALL =====
 function renderAll(){renderFood();renderAct();renderPlace();renderResult();renderSync();updateStats();}
 
 // ===== INIT =====
+loadLocal();
 renderLogin();
 </script>
 </body>
