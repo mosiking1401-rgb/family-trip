@@ -468,8 +468,25 @@ body.theme-dark .file-row .status{color:#4ade80}
   color:#2e7d32;font-size:11.5px;font-weight:900;white-space:nowrap}
 body.theme-dark .result-votes{background:linear-gradient(135deg,rgba(74,222,128,.2),rgba(34,197,94,.1));color:#4ade80}
 .admin-tabs-rail{margin-bottom:20px}
-.admin-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:4px}
+.admin-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:4px 2px}
 .admin-tabs::-webkit-scrollbar{display:none}
+.admin-tab{flex:0 0 auto}
+.admin-choice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.admin-choice-card{padding:16px;border-radius:16px;background:var(--sand-2);border:1.5px solid var(--border)}
+.admin-choice-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.admin-choice-name{font-size:13.5px;font-weight:900}
+.admin-choice-sub{font-size:10.5px;color:var(--muted);margin-top:2px}
+.admin-choice-row{padding:9px 10px;border-radius:11px;background:var(--white);border:1px solid var(--border);margin-top:7px;font-size:11.5px;line-height:1.8}
+.admin-choice-row b{font-weight:900}
+.admin-choice-empty{color:var(--muted);font-size:11px}
+.admin-gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.admin-gallery-item{overflow:hidden;border-radius:18px;background:var(--white);border:1.5px solid var(--border);box-shadow:var(--shadow-sm)}
+.admin-gallery-item img{width:100%;height:180px;object-fit:cover;display:block;cursor:pointer}
+.admin-gallery-meta{padding:10px 12px;font-size:11px;line-height:1.8}
+.admin-gallery-meta b{font-size:12px}
+.admin-gallery-actions{display:flex;gap:7px;padding:0 10px 10px}
+.admin-gallery-actions .mini-btn{flex:1}
+@media(max-width:650px){.admin-choice-grid{grid-template-columns:1fr}.admin-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-gallery-item img{height:145px}}
 .admin-tab{padding:11px 18px;border-radius:13px;border:1.5px solid var(--border);background:var(--white);
   font-family:'Vazirmatn';font-size:12px;font-weight:800;color:var(--muted);cursor:pointer;
   transition:all .28s var(--ease-spring);white-space:nowrap;display:flex;align-items:center;gap:7px;box-shadow:var(--shadow-sm)}
@@ -595,7 +612,43 @@ body.theme-dark .cleanup-card h4{color:#ffb74d}
 body.theme-dark .cleanup-btn{background:rgba(255,255,255,.05);color:#ffb74d}
 body.theme-dark .cleanup-btn:hover{background:rgba(255,183,77,.15)}
 body.theme-dark .cleanup-btn.danger{color:#f87171;border-color:rgba(248,113,113,.4)}
+/* ====== افزوده‌های محدود: موزیک، فونت خواناتر و کنترل گردونه ====== */
+.music-control.has-track button{background:var(--grad-palm)}
+.music-upload-box{border:1px dashed var(--border);border-radius:16px;padding:14px;background:var(--surface-2);margin-top:10px}
+.music-upload-name{font-size:12px;font-weight:900;margin-top:8px;word-break:break-word}
+.music-upload-help{font-size:10.5px;color:var(--muted);line-height:1.9;margin-top:5px}
+.music-control{
+  position:fixed;left:16px;bottom:16px;z-index:5000;display:flex;align-items:center;gap:7px;
+  padding:8px;border-radius:16px;background:color-mix(in srgb,var(--white) 92%,transparent);
+  border:1.5px solid var(--border);box-shadow:var(--shadow);backdrop-filter:blur(14px);
+}
+.music-control button{width:42px;height:42px;border:0;border-radius:13px;background:var(--grad-ocean);color:#fff;
+  cursor:pointer;font-size:19px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px -8px rgba(0,188,212,.65)}
+.music-control .music-status{font-size:11px;font-weight:800;color:var(--text);padding:0 5px 0 2px;white-space:nowrap;display:none}
+.music-control.on .music-status{display:block}
+.music-control.on button{animation:musicPulse 1.8s ease-in-out infinite}
+@keyframes musicPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.wheel.is-spinning{animation:wheelGlow .65s ease-in-out infinite alternate}
+@keyframes wheelGlow{from{filter:brightness(1)}to{filter:brightness(1.16)}}
+.spin-tick{position:absolute;top:-2px;right:50%;width:4px;height:14px;border-radius:4px;background:var(--coral);z-index:4;transform-origin:50% 166px;opacity:0}
+.game-sound-note{font-size:10.5px;color:var(--muted);margin-top:7px;font-weight:700}
+/* فونت کمی بزرگ‌تر، بدون تغییر در ساختار یا چیدمان اصلی */
+body{font-size:15px}
+.brand-title{font-size:16px}.brand-sub{font-size:11.5px}
+.btn{font-size:14px}.btn-sm{font-size:13px}
+.choice-title{font-size:18px}.choice-desc{font-size:13px}
+.form-label{font-size:12.5px}.form-input,.form-select,.form-textarea{font-size:14.5px}
+.tab{font-size:13px}.section-title{font-size:16px}.section-sub{font-size:12px}
+.meal-title{font-size:16px}.menu-dropdown select{font-size:14.5px}
+.food-card-name{font-size:13.5px}.food-card-desc{font-size:10.5px}
+.act-name{font-size:14.5px}.act-desc{font-size:12px}
+.place-name{font-size:15.5px}.place-desc{font-size:12.5px}
+.stat-label{font-size:11.5px}.stat-value{font-size:20px}
+.admin-tab{font-size:13px}.admin-card h4{font-size:15.5px}
+.task-chip{font-size:12px}.spin-row{font-size:12px}
 @media(max-width:640px){
+  .music-control{left:10px;bottom:10px}
+  .music-control .music-status{display:none!important}
   .container,.container-narrow{padding:0 14px}
   .nav-inner{padding:12px 14px}
   .card{padding:20px}.auth-card{padding:26px 20px}
@@ -605,6 +658,32 @@ body.theme-dark .cleanup-btn.danger{color:#f87171;border-color:rgba(248,113,113,
   .hero-scene .palm{font-size:52px}
   .hero-scene .boat{font-size:40px}
 }
+
+/* ===== FINAL RESPONSIVE FIX ===== */
+.tabs-rail{top:68px;padding:8px 0 12px;overflow:visible}
+.tabs{width:100%;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:7px;overflow:visible;padding:7px}
+.tab{min-width:0;width:100%;justify-content:center;padding:12px 8px;font-size:13px;line-height:1.25}
+.admin-tabs-rail{position:sticky;top:68px;z-index:49;padding:8px 0 12px;background:linear-gradient(to bottom,color-mix(in srgb,var(--sand) 95%,transparent) 70%,transparent)}
+.admin-tabs{width:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;overflow:visible;padding:4px 2px}
+.admin-tab{min-width:0;width:100%;justify-content:center;text-align:center;white-space:normal;line-height:1.35}
+@media(max-width:900px){
+  .tabs{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .admin-tabs{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:640px){
+  .tabs-rail{top:62px;margin-bottom:14px}
+  .tabs{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:6px;border-radius:16px}
+  .tab{font-size:12px;padding:11px 5px;gap:4px;min-height:43px;border-radius:12px}
+  .tab span{font-size:14px!important}
+  .admin-tabs-rail{top:62px;margin-bottom:16px}
+  .admin-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:3px 0}
+  .admin-tab{font-size:12px;padding:11px 7px;min-height:44px}
+}
+@media(max-width:380px){
+  .tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .admin-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
 </style>
 </head>
 <body>
@@ -624,6 +703,11 @@ body.theme-dark .cleanup-btn.danger{color:#f87171;border-color:rgba(248,113,113,
 </div>
 
 <div class="toast" id="toast"><div class="ico" id="toastIco"></div><span id="toastMsg"></span></div>
+
+<div class="music-control" id="musicControl" title="موزیک سفر">
+  <button type="button" id="musicBtn" onclick="toggleTravelMusic()" aria-label="پخش موزیک">🎵</button>
+  <span class="music-status" id="musicStatus">موزیک سفر</span>
+</div>
 
 <div class="view active" id="viewLanding">
   <div class="container landing">
@@ -780,6 +864,7 @@ body.theme-dark .cleanup-btn.danger{color:#f87171;border-color:rgba(248,113,113,
     <div class="tab-panel" id="adminCleanup"></div>
     <div class="tab-panel" id="adminSettings"></div>
     <div class="tab-panel" id="adminCalendar"></div>
+    <div class="tab-panel" id="adminGallery"></div>
   </div>
 </div>
 
@@ -845,6 +930,84 @@ body.theme-dark .cleanup-btn.danger{color:#f87171;border-color:rgba(248,113,113,
 <input type="file" id="backupInput" accept=".json" style="display:none" onchange="importBackup(this.files[0])">
 
 <script>
+
+/* ================= SUPABASE CLOUD SYNC =================
+   The table public.travel_app_state stores one shared JSON state row.
+   Paste your Supabase anon/public key below. Never use service_role here. */
+const SUPABASE_URL = 'https://kuqludtmcfmcctvmguri.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1cWx1ZHRtY2ZtY2N0dm1ndXJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2NTYxOTcsImV4cCI6MjEwNjIzMjE5N30.jen7bc-vnRLkltPrPMQE9vWBl1nYRJseEwdvi-t1TPE';
+const SUPABASE_STATE_ID = 'family_travel_v11';
+let supabaseReady = false;
+let supabaseSyncTimer = null;
+let supabasePulling = false;
+
+function supabaseConfigured(){
+  return /^https:\/\/[^\s]+\.supabase\.co$/.test(SUPABASE_URL) &&
+         SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes('PASTE_YOUR');
+}
+function supabaseHeaders(){
+  return {'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json','Prefer':'return=minimal'};
+}
+async function supabaseRequest(path,opts={}){
+  if(!supabaseConfigured()) return null;
+  const r=await fetch(SUPABASE_URL+'/rest/v1/'+path,{...opts,headers:{...supabaseHeaders(),...(opts.headers||{})}});
+  if(!r.ok){const txt=await r.text();throw new Error('Supabase '+r.status+': '+txt.slice(0,300));}
+  if(r.status===204)return null;
+  const txt=await r.text();return txt?JSON.parse(txt):null;
+}
+function buildCloudState(){
+  return {
+    version:11,updatedAt:Date.now(),
+    trips,tripsActive:currentTripId,
+    currentTripId,
+    tripData:{members:M,allVotes,customFoods,uploadedFiles,expenses,gallery,gameSpins},
+    myVotes:CU?myVotes:{},
+    theme:localStorage.getItem(LS.theme)||'light'
+  };
+}
+function scheduleCloudSync(reason='change'){
+  if(!supabaseConfigured() || supabasePulling)return;
+  clearTimeout(supabaseSyncTimer);
+  supabaseSyncTimer=setTimeout(()=>pushCloudState(reason),350);
+}
+async function pushCloudState(reason='change'){
+  if(!supabaseConfigured() || supabasePulling)return;
+  try{
+    await supabaseRequest('travel_app_state?select=id',{method:'POST',headers:{'Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({id:SUPABASE_STATE_ID,state:buildCloudState(),updated_at:new Date().toISOString()})});
+    supabaseReady=true;
+  }catch(e){
+    console.warn('[Supabase sync]',reason,e.message);
+    supabaseReady=false;
+  }
+}
+async function pullCloudState(){
+  if(!supabaseConfigured())return false;
+  try{
+    const rows=await supabaseRequest('travel_app_state?id=eq.'+encodeURIComponent(SUPABASE_STATE_ID)+'&select=state,updated_at');
+    if(!rows||!rows.length||!rows[0].state)return false;
+    const d=rows[0].state;
+    if(!d.trips || !d.tripData)return false;
+    supabasePulling=true;
+    trips=Array.isArray(d.trips)?d.trips:trips;
+    currentTripId=d.currentTripId||d.tripsActive||currentTripId;
+    saveTrips();
+    const td=d.tripData||{};
+    const local={members:td.members||[],allVotes:td.allVotes||{},customFoods:td.customFoods||{},uploadedFiles:td.uploadedFiles||[],expenses:td.expenses||[],gallery:td.gallery||[],gameSpins:td.gameSpins||{}};
+    if(currentTripId)localStorage.setItem(LS.tripData(currentTripId),JSON.stringify(local));
+    if(CU&&d.myVotes)localStorage.setItem('safar_v11_v_'+currentTripId+'_'+CU.id,JSON.stringify(d.myVotes));
+    loadTripData(currentTripId);refreshLanding();renderMemberLogin();
+    if(isAdminSession)renderAdminAll(); else if(CU)renderMemberAll();
+    supabaseReady=true;supabasePulling=false;return true;
+  }catch(e){
+    supabasePulling=false;console.warn('[Supabase pull]',e.message);return false;
+  }
+}
+function initCloudSync(){
+  if(!supabaseConfigured())return;
+  pullCloudState().then(found=>{if(!found)pushCloudState('initial');});
+  setInterval(()=>{if(!supabasePulling)pullCloudState();},15000);
+}
+
 /* ================= CONSTANTS ================= */
 const AVATAR_GRADIENTS = [
   ['#ff9a9e','#fecfef'],['#a8edea','#fed6e3'],['#ff6f91','#ff9671'],
@@ -993,7 +1156,7 @@ let trips=[],currentTripId=null,M=[],allVotes={},customFoods={},uploadedFiles=[]
 let CU=null,isAdminSession=false,selM=null;
 let editingMemberId=null,editingExpenseId=null,editingTripId=null;
 let expSplitSel=[],selectedEmoji='👧🏻';
-let currentTab='food',currentAdminTab='trips',calendarCursor=new Date();
+let currentTab='food',currentAdminTab='dash',calendarCursor=new Date();
 let galleryUploading=false,gameSpinning=false;
 
 /* ================= UTILITIES ================= */
@@ -1057,6 +1220,80 @@ function showView(id){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+/* ================= MUSIC + PERSISTENT STORAGE ================= */
+let travelAudio=null,musicTimer=null,musicPlaying=false,musicStep=0,uploadedMusic=null,uploadedMusicEl=null,musicTrackName='';
+const MUSIC_KEY='safar_v11_music';
+const MUSIC_TRACK_KEY='safar_v11_music_track';
+function ensureTravelAudio(){
+  if(travelAudio)return travelAudio;
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC)return null;
+  const ctx=new AC();
+  const master=ctx.createGain();master.gain.value=.045;master.connect(ctx.destination);
+  const notes=[261.63,329.63,392.00,523.25,392.00,329.63,293.66,349.23,440.00,587.33,440.00,349.23,261.63,329.63,392.00,493.88];
+  travelAudio={ctx,master,notes};
+  return travelAudio;
+}
+function musicTone(freq,dur=.34){
+  if(!travelAudio)return;
+  const {ctx,master}=travelAudio;
+  const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=freq;
+  const now=ctx.currentTime;g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.55,now+.025);g.gain.exponentialRampToValueAtTime(.001,now+dur);
+  o.connect(g);g.connect(master);o.start(now);o.stop(now+dur+.03);
+}
+function musicLoop(){
+  if(!musicPlaying||uploadedMusicEl)return;
+  musicTone(travelAudio.notes[musicStep%travelAudio.notes.length],.42);musicStep++;musicTimer=setTimeout(musicLoop,430);
+}
+function getMusicTrack(){
+  try{return JSON.parse(localStorage.getItem(MUSIC_TRACK_KEY)||'null');}catch(e){return null;}
+}
+function stopUploadedMusic(){
+  if(uploadedMusicEl){uploadedMusicEl.pause();uploadedMusicEl.currentTime=0;uploadedMusicEl=null;}
+}
+function playUploadedMusic(){
+  if(!uploadedMusic)return false;
+  stopUploadedMusic();
+  uploadedMusicEl=new Audio(uploadedMusic.url);uploadedMusicEl.loop=true;uploadedMusicEl.volume=.45;
+  uploadedMusicEl.addEventListener('ended',()=>{if(musicPlaying)playUploadedMusic();});
+  const p=uploadedMusicEl.play();
+  if(p&&p.catch)p.catch(()=>{musicPlaying=false;updateMusicUI();});
+  return true;
+}
+async function startTravelMusic(){
+  if(musicPlaying)return;
+  if(uploadedMusic){
+    musicPlaying=true;localStorage.setItem(MUSIC_KEY,'on');updateMusicUI();playUploadedMusic();return;
+  }
+  const a=ensureTravelAudio();if(!a)return;
+  if(a.ctx.state==='suspended')await a.ctx.resume();
+  musicPlaying=true;musicStep=0;musicLoop();localStorage.setItem(MUSIC_KEY,'on');updateMusicUI();
+}
+function stopTravelMusic(){
+  musicPlaying=false;if(musicTimer)clearTimeout(musicTimer);musicTimer=null;stopUploadedMusic();
+  localStorage.setItem(MUSIC_KEY,'off');updateMusicUI();
+}
+function toggleTravelMusic(){musicPlaying?stopTravelMusic():startTravelMusic();}
+function updateMusicUI(){
+  const c=document.getElementById('musicControl'),b=document.getElementById('musicBtn'),st=document.getElementById('musicStatus');
+  if(!c||!b)return;
+  c.classList.toggle('on',musicPlaying);c.classList.toggle('has-track',!!uploadedMusic);
+  b.textContent=musicPlaying?'🔊':'🎵';
+  if(st)st.textContent=musicPlaying?(uploadedMusic?'موزیک آپلودی روشن':'موزیک سفر روشن'):(uploadedMusic?'موزیک آماده پخش':'موزیک سفر');
+}
+function loadMusicTrack(){
+  uploadedMusic=getMusicTrack();musicTrackName=uploadedMusic?.name||'';updateMusicUI();
+}
+function wheelSound(type='tick'){
+  const a=ensureTravelAudio();if(!a)return;
+  const {ctx,master}=a,o=ctx.createOscillator(),g=ctx.createGain(),now=ctx.currentTime;
+  o.type=type==='win'?'triangle':'square';o.frequency.setValueAtTime(type==='win'?523.25:150,now);
+  if(type==='win')o.frequency.exponentialRampToValueAtTime(783.99,now+.16);
+  g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(type==='win'?.28:.07,now+(type==='win'?.01:.01));g.gain.exponentialRampToValueAtTime(.0001,now+(type==='win'?.42:.055));
+  o.connect(g);g.connect(master);o.start(now);o.stop(now+(type==='win'?.45:.07));
+}
+function initMusic(){loadMusicTrack();}
+
 /* ================= TRIP STORAGE ================= */
 function loadTrips(){
   try{
@@ -1065,9 +1302,13 @@ function loadTrips(){
   }catch(e){}
 }
 function saveTrips(){
-  localStorage.setItem(LS.trips,JSON.stringify(trips));
-  if(currentTripId)localStorage.setItem(LS.activeTrip,currentTripId);
+  try{
+    localStorage.setItem(LS.trips,JSON.stringify(trips));
+    if(currentTripId)localStorage.setItem(LS.activeTrip,currentTripId);
+  }catch(e){notify('فضای ذخیره‌سازی مرورگر پر شده است؛ از پشتیبان استفاده کنید.','err');}
 }
+  scheduleCloudSync('trips');
+
 function loadTripData(tripId){
   if(!tripId){M=[];allVotes={};customFoods={};uploadedFiles=[];expenses=[];myVotes={};gallery=[];gameSpins={};return;}
   try{
@@ -1086,9 +1327,13 @@ function loadTripData(tripId){
 function saveTripData(){
   if(!currentTripId)return;
   const d={members:M,allVotes,customFoods,uploadedFiles,expenses,gallery,gameSpins};
-  localStorage.setItem(LS.tripData(currentTripId),JSON.stringify(d));
-  if(CU)localStorage.setItem('safar_v11_v_'+currentTripId+'_'+CU.id,JSON.stringify(myVotes));
+  try{
+    localStorage.setItem(LS.tripData(currentTripId),JSON.stringify(d));
+    if(CU)localStorage.setItem('safar_v11_v_'+currentTripId+'_'+CU.id,JSON.stringify(myVotes));
+  }catch(e){notify('ذخیره اطلاعات انجام نشد؛ احتمالاً فضای مرورگر پر شده است.','err');}
 }
+  scheduleCloudSync('trip-data');
+
 function generateDays(count){
   const n2p=['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
   const toFa=n=>String(n).split('').map(d=>n2p[+d]||d).join('');
@@ -1143,13 +1388,15 @@ function saveTrip(){
   const destination=document.getElementById('tripDestination').value.trim();
   const startDate=document.getElementById('tripStart').value.trim();
   const endDate=document.getElementById('tripEnd').value.trim();
+  const startISO=document.getElementById('tripStartISO')?.value||'';
+  const endISO=document.getElementById('tripEndISO')?.value||'';
   const description=document.getElementById('tripDesc').value.trim();
   const dayCount=Math.max(1,Math.min(14,parseInt(document.getElementById('tripDays').value)||4));
   const setActive=document.getElementById('tripSetActive').checked;
   if(editingTripId){
     const t=trips.find(x=>x.id===editingTripId);
     if(t){
-      t.name=name;t.destination=destination;t.startDate=startDate;t.endDate=endDate;t.description=description;
+      t.name=name;t.destination=destination;t.startDate=startDate;t.endDate=endDate;t.startISO=startISO;t.endISO=endISO;t.description=description;
       if(t.days.length!==dayCount){
         const newDays=generateDays(dayCount);
         for(let i=0;i<Math.min(newDays.length,t.days.length);i++)newDays[i].date=t.days[i].date;
@@ -1159,7 +1406,7 @@ function saveTrip(){
     notify('سفر ویرایش شد ✏️','ok');
   } else {
     const id='trip_'+Date.now();
-    const trip={id,name,destination,startDate:displayStart,endDate:displayEnd,startISO,endISO,description,createdAt:Date.now(),archived:false,days:generateDays(dayCount)};
+    const trip={id,name,destination,startDate,endDate,startISO,endISO,description,createdAt:Date.now(),archived:false,days:generateDays(dayCount)};
     trips.push(trip);
     let members=[];
     if(document.getElementById('tripCopyMembers').checked&&trips.length>1){
@@ -1170,7 +1417,7 @@ function saveTrip(){
       }
     }
     if(members.length===0&&trips.length===1)members=[...DEFAULT_MEMBERS];
-    localStorage.setItem(LS.tripData(id),JSON.stringify({members,allVotes:{},customFoods:{},uploadedFiles:[],expenses:[]}));
+    localStorage.setItem(LS.tripData(id),JSON.stringify({members,allVotes:{},customFoods:{},uploadedFiles:[],expenses:[],gallery:[],gameSpins:{}}));
     if(setActive){currentTripId=id;loadTripData(id);}
     notify(`سفر «${name}» ساخته شد 🎉`,'ok');
   }
@@ -1324,7 +1571,7 @@ function loginAdmin(){
   const p=document.getElementById('adminPass').value;
   if(u===ADMIN_CREDENTIALS.user&&p===ADMIN_CREDENTIALS.pass){
     isAdminSession=true;CU=null;
-    showView('viewAdminPanel');currentAdminTab='trips';
+    showView('viewAdminPanel');currentAdminTab='dash';
     renderAdminTabs();renderAdminAll();
     notify('به پنل مدیریت خوش آمدی 👑','ok');
     document.getElementById('adminUser').value='';
@@ -2042,6 +2289,7 @@ const ADMIN_TABS=[
   {id:'cleanup',label:'پاک‌سازی',icon:'🧹'},
   {id:'settings',label:'تنظیمات',icon:'⚙️'},
   {id:'calendar',label:'تقویم سفرها',icon:'📅'},
+  {id:'gallery',label:'گالری عکس‌ها',icon:'📸'},
 ];
 function renderAdminTabs(){
   document.getElementById('adminTabs').innerHTML=ADMIN_TABS.map(t=>
@@ -2059,7 +2307,7 @@ function switchAdminTab(id){
 function renderAdminAll(){
   if(!isAdminSession)return;
   renderAdminStats();renderAdminTrips();renderAdminDash();renderAdminMembers();
-  renderAdminExpenses();renderAdminVotes();renderAdminReports();renderAdminCleanup();renderAdminSettings();renderAdminCalendar();
+  renderAdminExpenses();renderAdminVotes();renderAdminReports();renderAdminCleanup();renderAdminSettings();renderAdminCalendar();renderAdminGallery();
 }
 function renderAdminStats(){
   const el=document.getElementById('adminStats');
@@ -2136,35 +2384,64 @@ function renderAdminDash(){
   const perCat={};EXPENSE_CATS.forEach(c=>perCat[c.id]=0);
   expenses.forEach(e=>{perCat[e.cat]=(perCat[e.cat]||0)+parseAmount(e.amount);});
   const topCats=EXPENSE_CATS.map(c=>({...c,val:perCat[c.id]||0})).filter(c=>c.val>0).sort((a,b)=>b.val-a.val);
+
+  // Build a readable per-member selection map from the saved vote data.
+  const voteRows=[];
+  M.forEach(m=>{
+    const uv=allVotes[m.id]||{};
+    const choices=[];
+    (trip.days||[]).forEach(day=>MEALS.forEach(meal=>{
+      const kPrefix=day.id+'_'+meal.id+'_';
+      const foodId=Object.keys(uv).find(k=>k.startsWith(kPrefix)&&uv[k]);
+      if(foodId){
+        const fid=foodId.slice(kPrefix.length);
+        const all=[...(meal.pack||[]),...(customFoods[day.id+'_'+meal.id]||[])];
+        const food=all.find(f=>f.id===fid);
+        if(food)choices.push({label:`${day.name} • ${meal.name}`,value:`${food.em||'🍴'} ${food.name}`});
+      }
+    }));
+    ACTS.forEach(a=>{if(uv['act_'+a.id])choices.push({label:'تفریح',value:`${a.em} ${a.name}`});});
+    voteRows.push({m,choices});
+  });
+  const uploadedCount=uploadedFiles.length;
+  const totalVotes=Object.values(allVotes).reduce((s,uv)=>s+Object.keys(uv||{}).length,0);
+
   let h=`<div class="admin-card">
-    <h4>📊 خلاصه — ${esc(trip.name)}</h4>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px">
-      <div class="sum-card total"><div class="sum-em">💵</div><div class="sum-lbl">جمع کل</div><div class="sum-val">${fmtToman(totalExp)}</div></div>
-      <div class="sum-card"><div class="sum-em">📊</div><div class="sum-lbl">میانگین</div><div class="sum-val small">${M.length?fmtToman(totalExp/M.length):'0'}</div></div>
-      <div class="sum-card"><div class="sum-em">🧾</div><div class="sum-lbl">تعداد</div><div class="sum-val">${fmtNum(expenses.length)}</div></div>
-    </div></div>`;
+    <h4>📊 خلاصه سفر — ${esc(trip.name)}</h4>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+      <div class="sum-card total"><div class="sum-em">💵</div><div class="sum-lbl">جمع کل هزینه</div><div class="sum-val">${fmtToman(totalExp)}</div></div>
+      <div class="sum-card"><div class="sum-em">👥</div><div class="sum-lbl">اعضا</div><div class="sum-val">${fmtNum(M.length)}</div></div>
+      <div class="sum-card"><div class="sum-em">🗳️</div><div class="sum-lbl">اعضای دارای انتخاب</div><div class="sum-val small">${fmtNum(uploadedCount)} / ${fmtNum(M.length)}</div></div>
+      <div class="sum-card"><div class="sum-em">📸</div><div class="sum-lbl">عکس‌های گالری</div><div class="sum-val">${fmtNum(gallery.length)}</div></div>
+    </div>
+  </div>`;
+
+  h+=`<div class="admin-card"><h4>👥 انتخاب‌های اعضای سفر</h4>
+    <p style="font-size:11.5px;color:var(--muted);line-height:1.9;margin:-7px 0 14px">اینجا دقیقاً می‌بینی هر نفر چه غذا و تفریحی را انتخاب کرده است.</p>
+    <div class="admin-choice-grid">`;
+  voteRows.forEach(({m,choices})=>{
+    h+=`<div class="admin-choice-card">
+      <div class="admin-choice-head">${avatarHTML(m,'sm')}<div><div class="admin-choice-name">${esc(m.name)}</div><div class="admin-choice-sub">${choices.length?fmtNum(choices.length)+' انتخاب':'هنوز انتخابی ثبت نشده'}</div></div></div>`;
+    if(choices.length){
+      choices.forEach(c=>h+=`<div class="admin-choice-row"><b>${esc(c.label)}</b><br>${esc(c.value)}</div>`);
+    }else h+=`<div class="admin-choice-empty">— انتخابی برای نمایش وجود ندارد —</div>`;
+    h+=`</div>`;
+  });
+  h+=`</div></div>`;
+
   if(topCats.length){
     h+=`<div class="admin-card"><h4>📈 تفکیک هزینه‌ها</h4>`;
     topCats.forEach(c=>{
       const pct=totalExp?(c.val/totalExp*100):0;
-      h+=`<div style="margin-bottom:14px">
-        <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:12.5px;font-weight:700">
-          <span>${c.em} ${c.name}</span>
-          <span style="color:${c.color}">${fmtToman(c.val)} <span style="color:var(--muted);font-weight:600">(${pct.toFixed(1)}%)</span></span></div>
-        <div style="height:10px;background:var(--sand-2);border-radius:10px;overflow:hidden">
-          <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${c.color},${c.color}88);border-radius:10px"></div></div>
-      </div>`;
+      h+=`<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:12.5px;font-weight:700"><span>${c.em} ${c.name}</span><span style="color:${c.color}">${fmtToman(c.val)} <span style="color:var(--muted);font-weight:600">(${pct.toFixed(1)}%)</span></span></div><div style="height:10px;background:var(--sand-2);border-radius:10px;overflow:hidden"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${c.color},${c.color}88);border-radius:10px"></div></div></div>`;
     });
     h+=`</div>`;
   }
-  h+=`<div class="admin-card"><h4>📋 وضعیت بارگذاری آرا</h4>
+  h+=`<div class="admin-card"><h4>📋 وضعیت ثبت اطلاعات</h4>
     <div style="font-size:12.5px;line-height:2">
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
-        <span>رأی داده‌اند</span><span style="font-weight:900;color:#2e7d32">${fmtNum(uploadedFiles.length)} نفر</span></div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
-        <span>در انتظار</span><span style="font-weight:900;color:#e65100">${fmtNum(M.length-uploadedFiles.length)} نفر</span></div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0">
-        <span>کل آرا</span><span style="font-weight:900;color:var(--coral)">${fmtNum(Object.values(allVotes).reduce((s,uv)=>s+Object.keys(uv).length,0))}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span>اعضای دارای فایل/رأی</span><b style="color:#2e7d32">${fmtNum(uploadedCount)} نفر</b></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span>در انتظار ثبت</span><b style="color:#e65100">${fmtNum(Math.max(0,M.length-uploadedCount))} نفر</b></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0"><span>تعداد انتخاب‌های ثبت‌شده</span><b style="color:var(--coral)">${fmtNum(totalVotes)}</b></div>
     </div></div>`;
   el.innerHTML=h;
 }
@@ -2677,6 +2954,34 @@ function deleteGallery(i){
   gallery.splice(i,1);saveTripData();renderGallery();notify('عکس حذف شد','info');
 }
 
+/* ================= ADMIN GALLERY ================= */
+function renderAdminGallery(){
+  const el=document.getElementById('adminGallery');if(!el)return;
+  let h=`<div class="admin-card"><h4>📸 گالری عکس‌های سفر — ${esc(getCurrentTrip()?.name||'')}</h4>
+    <p style="font-size:11.5px;color:var(--muted);line-height:1.9;margin:-7px 0 16px">تمام عکس‌هایی که در گالری همین سفر ذخیره شده‌اند، همراه با نام ارسال‌کننده در اینجا نمایش داده می‌شوند.</p>`;
+  if(!gallery.length){
+    h+=`<div class="empty"><span class="em">🖼️</span>هنوز عکسی در گالری این سفر ثبت نشده است.</div>`;
+  }else{
+    h+=`<div class="admin-gallery-grid">`;
+    [...gallery].reverse().forEach((g,idx)=>{
+      const real=gallery.length-1-idx;
+      h+=`<div class="admin-gallery-item">
+        <img src="${g.data}" alt="${esc(g.name||'عکس سفر')}" onclick="openGalleryImage(${real})">
+        <div class="admin-gallery-meta"><b>${esc(g.name||'عکس سفر')}</b><br>📸 ${esc(g.byName||'مدیر')} • ${esc(g.date||'')}</div>
+        <div class="admin-gallery-actions"><button class="mini-btn" onclick="downloadGallery(${real})">⬇️ دانلود</button><button class="mini-btn del" onclick="deleteAdminGallery(${real})">🗑️ حذف</button></div>
+      </div>`;
+    });
+    h+=`</div>`;
+  }
+  h+=`</div>`;
+  el.innerHTML=h;
+}
+function deleteAdminGallery(i){
+  if(!gallery[i])return;
+  if(!confirm('این عکس از گالری سفر حذف شود؟'))return;
+  gallery.splice(i,1);saveTripData();renderAdminGallery();renderGallery();notify('عکس حذف شد 🗑️','info');
+}
+
 /* ================= FAMILY GAME ================= */
 const GAME_PRIZES=[
   {label:'پوچ 😎',icon:'😎',text:'امروز شانست گفت استراحت کن! هیچ کاری نداری.'},
@@ -2687,6 +2992,8 @@ const GAME_PRIZES=[
   {label:'کمک‌آشپز 👨‍🍳',icon:'👨‍🍳',text:'دستیار آشپزخانه؛ آماده‌سازی کوچک با خنده!'},
   {label:'انتخاب فیلم 🎬',icon:'🎬',text:'جایزه! فیلم امشب را تو انتخاب می‌کنی.'},
   {label:'دسر مهمان من 🍰',icon:'🍰',text:'جایزه خوش‌شانس‌ها: انتخاب دسر سفر!'},
+  {label:'نگهداری نیلماه 👶',icon:'👶',text:'ماموریت ویژه خانواده: مراقبت از نیلماه و کمک به او در سفر؛ جایزه‌اش یک بستنی یا خوراکی دلخواه است! 🍦'},
+  {label:'جایزه نیلماه 🎁',icon:'🎁',text:'جایزه فان: نیلماه انتخاب می‌کند چه خوراکی یا تفریح کوچکی برایش بگیریم! 🥳'},
 ];
 function gameWinnerFor(id){return gameSpins[id];}
 function renderGame(){
@@ -2697,10 +3004,11 @@ function renderGame(){
     <div style="font-size:15px;font-weight:900">🎁 جایزه یا مأموریت؟ گردونه تصمیم می‌گیرد!</div>
     <div style="font-size:11px;color:var(--muted);margin-top:5px">هر نفر در هر سفر یک شانس دارد. «پوچ» یعنی این بار نوبت استراحتت است 😎</div>
     <div class="wheel-wrap"><div class="wheel-pointer">🔻</div><div class="wheel" id="familyWheel"></div><div class="wheel-labels">`+
-      GAME_PRIZES.map((x,i)=>`<span class="wheel-label" style="transform:rotate(${i*45+22.5}deg) translateY(-125px) rotate(-${i*45+22.5}deg)">${x.icon}</span>`).join('')+
+      GAME_PRIZES.map((x,i)=>{const a=360/GAME_PRIZES.length,mid=i*a+a/2;return `<span class="wheel-label" style="transform:rotate(${mid}deg) translateY(-125px) rotate(-${mid}deg)">${x.icon}</span>`}).join('')+
       `</div><div class="wheel-center">🎡</div></div>
     <div class="game-result" id="gameResult">${my?`${my.icon} <b>${esc(my.label)}</b> — ${esc(my.text)}`:'هنوز نچرخوندی... ببینیم سرنوشت چه خوابی برات دیده! 😈'}</div>
     <button class="btn btn-sunset btn-block" id="spinBtn" ${my||gameSpinning?'disabled':''} onclick="spinGame()">🎡 بچرخون!</button>
+    <div class="game-sound-note">🔊 صدای چرخش و برنده‌شدن فعال است.</div>
   </div>
   <div class="admin-card"><h4>🎯 مأموریت‌های سفر</h4><div class="task-list">
     ${GAME_PRIZES.filter(x=>x.label!=='پوچ 😎').map(x=>`<div class="task-chip">${x.icon} ${x.label}<br><span style="color:var(--muted);font-weight:600">${x.text}</span></div>`).join('')}
@@ -2711,18 +3019,28 @@ function renderGame(){
   else rows.forEach(([mid,r])=>{const m=memOf(mid);h+=`<div class="spin-row">${m?avatarHTML(m,'sm'):''}<span>${esc(m?.name||r.name||'عضو')}</span><span style="margin-right:auto">${r.icon} ${esc(r.label)}</span></div>`;});
   h+=`</div>`;
   el.innerHTML=h;
+  const wheel=document.getElementById('familyWheel');
+  if(wheel){
+    const colors=['#ff7a59','#ffa726','#2ecc71','#00bcd4','#ff6f91','#81d4fa','#9c89ff','#66bb6a','#ef5350','#ab47bc'];
+    const step=360/GAME_PRIZES.length;
+    wheel.style.background=`conic-gradient(${GAME_PRIZES.map((_,i)=>`${colors[i%colors.length]} ${i*step}deg ${(i+1)*step}deg`).join(',')})`;
+  }
 }
 function spinGame(){
   if(!CU||gameSpins[CU.id]||gameSpinning)return;
   gameSpinning=true;
   const wheel=document.getElementById('familyWheel'),btn=document.getElementById('spinBtn');
-  const idx=Math.floor(Math.random()*GAME_PRIZES.length),turns=5+Math.floor(Math.random()*3),deg=turns*360+(360-(idx*45+22.5));
-  if(wheel){wheel.style.transform=`rotate(${deg}deg)`;}
+  const n=GAME_PRIZES.length,step=360/n,idx=Math.floor(Math.random()*n),turns=5+Math.floor(Math.random()*3),target=360-(idx*step+step/2),deg=turns*360+target;
+  ensureTravelAudio();wheelSound('tick');
+  if(wheel){wheel.classList.add('is-spinning');wheel.style.transform=`rotate(${deg}deg)`;}
   if(btn)btn.disabled=true;
+  let tickCount=0;const tickTimer=setInterval(()=>{if(!gameSpinning){clearInterval(tickTimer);return;}wheelSound('tick');tickCount++;if(tickCount>32)clearInterval(tickTimer);},125);
   setTimeout(()=>{
+    clearInterval(tickTimer);
     const r=GAME_PRIZES[idx];
     gameSpins[CU.id]={label:r.label,icon:r.icon,text:r.text,name:CU.name,at:Date.now()};
-    saveTripData();gameSpinning=false;renderGame();
+    saveTripData();gameSpinning=false;if(wheel)wheel.classList.remove('is-spinning');
+    wheelSound('win');renderGame();
     notify(r.label==='پوچ 😎'?'😂 این بار پوچ! خوش‌شانس بودی.':`🎉 ${r.label} — مأموریتت مشخص شد!`,'ok');
   },4200);
 }
@@ -2745,12 +3063,15 @@ function resetGame(){
     if(lbl) lbl.textContent = isDark ? 'تم روز' : 'تم شب';
   }, 50);
   loadTrips();
+  initMusic();
   if(trips.length===0)migrateFromV10();
   if(!currentTripId&&trips.length>0){
     currentTripId=trips.find(t=>!t.archived)?.id||trips[0].id;
     saveTrips();
   }
   loadTripData(currentTripId);
+  initMusic();
+  initCloudSync();
   renderMemberLogin();refreshLanding();
   ['modalTrip','modalMember','modalExpense'].forEach(id=>{
     const el=document.getElementById(id);
@@ -2764,6 +3085,12 @@ function resetGame(){
   });
   document.addEventListener('keydown',e=>{
     if(e.key==='Escape'){closeTripModal();closeMemberModal();closeExpenseModal();}
+  });
+  window.addEventListener('storage',e=>{
+    if(!e.key||e.key.startsWith('safar_v11')){
+      loadTrips();loadTripData(currentTripId);refreshLanding();renderMemberLogin();
+      if(isAdminSession)renderAdminAll();
+    }
   });
 })();
 </script>
