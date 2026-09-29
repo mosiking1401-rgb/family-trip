@@ -576,6 +576,26 @@ body.theme-dark .game-hero{background:linear-gradient(135deg,rgba(255,183,77,.12
   display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 10px 24px -8px rgba(255,122,89,.7)}
 .modal-head h3{font-size:16px;font-weight:900}
 .modal-btns{display:flex;gap:10px;margin-top:20px}
+.landing-public-votes{margin-top:18px;overflow:hidden;padding:0;border:1px solid var(--border-strong);box-shadow:var(--shadow-sm)}
+.landing-public-votes-head{width:100%;border:0;background:transparent;color:var(--text);display:flex;align-items:center;gap:12px;text-align:right;padding:17px 18px;cursor:pointer;font-family:inherit}
+.landing-public-votes-head:hover{background:rgba(255,255,255,.38)}
+.landing-public-votes-icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#fff0e8,#ffe2d4);font-size:23px;flex-shrink:0}
+.landing-public-votes-copy{min-width:0;flex:1}
+.landing-public-votes-title{font-size:14px;font-weight:900}
+.landing-public-votes-sub{font-size:11px;color:var(--muted);line-height:1.8;margin-top:3px}
+.landing-public-votes-arrow{width:32px;height:32px;border-radius:10px;background:var(--sand-2);display:grid;place-items:center;font-size:20px;font-weight:900;transition:transform .25s ease}
+.landing-public-votes-card.open .landing-public-votes-arrow{transform:rotate(180deg)}
+.landing-public-votes-body{display:none;border-top:1px solid var(--border);padding:14px}
+.landing-public-votes-card.open .landing-public-votes-body{display:block;animation:fadeIn .22s ease}
+.landing-vote-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.landing-vote-member{border:1px solid var(--border);border-radius:16px;background:var(--white);padding:13px}
+.landing-vote-member-head{display:flex;align-items:center;gap:10px;padding-bottom:10px;margin-bottom:10px;border-bottom:1px dashed var(--border)}
+.landing-vote-member-name{font-size:12.5px;font-weight:900}
+.landing-vote-member-count{font-size:10.5px;color:var(--muted);margin-top:2px}
+.landing-vote-row{font-size:11.5px;line-height:1.8;padding:7px 9px;border-radius:10px;background:var(--sand-2);margin-top:7px}
+.landing-vote-row b{display:block;font-size:10.5px;color:var(--muted);margin-bottom:1px}
+.landing-vote-empty{text-align:center;padding:18px 10px;color:var(--muted);font-size:11.5px}
+@media(max-width:620px){.landing-public-votes-head{padding:14px 12px}.landing-vote-grid{grid-template-columns:1fr}}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
 .chip{padding:9px 15px;border-radius:50px;background:var(--sand-2);border:1.5px solid var(--border);
   font-family:'Vazirmatn';font-size:11.5px;font-weight:700;cursor:pointer;transition:all .25s var(--ease-spring);
@@ -752,10 +772,64 @@ body{font-size:15px}
       </div>
     </div>
     <div class="landing-features">
-      <div class="feat"><div class="feat-icon">🗳️</div><div class="feat-num" id="featVotes">۰</div><div class="feat-lbl">رأی ثبت‌شده</div></div>
-      <div class="feat"><div class="feat-icon">💰</div><div class="feat-num" id="featExpenses">۰</div><div class="feat-lbl">هزینه ثبت‌شده</div></div>
-      <div class="feat"><div class="feat-icon">🗺️</div><div class="feat-num" id="featTrips">۰</div><div class="feat-lbl">سفر ثبت‌شده</div></div>
+      <div class="feat" onclick="toggleLandingVotes(true)" style="cursor:pointer"><div class="feat-icon">🗳️</div><div class="feat-num" id="featVotes">۰</div><div class="feat-lbl">رأی ثبت‌شده • مشاهده انتخاب‌ها</div></div>
+      <div class="feat" onclick="toggleLandingExpenses()" style="cursor:pointer"><div class="feat-icon">💰</div><div class="feat-num" id="featExpenses">۰</div><div class="feat-lbl">هزینه ثبت‌شده • مشاهده هزینه‌ها</div></div>
+      <div class="feat" onclick="toggleLandingTrips()" style="cursor:pointer"><div class="feat-icon">🗺️</div><div class="feat-num" id="featTrips">۰</div><div class="feat-lbl">سفر ثبت‌شده • مشاهده سفرها</div></div>
       <div class="feat"><div class="feat-icon">📅</div><div class="feat-num" id="featActiveDays">۰</div><div class="feat-lbl">روز سفر فعال</div></div>
+    </div>
+    <div class="landing-public-votes card" id="landingPublicVotesCard">
+      <button class="landing-public-votes-head" type="button" onclick="toggleLandingVotes()" aria-expanded="false" aria-controls="landingPublicVotesBody">
+        <div class="landing-public-votes-icon">🗳️</div>
+        <div class="landing-public-votes-copy">
+          <div class="landing-public-votes-title">انتخاب‌های ثبت‌شده اعضا</div>
+          <div class="landing-public-votes-sub" id="landingPublicVotesSummary">همه اعضا می‌توانند اینجا ببینند چه چیزی انتخاب شده</div>
+        </div>
+        <div class="landing-public-votes-arrow" id="landingPublicVotesArrow">⌄</div>
+      </button>
+      <div class="landing-public-votes-body" id="landingPublicVotesBody">
+        <div id="landingPublicVotesList"></div>
+      </div>
+    </div>
+
+    <div class="landing-public-votes card" id="landingPublicExpensesCard">
+      <button class="landing-public-votes-head" type="button" onclick="toggleLandingExpenses()" aria-expanded="false" aria-controls="landingPublicExpensesBody">
+        <div class="landing-public-votes-icon">💰</div>
+        <div class="landing-public-votes-copy">
+          <div class="landing-public-votes-title">هزینه‌های ثبت‌شده سفر</div>
+          <div class="landing-public-votes-sub" id="landingPublicExpensesSummary">همه می‌توانند هزینه‌های ثبت‌شده و پرداخت‌کننده‌ها را ببینند</div>
+        </div>
+        <div class="landing-public-votes-arrow">⌄</div>
+      </button>
+      <div class="landing-public-votes-body" id="landingPublicExpensesBody" style="display:none">
+        <div id="landingPublicExpensesList"></div>
+      </div>
+    </div>
+
+    <div class="landing-public-votes card" id="landingPublicTripsCard">
+      <button class="landing-public-votes-head" type="button" onclick="toggleLandingTrips()" aria-expanded="false" aria-controls="landingPublicTripsBody">
+        <div class="landing-public-votes-icon">🗺️</div>
+        <div class="landing-public-votes-copy">
+          <div class="landing-public-votes-title">سفرهای ثبت‌شده</div>
+          <div class="landing-public-votes-sub" id="landingPublicTripsSummary">لیست سفرهای ثبت‌شده و سفر فعال</div>
+        </div>
+        <div class="landing-public-votes-arrow">⌄</div>
+      </button>
+      <div class="landing-public-votes-body" id="landingPublicTripsBody" style="display:none">
+        <div id="landingPublicTripsList"></div>
+      </div>
+    </div>
+
+    <div class="landing-public-votes card" id="landingRecommendationsCard">
+      <div class="landing-public-votes-head" style="cursor:default">
+        <div class="landing-public-votes-icon">🤖</div>
+        <div class="landing-public-votes-copy">
+          <div class="landing-public-votes-title">انتخاب محبوب به‌صورت خودکار</div>
+          <div class="landing-public-votes-sub" id="landingRecommendationsSummary">سیستم بر اساس بیشترین رأی‌های ثبت‌شده، انتخاب‌های محبوب را محاسبه می‌کند.</div>
+        </div>
+      </div>
+      <div class="landing-public-votes-body" style="display:block">
+        <div id="landingRecommendationsList"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -1542,15 +1616,148 @@ function uploadTripData(input){
 }
 
 /* ================= LANDING ================= */
+async function toggleLandingVotes(force){
+  const card=document.getElementById('landingPublicVotesCard');
+  const body=document.getElementById('landingPublicVotesBody');
+  const btn=card?.querySelector('.landing-public-votes-head');
+  if(!card||!body)return;
+  const open=typeof force==='boolean'?force:!card.classList.contains('open');
+  card.classList.toggle('open',open);
+  body.style.display=open?'block':'none';
+  if(btn)btn.setAttribute('aria-expanded',open?'true':'false');
+  if(open){
+    const list=document.getElementById('landingPublicVotesList');
+    if(list)list.innerHTML='<div class="landing-vote-empty">⏳ در حال دریافت انتخاب‌های ثبت‌شده...</div>';
+    renderLandingPublicVotes();
+    if(supabaseConfigured()){ await pullCloudState(); renderLandingPublicVotes(); renderLandingRecommendations(); }
+    const first=card.getBoundingClientRect().top+window.scrollY-18;
+    window.scrollTo({top:Math.max(0,first),behavior:'smooth'});
+  }
+}
+async function toggleLandingExpenses(){
+  const card=document.getElementById('landingPublicExpensesCard'),body=document.getElementById('landingPublicExpensesBody');
+  if(!card||!body)return;
+  const open=!card.classList.contains('open'); card.classList.toggle('open',open); body.style.display=open?'block':'none';
+  if(open){
+    renderLandingPublicExpenses();
+    if(supabaseConfigured()){await pullCloudState();renderLandingPublicExpenses();renderLandingRecommendations();}
+    window.scrollTo({top:Math.max(0,card.getBoundingClientRect().top+window.scrollY-18),behavior:'smooth'});
+  }
+}
+async function toggleLandingTrips(){
+  const card=document.getElementById('landingPublicTripsCard'),body=document.getElementById('landingPublicTripsBody');
+  if(!card||!body)return;
+  const open=!card.classList.contains('open'); card.classList.toggle('open',open); body.style.display=open?'block':'none';
+  if(open){
+    renderLandingPublicTrips();
+    if(supabaseConfigured()){await pullCloudState();renderLandingPublicTrips();renderLandingRecommendations();}
+    window.scrollTo({top:Math.max(0,card.getBoundingClientRect().top+window.scrollY-18),behavior:'smooth'});
+  }
+}
+function _landingChoiceGroups(){
+  const trip=getCurrentTrip();
+  const out={breakfast:[],lunch:[],dinner:[],activity:[]};
+  if(!trip)return out;
+  (trip.days||[]).forEach(day=>{MEALS.forEach(meal=>{
+    const counts=new Map(); const prefix=day.id+'_'+meal.id+'_';
+    Object.values(allVotes||{}).forEach(uv=>Object.keys(uv||{}).forEach(k=>{
+      if(k.startsWith(prefix)&&uv[k])counts.set(k.slice(prefix.length),(counts.get(k.slice(prefix.length))||0)+1);
+    }));
+    const foods=[...(meal.pack||[]),...(customFoods[day.id+'_'+meal.id]||[])];
+    counts.forEach((count,id)=>{const f=foods.find(x=>x.id===id);if(f)out[meal.id].push({id,name:f.name,em:f.em,day:day.name,dayId:day.id,count});});
+  });});
+  ACTS.forEach(a=>{const count=Object.values(allVotes||{}).filter(uv=>uv&&uv['act_'+a.id]).length;if(count)out.activity.push({id:a.id,name:a.name,em:a.em,count});});
+  return out;
+}
+function _landingTop(items){
+  if(!items.length)return null;
+  const max=Math.max(...items.map(x=>x.count));
+  const winners=items.filter(x=>x.count===max);
+  return {max,winners};
+}
+function renderLandingPublicExpenses(){
+  const list=document.getElementById('landingPublicExpensesList'),sum=document.getElementById('landingPublicExpensesSummary'); if(!list)return;
+  const total=expenses.reduce((s,e)=>s+parseAmount(e.amount),0);
+  if(sum)sum.textContent=`${fmtNum(expenses.length)} هزینه • جمع ${fmtToman(total)} • ${getCurrentTrip()?.name||'سفر'}`;
+  if(!expenses.length){list.innerHTML='<div class="landing-vote-empty">💰 هنوز هزینه‌ای ثبت نشده است.</div>';return;}
+  const rows=[...expenses].sort((a,b)=>parseAmount(b.amount)-parseAmount(a.amount));
+  list.innerHTML='<div class="landing-vote-grid">'+rows.map(e=>{
+    const payer=M.find(m=>m.id===e.payerId)||M.find(m=>m.id===e.by);
+    const cat=EXPENSE_CATS.find(c=>c.id===e.cat);
+    return `<div class="landing-vote-member"><div class="landing-vote-member-head">${avatarHTML(payer,'sm')}<div><div class="landing-vote-member-name">${esc(e.title||e.desc||'هزینه سفر')}</div><div class="landing-vote-member-count">${cat?.em||'💰'} ${esc(cat?.name||'هزینه')} • ${fmtToman(parseAmount(e.amount))}</div></div></div><div class="landing-vote-row"><b>پرداخت‌کننده</b>${esc(payer?.name||'نامشخص')}</div>${e.desc?`<div class="landing-vote-row"><b>توضیح</b>${esc(e.desc)}</div>`:''}</div>`;
+  }).join('')+'</div>';
+}
+function renderLandingPublicTrips(){
+  const list=document.getElementById('landingPublicTripsList'),sum=document.getElementById('landingPublicTripsSummary'); if(!list)return;
+  const active=trips.find(t=>t.id===currentTripId&&!t.archived);
+  if(sum)sum.textContent=`${fmtNum(trips.length)} سفر ثبت‌شده • ${active?`سفر فعال: ${active.name}`:'سفر فعالی نیست'}`;
+  if(!trips.length){list.innerHTML='<div class="landing-vote-empty">🗺️ هنوز سفری ثبت نشده است.</div>';return;}
+  const rows=[...trips].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  list.innerHTML='<div class="landing-vote-grid">'+rows.map(t=>`<div class="landing-vote-member"><div class="landing-vote-member-head"><div class="landing-public-votes-icon" style="font-size:26px">${t.id===currentTripId&&!t.archived?'🌊':'🗺️'}</div><div><div class="landing-vote-member-name">${esc(t.name||'سفر')}</div><div class="landing-vote-member-count">${t.id===currentTripId&&!t.archived?'✅ سفر فعال':'📦 '+(t.archived?'بایگانی‌شده':'ثبت‌شده')} • ${fmtNum((t.days||[]).length)} روز</div></div></div><div class="landing-vote-row"><b>مقصد</b>${esc(t.destination||'—')}</div><div class="landing-vote-row"><b>تاریخ</b>${esc(t.startDate||'—')}${t.endDate?' تا '+esc(t.endDate):''}</div></div>`).join('')+'</div>';
+}
+function renderLandingRecommendations(){
+  const list=document.getElementById('landingRecommendationsList'),sum=document.getElementById('landingRecommendationsSummary'); if(!list)return;
+  const trip=getCurrentTrip();
+  if(!trip){if(sum)sum.textContent='هنوز سفری فعال نیست';list.innerHTML='<div class="landing-vote-empty">🤖 ابتدا یک سفر فعال کنید.</div>';return;}
+  const cards=[]; let mealWins=0;
+  (trip.days||[]).forEach(day=>{
+    const dayCards=[];
+    MEALS.slice(0,3).forEach(meal=>{
+      const foods=[...(meal.pack||[]),...(customFoods[mk(day.id,meal.id)]||[])];
+      const scored=foods.map(f=>({f,count:getFoodVoteCount(day.id,meal.id,f.id)})).filter(x=>x.count>0);
+      if(!scored.length)return;
+      const max=Math.max(...scored.map(x=>x.count));
+      const winners=scored.filter(x=>x.count===max);
+      mealWins++;
+      dayCards.push(`<div class="landing-vote-row"><b>${meal.em} ${meal.name}</b>${winners.map(x=>`${x.f.em} ${esc(x.f.name)} <span style="color:var(--muted)">(${fmtNum(x.count)} رأی)</span>`).join(' • ')}${winners.length>1?' <span style="color:var(--muted)">(مساوی)</span>':''}</div>`);
+    });
+    if(dayCards.length){
+      cards.push(`<div class="landing-vote-member"><div class="landing-vote-member-head"><div class="landing-public-votes-icon" style="font-size:25px">📅</div><div><div class="landing-vote-member-name">${esc(day.name)}${day.date?' — '+esc(day.date):''}</div><div class="landing-vote-member-count">انتخاب محبوب هر وعده بر اساس رأی اعضا</div></div></div>${dayCards.join('')}</div>`);
+    }
+  });
+  const actScores=ACTS.map(a=>({a,count:getActVoteCount(a.id)})).filter(x=>x.count>0);
+  if(actScores.length){
+    const max=Math.max(...actScores.map(x=>x.count));
+    const winners=actScores.filter(x=>x.count===max);
+    cards.push(`<div class="landing-vote-member"><div class="landing-vote-member-head"><div class="landing-public-votes-icon" style="font-size:25px">🎢</div><div><div class="landing-vote-member-name">تفریح محبوب سفر</div><div class="landing-vote-member-count">بیشترین انتخاب در بین همه اعضا</div></div></div><div class="landing-vote-row"><b>🏆 نتیجه</b>${winners.map(x=>`${x.a.em} ${esc(x.a.name)} <span style="color:var(--muted)">(${fmtNum(x.count)} رأی)</span>`).join(' • ')}${winners.length>1?' <span style="color:var(--muted)">(مساوی)</span>':''}</div></div>`);
+  }
+  const voters=Object.values(allVotes||{}).filter(uv=>uv&&Object.keys(uv).length).length;
+  if(sum)sum.textContent=mealWins||actScores.length?`بر اساس ${fmtNum(voters)} عضو رأی‌دهنده • محاسبه خودکارِ بیشترین انتخاب`:'هنوز انتخابی ثبت نشده تا انتخاب محبوب محاسبه شود';
+  list.innerHTML=cards.length?'<div class="landing-vote-grid">'+cards.join('')+'</div>':'<div class="landing-vote-empty">🤖 هنوز انتخابی ثبت نشده تا محبوب‌ترین گزینه‌ها محاسبه شوند.</div>';
+}
+function renderLandingPublicVotes(){
+  const list=document.getElementById('landingPublicVotesList');
+  const sum=document.getElementById('landingPublicVotesSummary');
+  if(!list)return;
+  const trip=getCurrentTrip();
+  if(!trip){list.innerHTML='<div class="landing-vote-empty">هنوز سفری فعال نشده است.</div>';if(sum)sum.textContent='هنوز سفری برای نمایش انتخاب‌ها فعال نیست';return;}
+  const rows=M.map(m=>({m,choices:landingMemberChoices(m)}));
+  const voted=rows.filter(x=>x.choices.length>0).length;
+  const total=rows.reduce((n,x)=>n+x.choices.length,0);
+  if(sum)sum.textContent=`${fmtNum(voted)} نفر از ${fmtNum(M.length)} نفر • ${fmtNum(total)} انتخاب ثبت‌شده • ${trip.name}`;
+  if(!rows.length){list.innerHTML='<div class="landing-vote-empty">هنوز عضوی برای این سفر ثبت نشده است.</div>';return;}
+  let h='<div class="landing-vote-grid">';
+  rows.forEach(({m,choices})=>{
+    h+=`<div class="landing-vote-member">
+      <div class="landing-vote-member-head">${avatarHTML(m,'sm')}<div><div class="landing-vote-member-name">${esc(m.name)}</div><div class="landing-vote-member-count">${choices.length?fmtNum(choices.length)+' انتخاب ثبت شده':'هنوز انتخابی ثبت نکرده'}</div></div></div>`;
+    if(choices.length){
+      choices.forEach(c=>h+=`<div class="landing-vote-row"><b>${esc(c.label)}</b>${esc(c.value)}</div>`);
+    }else h+='<div class="landing-vote-empty" style="padding:10px 4px">— هنوز چیزی انتخاب نکرده —</div>';
+    h+='</div>';
+  });
+  h+='</div>';
+  list.innerHTML=h;
+}
 function refreshLanding(){
   const el=document.getElementById('landingActiveTrip');
   const active=trips.find(t=>t.id===currentTripId&&!t.archived)||trips.find(t=>!t.archived);
   let totalVotes=0;
-  trips.forEach(t=>{
-    try{const d=JSON.parse(localStorage.getItem(LS.tripData(t.id))||'{}');
-      Object.values(d.allVotes||{}).forEach(uv=>{totalVotes+=Object.keys(uv).length;});}catch(e){}
-  });
+  Object.values(allVotes||{}).forEach(uv=>{totalVotes+=Object.keys(uv||{}).length;});
   document.getElementById('featVotes').textContent=fmtNum(totalVotes);
+  renderLandingPublicVotes();
+  renderLandingPublicExpenses();
+  renderLandingPublicTrips();
+  renderLandingRecommendations();
   document.getElementById('featExpenses').textContent=fmtNum(expenses.length);
   document.getElementById('featTrips').textContent=fmtNum(trips.length);
   document.getElementById('featActiveDays').textContent=fmtNum(active?.days?.length||0);
