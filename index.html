@@ -1474,6 +1474,33 @@ function saveTripData(){
   scheduleCloudSync('trip-data');
 }
 
+// Admin destructive actions must overwrite the shared state instead of merging
+// with the old remote state; otherwise deleted records can be resurrected.
+async function saveAdminCloudStateNow(){
+  if(!currentTripId)return false;
+  if(!supabaseConfigured())return true;
+  try{
+    const state=baseCloudState();
+    await supabaseRequest('travel_app_state?on_conflict=id',{
+      method:'POST',
+      headers:{'Prefer':'resolution=merge-duplicates,return=minimal'},
+      body:JSON.stringify({id:SUPABASE_STATE_ID,state,updated_at:new Date().toISOString()})
+    });
+    supabaseReady=true;
+    return true;
+  }catch(e){
+    console.warn('[Supabase admin save]',e.message);
+    supabaseReady=false;
+    notify('ذخیره ابری انجام نشد؛ دوباره تلاش کنید.','err');
+    return false;
+  }
+}
+
+async function adminPrepareChange(){
+  if(supabaseConfigured()) await pullCloudState();
+  return true;
+}
+
 function generateDays(count){
   const n2p=['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
   const toFa=n=>String(n).split('').map(d=>n2p[+d]||d).join('');
@@ -2841,34 +2868,83 @@ function renderAdminCleanup(){
   </div>`;
   el.innerHTML=h;
 }
-function adminClearVotes(mid){const m=memOf(mid);if(!m)return;if(!confirm(`آرای «${m.name}» پاک شوند؟`))return;delete allVotes[mid];saveTripData();renderAdminAll();notify('پاک شد','info');}
-function adminClearExpenses(mid){const m=memOf(mid);if(!m)return;const cnt=expenses.filter(e=>e.by===mid).length;if(!confirm(`${cnt} هزینه «${m.name}» پاک شوند؟`))return;expenses=expenses.filter(e=>e.by!==mid);saveTripData();renderAdminAll();notify('حذف شد','info');}
-function adminClearFoods(mid){
-  const m=memOf(mid);if(!m)return;let removed=0;
-  Object.keys(customFoods).forEach(k=>{
-    const before=customFoods[k].length;
-    customFoods[k]=customFoods[k].filter(f=>!f.d.includes(m.name));
-    removed += before - customFoods[k].length;
-    if(customFoods[k].length===0)delete customFoods[k];
+async function adminClearVotes(mid){
+  const m=memOf(mid);if(!m)return;
+  if(!confirm(`آرای «${m.name}» پاک شوند؟`))return;
+  await adminPrepareChange();
+  delete allVotes[mid];
+  if(CU&&CU.id===mid)myVotes={};
+  lotteryResults={};
+  localStorage.setItem(LS.tripData(currentTripId),JSON.stringify({members:M,allVotes,customFoods,uploadedFiles:[],expenses,gameSpins,lotteryResults}));
+  const ok=await saveAdminCloudStateNow();
+  renderAdminAll();refreshLanding();
+  notify(ok?'آرای عضو از همه دستگاه‌ها پاک شد ✅':'پاک شد؛ همگام‌سازی ابری ناموفق بود','info');
+}
+async function adminClearExpenses(mid){
+  const m=memOf(mid);if(!m)return;
+  await adminPrepareChange();
+  const cnt=expenses.filter(e=>e.by===mid).length;
+  if(!confirm(`${cnt} هزینه «${m.name}» پاک شوند؟`))return;
+  expenses=expenses.filter(e=>e.by!==mid);
+  saveTripData();
+  await saveAdminCloudStateNow();
+  renderAdminAll();refreshLanding();notify('هزینه‌ها از همه دستگاه‌ها پاک شد ✅','info');
+}
+async function adminClearFoods(mid){
+  const m=memOf(mid);if(!m)return;
+  await adminPrepareChange();
+  let removed=0;
+  Object.values(customFoods||{}).forEach(arr=>{
+    (arr||[]).forEach(f=>{if(String(f.d||'').includes(m.name))removed++;});
   });
   if(!confirm(`${removed} پیشنهاد حذف شوند؟`))return;
-  saveTripData();renderAdminAll();notify('حذف شد','info');
-}
-function adminClearAll(mid){
-  const m=memOf(mid);if(!m)return;
-  if(!confirm(`⚠️ همه اطلاعات «${m.name}» پاک شوند؟`))return;
-  delete allVotes[mid];
-  
-  expenses=expenses.filter(e=>e.by!==mid);
   Object.keys(customFoods).forEach(k=>{
-    customFoods[k]=customFoods[k].filter(f=>!f.d.includes(m.name));
+    customFoods[k]=customFoods[k].filter(f=>!String(f.d||'').includes(m.name));
     if(customFoods[k].length===0)delete customFoods[k];
   });
-  saveTripData();renderAdminAll();notify('پاک شد','info');
+  saveTripData();
+  await saveAdminCloudStateNow();
+  renderAdminAll();refreshLanding();notify('پیشنهادها از همه دستگاه‌ها پاک شد ✅','info');
 }
-function adminClearAllVotes(){if(!confirm('همه انتخاب‌ها پاک شوند؟'))return;allVotes={};if(CU)myVotes={};lotteryResults={};saveTripData();renderAdminAll();notify('همه انتخاب‌ها پاک شد','info');}
-function adminClearAllExpenses(){if(!confirm('همه هزینه‌ها پاک شوند؟'))return;expenses=[];saveTripData();renderAdminAll();notify('پاک شد','info');}
-function adminClearAllUploads(){if(!confirm('این عملیات قدیمی است؛ همه انتخاب‌ها پاک شوند؟'))return;allVotes={};lotteryResults={};saveTripData();renderAdminAll();notify('همه انتخاب‌ها پاک شد','info');}
+async function adminClearAll(mid){
+  const m=memOf(mid);if(!m)return;
+  if(!confirm(`⚠️ همه اطلاعات «${m.name}» پاک شوند؟`))return;
+  await adminPrepareChange();
+  delete allVotes[mid];
+  if(CU&&CU.id===mid)myVotes={};
+  expenses=expenses.filter(e=>e.by!==mid);
+  Object.keys(customFoods).forEach(k=>{
+    customFoods[k]=customFoods[k].filter(f=>!String(f.d||'').includes(m.name));
+    if(customFoods[k].length===0)delete customFoods[k];
+  });
+  saveTripData();
+  await saveAdminCloudStateNow();
+  renderAdminAll();refreshLanding();notify('تمام اطلاعات عضو از همه دستگاه‌ها پاک شد ✅','info');
+}
+async function adminClearAllVotes(){
+  if(!confirm('همه انتخاب‌ها پاک شوند؟'))return;
+  await adminPrepareChange();
+  allVotes={};if(CU)myVotes={};lotteryResults={};
+  saveTripData();
+  await saveAdminCloudStateNow();
+  renderAdminAll();refreshLanding();notify('همه انتخاب‌ها از همه دستگاه‌ها پاک شد ✅','info');
+}
+async function adminClearAllExpenses(){
+  if(!confirm('همه هزینه‌ها پاک شوند؟'))return;
+  await adminPrepareChange();
+  expenses=[];saveTripData();
+  await saveAdminCloudStateNow();
+  renderAdminAll();refreshLanding();notify('همه هزینه‌ها از همه دستگاه‌ها پاک شد ✅','info');
+}
+async function adminClearAllUploads(){
+  if(!confirm('همه داده‌های بارگذاری/انتخاب مرتبط پاک شوند؟'))return;
+  await adminPrepareChange();
+  allVotes={};lotteryResults={};
+  uploadedFiles=[];
+  saveTripData();
+  await saveAdminCloudStateNow();
+  renderAdminAll();refreshLanding();notify('اطلاعات پاک شد ✅','info');
+}
 function renderAdminSettings(){
   const el=document.getElementById('adminSettings');
   let h=`<div class="admin-card"><h4>🎡 بازی خانوادگی</h4>
