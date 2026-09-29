@@ -831,7 +831,6 @@ body{font-size:15px}
     <div class="tab-panel" id="panelAct"></div>
     <div class="tab-panel" id="panelPlace"></div>
     <div class="tab-panel" id="panelExpense"></div>
-    <div class="tab-panel" id="panelSync"></div>
     <div class="tab-panel" id="panelResult"></div>
     <div class="tab-panel" id="panelCleanup"></div>
     <div class="tab-panel" id="panelGallery"></div>
@@ -860,6 +859,7 @@ body{font-size:15px}
     <div class="tab-panel" id="adminMembers"></div>
     <div class="tab-panel" id="adminExpenses"></div>
     <div class="tab-panel" id="adminVotes"></div>
+    <div class="tab-panel" id="adminLottery"></div>
     <div class="tab-panel" id="adminReports"></div>
     <div class="tab-panel" id="adminCleanup"></div>
     <div class="tab-panel" id="adminSettings"></div>
@@ -926,14 +926,12 @@ body{font-size:15px}
   </div>
 </div>
 
-<input type="file" id="fileInput" multiple accept=".json" style="display:none" onchange="handleVoteFiles(this.files)">
-<input type="file" id="backupInput" accept=".json" style="display:none" onchange="importBackup(this.files[0])">
-
 <script>
 
 /* ================= SUPABASE CLOUD SYNC =================
-   The table public.travel_app_state stores one shared JSON state row.
-   Paste your Supabase anon/public key below. Never use service_role here. */
+   Shared state lives in public.travel_app_state.
+   No member-to-member JSON file exchange is used.
+   Never use service_role in the browser. */
 const SUPABASE_URL = 'https://kuqludtmcfmcctvmguri.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1cWx1ZHRtY2ZtY2N0dm1ndXJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2NTYxOTcsImV4cCI6MjEwNjIzMjE5N30.jen7bc-vnRLkltPrPMQE9vWBl1nYRJseEwdvi-t1TPE';
 const SUPABASE_STATE_ID = 'family_travel_v11';
@@ -946,66 +944,135 @@ function supabaseConfigured(){
          SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes('PASTE_YOUR');
 }
 function supabaseHeaders(){
-  return {'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json','Prefer':'return=minimal'};
+  return {'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,
+    'Content-Type':'application/json','Prefer':'return=minimal'};
 }
 async function supabaseRequest(path,opts={}){
   if(!supabaseConfigured()) return null;
   const r=await fetch(SUPABASE_URL+'/rest/v1/'+path,{...opts,headers:{...supabaseHeaders(),...(opts.headers||{})}});
-  if(!r.ok){const txt=await r.text();throw new Error('Supabase '+r.status+': '+txt.slice(0,300));}
+  if(!r.ok){const txt=await r.text();throw new Error('Supabase '+r.status+': '+txt.slice(0,400));}
   if(r.status===204)return null;
   const txt=await r.text();return txt?JSON.parse(txt):null;
 }
-function buildCloudState(){
+function cloneJSON(v){try{return JSON.parse(JSON.stringify(v));}catch(e){return v;}}
+function mergeById(remoteArr,localArr){
+  const map=new Map();
+  [...(remoteArr||[]),...(localArr||[])].forEach(x=>{if(x&&x.id)map.set(x.id,x);});
+  return [...map.values()];
+}
+function mergeCustomFoods(remoteObj,localObj){
+  const out={...cloneJSON(remoteObj||{})};
+  Object.entries(localObj||{}).forEach(([k,arr])=>{out[k]=mergeById(out[k]||[],arr||[]);});
+  return out;
+}
+function baseCloudState(){
   return {
-    version:11,updatedAt:Date.now(),
-    trips,tripsActive:currentTripId,
-    currentTripId,
-    tripData:{members:M,allVotes,customFoods,uploadedFiles,expenses,gallery,gameSpins},
-    myVotes:CU?myVotes:{},
+    version:12,updatedAt:Date.now(),
+    trips:cloneJSON(trips),tripsActive:currentTripId,currentTripId,
+    tripData:{members:cloneJSON(M),allVotes:cloneJSON(allVotes),customFoods:cloneJSON(customFoods),
+      uploadedFiles:[],expenses:cloneJSON(expenses),gallery:cloneJSON(gallery),galleryDeletedIds:cloneJSON(galleryDeletedIds),gameSpins:cloneJSON(gameSpins),
+      lotteryResults:cloneJSON(lotteryResults)},
     theme:localStorage.getItem(LS.theme)||'light'
   };
 }
 function scheduleCloudSync(reason='change'){
   if(!supabaseConfigured() || supabasePulling)return;
   clearTimeout(supabaseSyncTimer);
-  supabaseSyncTimer=setTimeout(()=>pushCloudState(reason),350);
+  supabaseSyncTimer=setTimeout(()=>pushCloudState(reason),280);
+}
+async function getRemoteCloudState(){
+  const rows=await supabaseRequest('travel_app_state?id=eq.'+encodeURIComponent(SUPABASE_STATE_ID)+'&select=state,updated_at');
+  return rows&&rows.length&&rows[0].state?rows[0].state:null;
+}
+function mergeForMember(remote){
+  const local=baseCloudState();
+  if(!remote)return local;
+  const rtd=remote.tripData||{};
+  const merged=cloneJSON(remote);
+  merged.version=12;merged.currentTripId=remote.currentTripId||remote.tripsActive||currentTripId;
+  merged.trips=Array.isArray(remote.trips)&&remote.trips.length?cloneJSON(remote.trips):cloneJSON(trips);
+  merged.tripsActive=merged.currentTripId;
+  merged.tripData=merged.tripData||{};
+  merged.tripData.members=cloneJSON(rtd.members||M);
+
+  const remoteVotes=cloneJSON(rtd.allVotes||{});
+  if(CU)remoteVotes[CU.id]=cloneJSON(myVotes||{});
+  merged.tripData.allVotes=remoteVotes;
+  merged.tripData.customFoods=mergeCustomFoods(rtd.customFoods||{},customFoods||{});
+  merged.tripData.expenses=[...(rtd.expenses||[]).filter(e=>!CU||e.by!==CU.id),...(CU?expenses.filter(e=>e.by===CU.id):[])];
+  const deleted=new Set([...(rtd.galleryDeletedIds||[]),...(galleryDeletedIds||[])]);
+  merged.tripData.gallery=mergeById(rtd.gallery||[],gallery||[]).filter(g=>!deleted.has(g.id));
+  merged.tripData.galleryDeletedIds=[...deleted];
+  const remoteGame=cloneJSON(rtd.gameSpins||{});
+  if(CU&&gameSpins[CU.id])remoteGame[CU.id]=cloneJSON(gameSpins[CU.id]);
+  merged.tripData.gameSpins=remoteGame;
+  merged.tripData.lotteryResults=cloneJSON(rtd.lotteryResults||lotteryResults||{});
+  merged.tripData.uploadedFiles=[];
+  return merged;
+}
+function mergeForAdmin(remote){
+  const local=baseCloudState();
+  if(!remote)return local;
+  // Admin changes are authoritative, but preserve newer member votes/gallery that are not present locally.
+  const rtd=remote.tripData||{}, l=local.tripData;
+  const out=cloneJSON(local);
+  const mergedVotes={...(rtd.allVotes||{}),...(l.allVotes||{})};
+  out.tripData.allVotes=mergedVotes;
+  const deleted=new Set([...(rtd.galleryDeletedIds||[]),...(galleryDeletedIds||[])]);
+  out.tripData.gallery=mergeById(rtd.gallery||[],l.gallery||[]).filter(g=>!deleted.has(g.id));
+  out.tripData.galleryDeletedIds=[...deleted];
+  out.tripData.gameSpins={...(rtd.gameSpins||{}),...(l.gameSpins||{})};
+  out.tripData.expenses=mergeById(rtd.expenses||[],l.expenses||[]);
+  out.tripData.customFoods=mergeCustomFoods(rtd.customFoods||{},l.customFoods||{});
+  out.tripData.uploadedFiles=[];
+  return out;
 }
 async function pushCloudState(reason='change'){
-  if(!supabaseConfigured() || supabasePulling)return;
+  if(!supabaseConfigured() || supabasePulling)return false;
   try{
-    await supabaseRequest('travel_app_state?select=id',{method:'POST',headers:{'Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({id:SUPABASE_STATE_ID,state:buildCloudState(),updated_at:new Date().toISOString()})});
-    supabaseReady=true;
+    const remote=await getRemoteCloudState();
+    const state=isAdminSession?mergeForAdmin(remote):mergeForMember(remote);
+    // Keep local UI state in sync with the merged payload.
+    const r=await supabaseRequest('travel_app_state?on_conflict=id',{method:'POST',headers:{'Prefer':'resolution=merge-duplicates,return=minimal'},
+      body:JSON.stringify({id:SUPABASE_STATE_ID,state,updated_at:new Date().toISOString()})});
+    supabaseReady=true;return true;
   }catch(e){
-    console.warn('[Supabase sync]',reason,e.message);
-    supabaseReady=false;
+    console.warn('[Supabase sync]',reason,e.message);supabaseReady=false;return false;
   }
+}
+function applyCloudState(d){
+  if(!d||!d.tripData)return false;
+  const td=d.tripData||{};
+  trips=Array.isArray(d.trips)?d.trips:trips;
+  currentTripId=d.currentTripId||d.tripsActive||currentTripId;
+  M=td.members||[];allVotes=td.allVotes||{};customFoods=td.customFoods||{};
+  uploadedFiles=[];expenses=td.expenses||[];gallery=td.gallery||[];galleryDeletedIds=td.galleryDeletedIds||[];gameSpins=td.gameSpins||{};lotteryResults=td.lotteryResults||{};
+  myVotes=CU?(allVotes[CU.id]||{}):{};
+  saveTrips();
+  // Do not put gallery base64 in localStorage: large images can exceed browser quota.
+  if(currentTripId){
+    const cache={members:M,allVotes,customFoods,uploadedFiles:[],expenses,gameSpins,lotteryResults};
+    try{localStorage.setItem(LS.tripData(currentTripId),JSON.stringify(cache));}catch(e){}
+    if(CU)try{localStorage.setItem('safar_v11_v_'+currentTripId+'_'+CU.id,JSON.stringify(myVotes));}catch(e){}
+  }
+  return true;
 }
 async function pullCloudState(){
   if(!supabaseConfigured())return false;
   try{
-    const rows=await supabaseRequest('travel_app_state?id=eq.'+encodeURIComponent(SUPABASE_STATE_ID)+'&select=state,updated_at');
-    if(!rows||!rows.length||!rows[0].state)return false;
-    const d=rows[0].state;
-    if(!d.trips || !d.tripData)return false;
+    const d=await getRemoteCloudState();
+    if(!d||!d.tripData)return false;
     supabasePulling=true;
-    trips=Array.isArray(d.trips)?d.trips:trips;
-    currentTripId=d.currentTripId||d.tripsActive||currentTripId;
-    saveTrips();
-    const td=d.tripData||{};
-    const local={members:td.members||[],allVotes:td.allVotes||{},customFoods:td.customFoods||{},uploadedFiles:td.uploadedFiles||[],expenses:td.expenses||[],gallery:td.gallery||[],gameSpins:td.gameSpins||{}};
-    if(currentTripId)localStorage.setItem(LS.tripData(currentTripId),JSON.stringify(local));
-    if(CU&&d.myVotes)localStorage.setItem('safar_v11_v_'+currentTripId+'_'+CU.id,JSON.stringify(d.myVotes));
-    loadTripData(currentTripId);refreshLanding();renderMemberLogin();
+    applyCloudState(d);
+    renderMemberLogin();refreshLanding();
     if(isAdminSession)renderAdminAll(); else if(CU)renderMemberAll();
     supabaseReady=true;supabasePulling=false;return true;
-  }catch(e){
-    supabasePulling=false;console.warn('[Supabase pull]',e.message);return false;
-  }
+  }catch(e){supabasePulling=false;console.warn('[Supabase pull]',e.message);return false;}
 }
 function initCloudSync(){
   if(!supabaseConfigured())return;
   pullCloudState().then(found=>{if(!found)pushCloudState('initial');});
-  setInterval(()=>{if(!supabasePulling)pullCloudState();},15000);
+  setInterval(()=>{if(!supabasePulling)pullCloudState();},5000);
 }
 
 /* ================= CONSTANTS ================= */
@@ -1152,7 +1219,7 @@ const DEFAULT_MEMBERS = [
 ];
 
 /* ================= STATE ================= */
-let trips=[],currentTripId=null,M=[],allVotes={},customFoods={},uploadedFiles=[],expenses=[],myVotes={},gallery=[],gameSpins={};
+let trips=[],currentTripId=null,M=[],allVotes={},customFoods={},uploadedFiles=[],expenses=[],myVotes={},gallery=[],galleryDeletedIds=[],gameSpins={},lotteryResults={};
 let CU=null,isAdminSession=false,selM=null;
 let editingMemberId=null,editingExpenseId=null,editingTripId=null;
 let expSplitSel=[],selectedEmoji='👧🏻';
@@ -1310,29 +1377,28 @@ function saveTrips(){
   scheduleCloudSync('trips');
 
 function loadTripData(tripId){
-  if(!tripId){M=[];allVotes={};customFoods={};uploadedFiles=[];expenses=[];myVotes={};gallery=[];gameSpins={};return;}
+  if(!tripId){M=[];allVotes={};customFoods={};uploadedFiles=[];expenses=[];myVotes={};gallery=[];galleryDeletedIds=[];gameSpins={};lotteryResults={};return;}
   try{
     const raw=localStorage.getItem(LS.tripData(tripId));
     if(raw){
       const d=JSON.parse(raw);
       M=d.members||[];allVotes=d.allVotes||{};customFoods=d.customFoods||{};
-      uploadedFiles=d.uploadedFiles||[];expenses=d.expenses||[];gallery=d.gallery||[];gameSpins=d.gameSpins||{};
-    } else {M=[];allVotes={};customFoods={};uploadedFiles=[];expenses=[];gallery=[];gameSpins={};}
-    if(CU){
-      const v=localStorage.getItem('safar_v11_v_'+tripId+'_'+CU.id);
-      myVotes=v?JSON.parse(v):{};
-    } else myVotes={};
-  }catch(e){}
+      uploadedFiles=[];expenses=d.expenses||[];gallery=d.gallery||[];galleryDeletedIds=d.galleryDeletedIds||[];gameSpins=d.gameSpins||{};lotteryResults=d.lotteryResults||{};
+    } else {M=[];allVotes={};customFoods={};uploadedFiles=[];expenses=[];gallery=[];galleryDeletedIds=[];gameSpins={};lotteryResults={};}
+    if(CU)myVotes=(allVotes[CU.id]||JSON.parse(localStorage.getItem('safar_v11_v_'+tripId+'_'+CU.id)||'null')||{});
+    else myVotes={};
+  }catch(e){M=[];allVotes={};customFoods={};uploadedFiles=[];expenses=[];gallery=[];galleryDeletedIds=[];gameSpins={};lotteryResults={};myVotes={};}
 }
 function saveTripData(){
   if(!currentTripId)return;
-  const d={members:M,allVotes,customFoods,uploadedFiles,expenses,gallery,gameSpins};
+  if(CU)allVotes[CU.id]=cloneJSON(myVotes);
+  const d={members:M,allVotes,customFoods,uploadedFiles:[],expenses,gameSpins,lotteryResults};
   try{
     localStorage.setItem(LS.tripData(currentTripId),JSON.stringify(d));
     if(CU)localStorage.setItem('safar_v11_v_'+currentTripId+'_'+CU.id,JSON.stringify(myVotes));
-  }catch(e){notify('ذخیره اطلاعات انجام نشد؛ احتمالاً فضای مرورگر پر شده است.','err');}
-}
+  }catch(e){notify('ذخیره محلی انجام نشد؛ اطلاعات ابری همچنان در حال همگام‌سازی است.','err');}
   scheduleCloudSync('trip-data');
+}
 
 function generateDays(count){
   const n2p=['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
@@ -1349,7 +1415,7 @@ function createDefaultTrip(){
     days:[{id:'d1',name:'روز اول',date:'۲۱ مهر',n:'۱'},{id:'d2',name:'روز دوم',date:'۲۲ مهر',n:'۲'},
       {id:'d3',name:'روز سوم',date:'۲۳ مهر',n:'۳'},{id:'d4',name:'روز چهارم',date:'۲۴ مهر',n:'۴'}]};
   trips=[trip];currentTripId=id;saveTrips();
-  localStorage.setItem(LS.tripData(id),JSON.stringify({members:[...DEFAULT_MEMBERS],allVotes:{},customFoods:{},uploadedFiles:[],expenses:[],gallery:[],gameSpins:{}}));
+  localStorage.setItem(LS.tripData(id),JSON.stringify({members:[...DEFAULT_MEMBERS],allVotes:{},customFoods:{},uploadedFiles:[],expenses:[],gallery:[],gameSpins:{},lotteryResults:{}}));
 }
 function migrateFromV10(){
   if(localStorage.getItem(LS.trips))return false;
@@ -1417,7 +1483,7 @@ function saveTrip(){
       }
     }
     if(members.length===0&&trips.length===1)members=[...DEFAULT_MEMBERS];
-    localStorage.setItem(LS.tripData(id),JSON.stringify({members,allVotes:{},customFoods:{},uploadedFiles:[],expenses:[],gallery:[],gameSpins:{}}));
+    localStorage.setItem(LS.tripData(id),JSON.stringify({members,allVotes:{},customFoods:{},uploadedFiles:[],expenses:[],gallery:[],gameSpins:{},lotteryResults:{}}));
     if(setActive){currentTripId=id;loadTripData(id);}
     notify(`سفر «${name}» ساخته شد 🎉`,'ok');
   }
@@ -1592,7 +1658,6 @@ const MEMBER_TABS=[
   {id:'act',label:'تفریح',icon:'🎢'},
   {id:'place',label:'جاذبه',icon:'📍'},
   {id:'expense',label:'هزینه‌ها',icon:'💰'},
-  {id:'sync',label:'ارسال',icon:'📤'},
   {id:'result',label:'نتایج',icon:'📊'},
   {id:'cleanup',label:'پاک‌سازی',icon:'🧹'},
   {id:'gallery',label:'گالری خاطرات',icon:'📸'},
@@ -1610,7 +1675,6 @@ function switchMemberTab(id){
   document.querySelectorAll('#viewMemberApp .tab-panel').forEach(p=>p.classList.remove('on'));
   document.getElementById('panel'+cap(id)).classList.add('on');
   if(id==='result')renderResult();
-  if(id==='sync')renderSync();
   if(id==='expense')renderExpenses();
   if(id==='cleanup')renderCleanup();
   if(id==='gallery')renderGallery();
@@ -1620,7 +1684,7 @@ function switchMemberTab(id){
 
 /* ================= MEMBER RENDER ================= */
 function renderMemberAll(){
-  renderFood();renderAct();renderPlace();renderExpenses();renderResult();renderSync();renderCleanup();renderGallery();renderGame();updateMemberStats();
+  renderFood();renderAct();renderPlace();renderExpenses();renderResult();renderCleanup();renderGallery();renderGame();updateMemberStats();
 }
 function updateMemberStats(){
   const el=document.getElementById('statsGrid');
@@ -1647,16 +1711,21 @@ function vote(dayId,mealId,foodId){
   const all=[...(meal?.pack||[]),...(customFoods[k]||[])];
   all.forEach(f=>{delete myVotes[vk(dayId,mealId,f.id)];});
   myVotes[vk(dayId,mealId,foodId)]=true;
-  saveTripData();renderFood();updateMemberStats();
+  allVotes[CU.id]=cloneJSON(myVotes);
+  // A new vote invalidates the previous lottery for this meal; admin can draw again from the new pool.
+  delete lotteryResults[k];
+  saveTripData();renderFood();renderResult();updateMemberStats();
   const food=all.find(f=>f.id===foodId);
-  notify(`رأی به «${food?.name}» ثبت شد ✅`,'ok');
+  notify(`«${food?.name}» ثبت شد ✅ همه اعضا می‌توانند انتخابت را ببینند.`,'ok');
 }
 function voteAct(actId){
   if(!CU)return;
   const k='act_'+actId;
-  if(myVotes[k]){delete myVotes[k];notify('رأی حذف شد','info');}
-  else{myVotes[k]=true;const a=ACTS.find(x=>x.id===actId);notify(`رأی به «${a?.name}» ✅`,'ok');}
-  saveTripData();renderAct();updateMemberStats();
+  if(myVotes[k]){delete myVotes[k];notify('انتخاب تفریح حذف شد','info');}
+  else{myVotes[k]=true;const a=ACTS.find(x=>x.id===actId);notify(`«${a?.name}» انتخاب شد ✅`,'ok');}
+  allVotes[CU.id]=cloneJSON(myVotes);
+  delete lotteryResults.activity;
+  saveTripData();renderAct();renderResult();updateMemberStats();
 }
 function getFoodVoteCount(dayId,mealId,foodId){
   const k=vk(dayId,mealId,foodId);
@@ -1684,13 +1753,21 @@ function getVotersForAct(actId){
   if(CU&&myVotes[k]&&!(allVotes[CU.id]||{})[k])voters.push(CU);
   return voters;
 }
-function getWinner(dayId,mealId){
-  const k=mk(dayId,mealId);
+function foodOptions(dayId,mealId){
   const meal=MEALS.find(x=>x.id===mealId);
-  const all=[...(meal?.pack||[]),...(customFoods[k]||[])];
-  let max=0,w=null;
-  all.forEach(f=>{const c=getFoodVoteCount(dayId,mealId,f.id);if(c>max){max=c;w={...f,vc:c};}});
-  return max>=1?w:null;
+  return [...(meal?.pack||[]),...(customFoods[mk(dayId,mealId)]||[])];
+}
+function getWinner(dayId,mealId){
+  const r=lotteryResults[mk(dayId,mealId)];
+  if(!r||!r.itemId)return null;
+  const food=foodOptions(dayId,mealId).find(f=>f.id===r.itemId);
+  return food?{...food,vc:getFoodVoteCount(dayId,mealId,food.id),lottery:r}:null;
+}
+function getLotteryCandidates(dayId,mealId){
+  return foodOptions(dayId,mealId).map(f=>({...f,vc:getFoodVoteCount(dayId,mealId,f.id)})).filter(f=>f.vc>0);
+}
+function getActivityCandidates(){
+  return ACTS.map(a=>({...a,vc:getActVoteCount(a.id)})).filter(a=>a.vc>0);
 }
 
 /* ================= RENDER: FOOD (با گرید + منو) ================= */
@@ -1749,7 +1826,7 @@ function renderFood(){
         h+=`<div class="food-card ${isVoted?'voted':''} ${isW?'winner':''}" style="--pct:${pct}%"
                  onclick="vote('${day.id}','${meal.id}','${food.id}')">
           ${isCustom?`<button class="food-card-del" onclick="event.stopPropagation();deleteCustomFood('${k}','${food.id}')" title="حذف">🗑️</button>`:''}
-          <div class="food-card-badge">👑 برنده</div>
+          <div class="food-card-badge">🎲 نتیجه قرعه</div>
           <span class="food-card-emoji">${food.em}</span>
           <div class="food-card-name">${esc(food.name)}</div>
           <div class="food-card-desc">${esc(food.d)}</div>
@@ -1798,7 +1875,7 @@ function renderAct(){
   const sorted=[...ACTS].sort((a,b)=>getActVoteCount(b.id)-getActVoteCount(a.id));
   let h=`<div class="section-head">
     <div class="section-num">🎢</div>
-    <div><div class="section-title">تفریحات سفر</div><div class="section-sub">کلیک دوباره = حذف رأی</div></div>
+    <div><div class="section-title">تفریحات سفر</div><div class="section-sub">هر تعداد تفریح که می‌خواهی انتخاب کن؛ انتخاب‌ها همزمان برای همه ثبت می‌شوند.</div></div>
   </div><div class="act-grid">`;
   sorted.forEach(a=>{
     const cnt=getActVoteCount(a.id);
@@ -2093,9 +2170,9 @@ function renderCleanup(){
   </div>`;
   el.innerHTML = h;
 }
-function clearMyVotes(){if(!CU)return;if(!confirm('همه رأی‌های شما پاک شوند؟'))return;myVotes={};saveTripData();renderFood();renderAct();updateMemberStats();renderCleanup();notify('پاک شد 🗑️','info');}
-function clearMyFoodVotes(){if(!CU)return;if(!confirm('رأی‌های غذای شما پاک شوند؟'))return;Object.keys(myVotes).forEach(k=>{if(!k.startsWith('act_'))delete myVotes[k];});saveTripData();renderFood();updateMemberStats();renderCleanup();notify('پاک شد','info');}
-function clearMyActVotes(){if(!CU)return;if(!confirm('رأی‌های تفریح شما پاک شوند؟'))return;Object.keys(myVotes).forEach(k=>{if(k.startsWith('act_'))delete myVotes[k];});saveTripData();renderAct();updateMemberStats();renderCleanup();notify('پاک شد','info');}
+function clearMyVotes(){if(!CU)return;if(!confirm('همه انتخاب‌های شما پاک شوند؟'))return;myVotes={};allVotes[CU.id]={};lotteryResults={};saveTripData();renderFood();renderAct();renderResult();updateMemberStats();renderCleanup();notify('همه انتخاب‌های شما پاک شد 🗑️','info');}
+function clearMyFoodVotes(){if(!CU)return;if(!confirm('انتخاب‌های غذای شما پاک شوند؟'))return;Object.keys(myVotes).forEach(k=>{if(!k.startsWith('act_'))delete myVotes[k];});allVotes[CU.id]=cloneJSON(myVotes);lotteryResults={};saveTripData();renderFood();renderResult();updateMemberStats();renderCleanup();notify('انتخاب‌های غذا پاک شد','info');}
+function clearMyActVotes(){if(!CU)return;if(!confirm('انتخاب‌های تفریح شما پاک شوند؟'))return;Object.keys(myVotes).forEach(k=>{if(k.startsWith('act_'))delete myVotes[k];});allVotes[CU.id]=cloneJSON(myVotes);delete lotteryResults.activity;saveTripData();renderAct();renderResult();updateMemberStats();renderCleanup();notify('انتخاب‌های تفریح پاک شد','info');}
 function clearMyExpenses(){if(!CU)return;const myExp=expenses.filter(e=>e.by===CU.id);if(myExp.length===0){notify('هزینه‌ای نیست','info');return;}if(!confirm(`${myExp.length} هزینه پاک شوند؟`))return;expenses=expenses.filter(e=>e.by!==CU.id);saveTripData();renderExpenses();updateMemberStats();renderCleanup();notify('پاک شد','info');}
 function clearMyFoodSuggestions(){
   if(!CU)return;
@@ -2120,134 +2197,38 @@ function clearAllMyData(){
     customFoods[k]=customFoods[k].filter(f=>!f.d.includes(CU.name));
     if(customFoods[k].length===0)delete customFoods[k];
   });
-  uploadedFiles=uploadedFiles.filter(f=>f.memberId!==CU.id);
   delete allVotes[CU.id];
-  saveTripData();renderFood();renderAct();renderExpenses();updateMemberStats();renderCleanup();
+  lotteryResults={};
+  saveTripData();renderFood();renderAct();renderExpenses();renderResult();updateMemberStats();renderCleanup();
   notify('همه اطلاعات پاک شد','info');
 }
 
 /* ================= SYNC / RESULTS ================= */
-function renderSync(){
-  const el=document.getElementById('panelSync');
-  const isAdmin=isAdminSession||CU?.admin;
-  const voteCount=Object.keys(myVotes).length;
-  let h=`<div class="section-head"><div class="section-num">📤</div>
-    <div><div class="section-title">ارسال و دریافت آرا</div><div class="section-sub">فایل خود را برای مدیر بفرستید</div></div></div>
-  <div class="sync-card"><h3>📥 دانلود فایل من</h3>
-    <p>آرا: <b>${fmtNum(voteCount)}</b> • هزینه‌ها: <b>${fmtNum(expenses.length)}</b></p>
-    <div class="sync-btns"><button class="btn btn-ocean" onclick="downloadMyVotes()">📥 دانلود فایل من</button></div></div>`;
-  if(isAdmin){
-    h+=`<div class="sync-card" style="border-color:var(--ocean)">
-      <h3>📤 بارگذاری فایل اعضا</h3>
-      <div class="sync-btns">
-        <button class="btn btn-ocean" onclick="document.getElementById('fileInput').click()">📤 انتخاب فایل‌ها</button>
-        <button class="btn btn-sunset" onclick="printResults()">🖨️ پرینت نتایج</button>
-      </div>
-      <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
-        <div style="font-size:38px;margin-bottom:8px">📁</div>
-        <div style="font-weight:800;font-size:13px">کلیک یا رها کردن فایل</div>
-      </div>`;
-    if(uploadedFiles.length>0){
-      h+=`<div style="margin-top:16px;text-align:right">
-        <div style="font-size:12.5px;font-weight:800;margin-bottom:9px">📋 بارگذاری‌شده (${fmtNum(uploadedFiles.length)})</div>`;
-      uploadedFiles.forEach((f,i)=>{
-        const m=memOf(f.memberId);
-        h+=`<div class="file-row">${m?avatarHTML(m,'sm'):''}
-          <span class="name">${esc(m?.name||f.memberName||f.memberId)}</span>
-          <span class="status">${fmtNum(Object.keys(f.votes||{}).length)} رأی</span>
-          <button class="del" onclick="removeFile(${i})">حذف</button></div>`;
-      });
-      h+=`</div>`;
-    }
-    h+=`</div>`;
-  } else {
-    h+=`<div class="sync-card" style="border-color:#ffcc80;background:#fff8e1">
-      <h3 style="color:#e65100">ℹ️ راهنما</h3>
-      <p>فایل را دانلود و برای مدیر بفرستید</p></div>`;
-  }
-  el.innerHTML=h;
-}
-function downloadMyVotes(){
-  const who=CU||{id:'admin',name:'مدیر'};
-  const trip=getCurrentTrip();
-  const data={memberId:who.id,memberName:who.name,tripId:currentTripId,tripName:trip?.name||'',
-    votes:myVotes,expenses:expenses.filter(e=>e.by===who.id),
-    timestamp:new Date().toISOString(),version:11};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download=`vote_${trip?.name||''}_${who.name}.json`;
-  a.click();URL.revokeObjectURL(url);
-  notify('دانلود شد 📥','ok');
-}
-function handleVoteFiles(files){
-  if(!(isAdminSession||CU?.admin)){notify('فقط مدیر','err');return;}
-  Array.from(files).forEach(file=>{
-    if(!file.name.endsWith('.json'))return;
-    const reader=new FileReader();
-    reader.onload=function(ev){
-      try{
-        const data=JSON.parse(ev.target.result);
-        if(!data.memberId||!data.votes){notify('فایل نامعتبر','err');return;}
-        if(data.tripId&&data.tripId!==currentTripId){notify('⚠️ از سفر دیگری','err');return;}
-        if(!M.some(m=>m.id===data.memberId)){
-          M.push({id:data.memberId,name:data.memberName||'عضو جدید',role:'عضو',g:'c',custom:true,em:'👤'});
-        }
-        const idx=uploadedFiles.findIndex(f=>f.memberId===data.memberId);
-        if(idx>=0)uploadedFiles[idx]=data;else uploadedFiles.push(data);
-        allVotes[data.memberId]=data.votes;
-        if(Array.isArray(data.expenses)){
-          const known=new Set(expenses.map(e=>e.id));
-          data.expenses.forEach(e=>{if(e&&e.id&&!known.has(e.id)){expenses.push(e);known.add(e.id);}});
-        }
-        saveTripData();renderSync();renderMemberAll();
-        if(isAdminSession)renderAdminAll();
-        const m=memOf(data.memberId);
-        notify(`${m?.name||data.memberId} بارگذاری شد ✅`,'ok');
-      }catch(err){notify('خطا','err');}
-    };
-    reader.readAsText(file);
-  });
-  document.getElementById('fileInput').value='';
-}
-function removeFile(idx){
-  const f=uploadedFiles[idx];if(f)delete allVotes[f.memberId];
-  uploadedFiles.splice(idx,1);saveTripData();renderSync();renderMemberAll();
-  if(isAdminSession)renderAdminAll();
-  notify('حذف شد','info');
-}
+function renderSync(){return;}
 function renderResult(){
   const el=document.getElementById('panelResult');
-  const trip=getCurrentTrip();
-  const days=trip?.days||[];
+  const trip=getCurrentTrip(),days=trip?.days||[];
   let h=`<div class="section-head"><div class="section-num">📊</div>
-    <div><div class="section-title">نتایج نهایی</div><div class="section-sub">از تمام فایل‌های بارگذاری‌شده</div></div></div>`;
+    <div><div class="section-title">نتایج و قرعه‌کشی</div><div class="section-sub">همه اعضا انتخاب‌ها را می‌بینند؛ نتیجه فقط بعد از قرعه‌کشی مدیر نهایی می‌شود.</div></div></div>`;
   days.forEach(day=>{
-    h+=`<div style="margin-bottom:22px">
-      <div style="font-size:14px;font-weight:900;margin-bottom:10px">📅 ${day.name} — ${day.date||''}</div>`;
+    h+=`<div style="margin-bottom:22px"><div style="font-size:14px;font-weight:900;margin-bottom:10px">📅 ${day.name} — ${day.date||''}</div>`;
     MEALS.forEach(meal=>{
-      const w=getWinner(day.id,meal.id);
-      h+=`<div class="result-row"><span class="result-em">${meal.em}</span>
-        <div class="result-info"><div class="result-type">${meal.name}</div>
-        ${w?`<div class="result-name">${w.em} ${esc(w.name)}</div>`:'<div class="result-name" style="color:var(--muted);font-style:italic">هنوز رأیی نیست</div>'}</div>
-        ${w?`<div class="result-votes">👑 ${fmtNum(w.vc)} رأی</div>`:''}</div>`;
+      const w=getWinner(day.id,meal.id),cands=getLotteryCandidates(day.id,meal.id),r=lotteryResults[mk(day.id,meal.id)];
+      h+=`<div class="result-row"><span class="result-em">${meal.em}</span><div class="result-info">
+        <div class="result-type">${meal.name}</div>
+        ${w?`<div class="result-name">🎲 ${w.em} ${esc(w.name)}</div>`:`<div class="result-name" style="color:var(--muted);font-style:italic">${cands.length?`آماده قرعه‌کشی (${fmtNum(cands.length)} گزینه)`:'هنوز انتخابی ثبت نشده'}</div>`}
+        ${cands.length?`<div style="font-size:10.5px;color:var(--muted);margin-top:4px">گزینه‌های شرکت‌کننده: ${cands.map(x=>`${esc(x.em)} ${esc(x.name)} (${fmtNum(x.vc)})`).join(' • ')}</div>`:''}
+      </div>${w?`<div class="result-votes">🎲 ${fmtNum(w.vc)} رأی</div>`:''}</div>`;
     });
     h+=`</div>`;
   });
-  h+=`<div style="margin-bottom:22px"><div style="font-size:14px;font-weight:900;margin-bottom:10px">🎢 تفریحات برگزیده</div>`;
-  const sorted=[...ACTS].sort((a,b)=>getActVoteCount(b.id)-getActVoteCount(a.id)).slice(0,6);
-  const medals=['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣'];let any=false;
-  sorted.forEach((a,i)=>{
-    const c=getActVoteCount(a.id);
-    if(c>0){any=true;
-      h+=`<div class="result-row"><span class="result-em">${medals[i]}</span>
-        <div class="result-info"><div class="result-type">${a.em} ${esc(a.name)}</div>
-        <div class="result-name" style="font-size:11.5px;color:var(--muted);font-weight:600">${esc(a.d)}</div></div>
-        <div class="result-votes">👥 ${fmtNum(c)} رأی</div></div>`;
-    }
-  });
-  if(!any)h+=`<div class="empty"><span class="em">🗳️</span>هنوز رأیی نیست</div>`;
-  h+=`</div>`;el.innerHTML=h;
+  const actCands=getActivityCandidates(),ar=lotteryResults.activity,aw=ar?ACTS.find(a=>a.id===ar.itemId):null;
+  h+=`<div style="margin-bottom:22px"><div style="font-size:14px;font-weight:900;margin-bottom:10px">🎢 قرعه‌کشی تفریحات</div>`;
+  if(aw)h+=`<div class="result-row"><span class="result-em">🎲</span><div class="result-info"><div class="result-type">تفریح منتخب</div><div class="result-name">${aw.em} ${esc(aw.name)}</div><div style="font-size:10.5px;color:var(--muted);margin-top:4px">از بین ${fmtNum(actCands.length)} تفریح انتخاب‌شده</div></div><div class="result-votes">👥 ${fmtNum(getActVoteCount(aw.id))} رأی</div></div>`;
+  else if(actCands.length)h+=`<div class="empty"><span class="em">🎲</span>آماده قرعه‌کشی از ${fmtNum(actCands.length)} تفریح منتخب اعضاست.</div>`;
+  else h+=`<div class="empty"><span class="em">🎢</span>هنوز تفریحی توسط اعضا انتخاب نشده.</div>`;
+  h+=`</div>`;
+  el.innerHTML=h;
 }
 function printResults(){
   const trip=getCurrentTrip();
@@ -2278,13 +2259,64 @@ function printResults(){
   w.document.close();setTimeout(()=>w.print(),500);
 }
 
+/* ================= FINAL LOTTERY ================= */
+function drawMealLottery(dayId,mealId){
+  if(!isAdminSession){notify('فقط مدیر می‌تواند قرعه‌کشی نهایی را انجام دهد.','err');return;}
+  const candidates=getLotteryCandidates(dayId,mealId);
+  if(!candidates.length){notify('برای این وعده هنوز انتخابی ثبت نشده.','err');return;}
+  const chosen=candidates[Math.floor(Math.random()*candidates.length)];
+  lotteryResults[mk(dayId,mealId)]={type:'meal',dayId,mealId,itemId:chosen.id,itemName:chosen.name,itemEm:chosen.em,voteCount:chosen.vc,candidateCount:candidates.length,at:Date.now()};
+  saveTripData();renderResult();renderFood();renderAdminLottery();updateMemberStats();notify(`🎲 ${chosen.em} ${chosen.name} برای ${MEALS.find(m=>m.id===mealId)?.name||''} انتخاب شد.`,'ok');
+}
+function drawActivityLottery(){
+  if(!isAdminSession){notify('فقط مدیر می‌تواند قرعه‌کشی نهایی را انجام دهد.','err');return;}
+  const candidates=getActivityCandidates();
+  if(!candidates.length){notify('هنوز تفریحی انتخاب نشده.','err');return;}
+  const chosen=candidates[Math.floor(Math.random()*candidates.length)];
+  lotteryResults.activity={type:'activity',itemId:chosen.id,itemName:chosen.name,itemEm:chosen.em,voteCount:chosen.vc,candidateCount:candidates.length,at:Date.now()};
+  saveTripData();renderResult();renderAct();renderAdminLottery();notify(`🎲 ${chosen.em} ${chosen.name} به‌عنوان تفریح منتخب درآمد.`,'ok');
+}
+function resetLotteries(){
+  if(!isAdminSession)return;
+  if(!confirm('همه نتایج قرعه‌کشی این سفر پاک شوند و امکان قرعه‌کشی دوباره باز شود؟'))return;
+  lotteryResults={};saveTripData();renderResult();renderFood();renderAct();renderAdminLottery();updateMemberStats();notify('نتایج قرعه‌کشی پاک شد.','info');
+}
+function renderAdminLottery(){
+  const el=document.getElementById('adminLottery');if(!el)return;
+  const trip=getCurrentTrip();
+  if(!trip){el.innerHTML=`<div class="empty"><span class="em">🎲</span>ابتدا یک سفر فعال انتخاب کنید</div>`;return;}
+  let h=`<div class="admin-card"><h4>🎲 قرعه‌کشی نهایی سفر — ${esc(trip.name)}</h4>
+    <p style="font-size:11.5px;color:var(--muted);line-height:1.9;margin:-6px 0 16px">قرعه فقط از بین گزینه‌هایی انجام می‌شود که حداقل یک عضو انتخاب کرده است. نتیجه در دیتابیس ذخیره می‌شود و همه اعضا یک نتیجه یکسان می‌بینند.</p>
+    <button class="btn btn-ghost btn-sm" onclick="resetLotteries()">🔄 پاک کردن نتایج قرعه‌کشی</button></div>`;
+  (trip.days||[]).forEach(day=>{
+    h+=`<div class="admin-card"><h4>📅 ${day.name} ${day.date?'— '+esc(day.date):''}</h4>`;
+    MEALS.forEach(meal=>{
+      const cands=getLotteryCandidates(day.id,meal.id),k=mk(day.id,meal.id),r=lotteryResults[k];
+      h+=`<div style="border:1px solid var(--border);border-radius:16px;padding:13px;margin:10px 0;background:var(--surface-2)">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div style="font-weight:900">${meal.em} ${meal.name}</div>
+        <button class="btn btn-sunset btn-sm" onclick="drawMealLottery('${day.id}','${meal.id}')" ${cands.length?'':'disabled'}>${r?'🎲 قرعه‌کشی مجدد':'🎲 قرعه‌کشی'}</button></div>`;
+      if(r){
+        h+=`<div style="margin-top:10px;padding:11px;border-radius:12px;background:var(--white);border:2px solid var(--sunset);font-weight:800">👑 نتیجه: ${r.itemEm||'🍴'} ${esc(r.itemName||'')} <span style="color:var(--muted);font-size:10.5px">— از ${fmtNum(r.candidateCount||cands.length)} گزینه منتخب</span></div>`;
+      }
+      h+=`<div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:10px">${cands.length?cands.map(x=>`<span style="font-size:10.5px;padding:6px 9px;border-radius:10px;background:var(--white);border:1px solid var(--border)">${x.em} ${esc(x.name)} • ${fmtNum(x.vc)} رأی</span>`).join(''):'<span style="font-size:10.5px;color:var(--muted)">هیچ گزینه‌ای انتخاب نشده</span>'}</div></div>`;
+    });
+    h+=`</div>`;
+  });
+  const ac=getActivityCandidates(),ar=lotteryResults.activity;
+  h+=`<div class="admin-card"><h4>🎢 قرعه‌کشی تفریح</h4><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-size:11.5px;color:var(--muted)">${ac.length?`از ${fmtNum(ac.length)} تفریح انتخاب‌شده`:'هنوز تفریحی انتخاب نشده'}</span><button class="btn btn-sunset btn-sm" onclick="drawActivityLottery()" ${ac.length?'':'disabled'}>${ar?'🎲 قرعه‌کشی مجدد':'🎲 قرعه‌کشی'}</button></div>`;
+  if(ar)h+=`<div style="margin-top:11px;padding:11px;border-radius:12px;background:var(--white);border:2px solid var(--sunset);font-weight:800">👑 نتیجه: ${ar.itemEm||'🎢'} ${esc(ar.itemName||'')} <span style="color:var(--muted);font-size:10.5px">— از ${fmtNum(ar.candidateCount||ac.length)} گزینه منتخب</span></div>`;
+  h+=`<div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:10px">${ac.map(x=>`<span style="font-size:10.5px;padding:6px 9px;border-radius:10px;background:var(--white);border:1px solid var(--border)">${x.em} ${esc(x.name)} • ${fmtNum(x.vc)} رأی</span>`).join('')}</div></div>`;
+  el.innerHTML=h;
+}
+
 /* ================= ADMIN PANEL ================= */
 const ADMIN_TABS=[
   {id:'trips',label:'سفرها',icon:'🗺️'},
   {id:'dash',label:'داشبورد',icon:'📊'},
   {id:'members',label:'اعضا',icon:'👥'},
   {id:'expenses',label:'هزینه‌ها',icon:'💰'},
-  {id:'votes',label:'آرا',icon:'🗳️'},
+  {id:'votes',label:'انتخاب‌ها',icon:'🗳️'},
+  {id:'lottery',label:'قرعه‌کشی',icon:'🎲'},
   {id:'reports',label:'گزارش‌ها',icon:'📈'},
   {id:'cleanup',label:'پاک‌سازی',icon:'🧹'},
   {id:'settings',label:'تنظیمات',icon:'⚙️'},
@@ -2307,7 +2339,7 @@ function switchAdminTab(id){
 function renderAdminAll(){
   if(!isAdminSession)return;
   renderAdminStats();renderAdminTrips();renderAdminDash();renderAdminMembers();
-  renderAdminExpenses();renderAdminVotes();renderAdminReports();renderAdminCleanup();renderAdminSettings();renderAdminCalendar();renderAdminGallery();
+  renderAdminExpenses();renderAdminVotes();renderAdminLottery();renderAdminReports();renderAdminCleanup();renderAdminSettings();renderAdminCalendar();renderAdminGallery();
 }
 function renderAdminStats(){
   const el=document.getElementById('adminStats');
@@ -2317,7 +2349,7 @@ function renderAdminStats(){
     <div class="stat-card"><span class="stat-emoji">🗺️</span><div class="stat-label">کل سفرها</div><div class="stat-value">${fmtNum(trips.length)} <span style="font-size:11px;color:var(--muted)">(${fmtNum(activeCount)} فعال)</span></div></div>
     <div class="stat-card"><span class="stat-emoji">👥</span><div class="stat-label">اعضا</div><div class="stat-value">${fmtNum(M.length)}</div></div>
     <div class="stat-card"><span class="stat-emoji">💰</span><div class="stat-label">هزینه سفر فعال</div><div class="stat-value small">${fmtToman(totalExp)}</div></div>
-    <div class="stat-card"><span class="stat-emoji">✅</span><div class="stat-label">آرا بارگذاری</div><div class="stat-value">${fmtNum(uploadedFiles.length)} <span style="font-size:11px;color:var(--muted)">/ ${fmtNum(M.length)}</span></div></div>`;
+    <div class="stat-card"><span class="stat-emoji">✅</span><div class="stat-label">اعضای ثبت‌کرده</div><div class="stat-value">${fmtNum(M.filter(m=>Object.keys(allVotes[m.id]||{}).length).length)} <span style="font-size:11px;color:var(--muted)">/ ${fmtNum(M.length)}</span></div></div>`;
 }
 function renderAdminTrips(){
   const el=document.getElementById('adminTrips');
@@ -2360,7 +2392,6 @@ function renderAdminTrips(){
         </div>
         <div class="trip-admin-actions">
           ${!isActive&&!t.archived?`<button class="btn btn-palm btn-sm" onclick="setActiveTrip('${t.id}')">✅ فعال‌سازی</button>`:''}
-          <button class="btn btn-ghost btn-sm" onclick="downloadTripData('${t.id}')">⬇️ دانلود</button>
           <button class="btn btn-ghost btn-sm" onclick="openTripModal('${t.id}')">✏️ ویرایش</button>
           <button class="btn btn-ghost btn-sm" onclick="archiveTrip('${t.id}')">${t.archived?'↩️ خروج':'📦 بایگانی'}</button>
           <button class="btn btn-ghost btn-sm" style="color:#f44336;border-color:#ffcdd2" onclick="deleteTrip('${t.id}')">🗑️ حذف</button>
@@ -2368,12 +2399,7 @@ function renderAdminTrips(){
       </div>`;
     });
   }
-  h+=`</div>
-  <div class="admin-card"><h4>📤 بازیابی سفر از فایل</h4>
-    <p style="font-size:11.5px;color:var(--muted);line-height:1.9;margin-bottom:14px">فایل پشتیبان سفر را بارگذاری کنید.</p>
-    <input type="file" id="tripUploadInput" accept=".json" style="display:none" onchange="uploadTripData(this)">
-    <button class="btn btn-ocean btn-sm" onclick="document.getElementById('tripUploadInput').click()">📂 بارگذاری فایل سفر</button>
-  </div>`;
+  h+=`</div>`;
   el.innerHTML=h;
 }
 function renderAdminDash(){
@@ -2403,7 +2429,7 @@ function renderAdminDash(){
     ACTS.forEach(a=>{if(uv['act_'+a.id])choices.push({label:'تفریح',value:`${a.em} ${a.name}`});});
     voteRows.push({m,choices});
   });
-  const uploadedCount=uploadedFiles.length;
+  const votedMemberCount=M.filter(m=>Object.keys(allVotes[m.id]||{}).length>0).length;
   const totalVotes=Object.values(allVotes).reduce((s,uv)=>s+Object.keys(uv||{}).length,0);
 
   let h=`<div class="admin-card">
@@ -2411,13 +2437,13 @@ function renderAdminDash(){
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
       <div class="sum-card total"><div class="sum-em">💵</div><div class="sum-lbl">جمع کل هزینه</div><div class="sum-val">${fmtToman(totalExp)}</div></div>
       <div class="sum-card"><div class="sum-em">👥</div><div class="sum-lbl">اعضا</div><div class="sum-val">${fmtNum(M.length)}</div></div>
-      <div class="sum-card"><div class="sum-em">🗳️</div><div class="sum-lbl">اعضای دارای انتخاب</div><div class="sum-val small">${fmtNum(uploadedCount)} / ${fmtNum(M.length)}</div></div>
+      <div class="sum-card"><div class="sum-em">🗳️</div><div class="sum-lbl">اعضای ثبت‌کرده</div><div class="sum-val small">${fmtNum(votedMemberCount)} / ${fmtNum(M.length)}</div></div>
       <div class="sum-card"><div class="sum-em">📸</div><div class="sum-lbl">عکس‌های گالری</div><div class="sum-val">${fmtNum(gallery.length)}</div></div>
     </div>
   </div>`;
 
-  h+=`<div class="admin-card"><h4>👥 انتخاب‌های اعضای سفر</h4>
-    <p style="font-size:11.5px;color:var(--muted);line-height:1.9;margin:-7px 0 14px">اینجا دقیقاً می‌بینی هر نفر چه غذا و تفریحی را انتخاب کرده است.</p>
+  h+=`<div class="admin-card"><h4>👥 انتخاب‌های زنده اعضای سفر</h4>
+    <p style="font-size:11.5px;color:var(--muted);line-height:1.9;margin:-7px 0 14px">همین الان می‌بینی هر نفر چه غذا و تفریحی را انتخاب کرده است.</p>
     <div class="admin-choice-grid">`;
   voteRows.forEach(({m,choices})=>{
     h+=`<div class="admin-choice-card">
@@ -2439,8 +2465,8 @@ function renderAdminDash(){
   }
   h+=`<div class="admin-card"><h4>📋 وضعیت ثبت اطلاعات</h4>
     <div style="font-size:12.5px;line-height:2">
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span>اعضای دارای فایل/رأی</span><b style="color:#2e7d32">${fmtNum(uploadedCount)} نفر</b></div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span>در انتظار ثبت</span><b style="color:#e65100">${fmtNum(Math.max(0,M.length-uploadedCount))} نفر</b></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span>اعضای ثبت‌کرده</span><b style="color:#2e7d32">${fmtNum(votedMemberCount)} نفر</b></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span>در انتظار ثبت</span><b style="color:#e65100">${fmtNum(Math.max(0,M.length-votedMemberCount))} نفر</b></div>
       <div style="display:flex;justify-content:space-between;padding:8px 0"><span>تعداد انتخاب‌های ثبت‌شده</span><b style="color:var(--coral)">${fmtNum(totalVotes)}</b></div>
     </div></div>`;
   el.innerHTML=h;
@@ -2503,23 +2529,34 @@ function renderAdminExpenses(){
 }
 function renderAdminVotes(){
   const el=document.getElementById('adminVotes');
-  let h=`<div class="admin-card"><h4>🗳️ آرای بارگذاری‌شده — ${esc(getCurrentTrip()?.name||'')}</h4>`;
-  if(uploadedFiles.length===0){
-    h+=`<div class="empty"><span class="em">📥</span>هنوز رأیی بارگذاری نشده</div>
-      <button class="btn btn-ocean btn-block" style="margin-top:16px" onclick="document.getElementById('fileInput').click()">📤 بارگذاری</button>`;
-  } else {
-    uploadedFiles.forEach((f,i)=>{
-      const m=memOf(f.memberId);
-      const cnt=Object.keys(f.votes||{}).length;
-      h+=`<div class="member-row">${m?avatarHTML(m,'md'):''}
-        <div class="member-meta"><div class="member-nm">${esc(m?.name||f.memberName||f.memberId)}</div>
-        <div class="member-rl">${fmtNum(cnt)} رأی • ${f.timestamp?new Date(f.timestamp).toLocaleDateString('fa-IR'):''}</div></div>
-        <button class="mini-btn del" onclick="removeFile(${i})">🗑️</button></div>`;
-    });
-    h+=`<button class="btn btn-ocean btn-block" style="margin-top:14px" onclick="document.getElementById('fileInput').click()">📤 بارگذاری فایل جدید</button>`;
-  }
-  h+=`</div>`;el.innerHTML=h;
+  let h=`<div class="admin-card"><h4>🗳️ انتخاب‌های زنده اعضای سفر — ${esc(getCurrentTrip()?.name||'')}</h4>
+    <p style="font-size:11.5px;color:var(--muted);line-height:1.9;margin:-7px 0 16px">دیگر هیچ فایل ارسال/دریافت لازم نیست. هر انتخاب مستقیم در دیتابیس مشترک ثبت می‌شود و همه همین‌جا می‌بینند.</p>`;
+  if(!M.length){h+=`<div class="empty"><span class="em">👥</span>عضوی ثبت نشده</div>`;el.innerHTML=h+'</div>';return;}
+  M.forEach(m=>{
+    const uv=allVotes[m.id]||{};
+    const choices=[];
+    (getCurrentTrip()?.days||[]).forEach(day=>MEALS.forEach(meal=>{
+      const prefix=day.id+'_'+meal.id+'_';
+      Object.keys(uv).filter(k=>k.startsWith(prefix)&&uv[k]).forEach(k=>{
+        const food=foodOptions(day.id,meal.id).find(f=>f.id===k.slice(prefix.length));
+        if(food)choices.push({label:`${day.name} • ${meal.name}`,value:`${food.em} ${food.name}`});
+      });
+    }));
+    ACTS.forEach(a=>{if(uv['act_'+a.id])choices.push({label:'تفریح',value:`${a.em} ${a.name}`});});
+    h+=`<div class="admin-choice-card" style="margin-bottom:12px"><div class="admin-choice-head">${avatarHTML(m,'sm')}<div><div class="admin-choice-name">${esc(m.name)}</div><div class="admin-choice-sub">${choices.length?fmtNum(choices.length)+' انتخاب':'هنوز انتخابی ثبت نشده'}</div></div></div>`;
+    if(choices.length)choices.forEach(c=>h+=`<div class="admin-choice-row"><b>${esc(c.label)}</b><br>${esc(c.value)}</div>`);
+    else h+=`<div class="admin-choice-empty">— انتخابی ثبت نشده —</div>`;
+    h+=`</div>`;
+  });
+  const totalVotes=Object.values(allVotes).reduce((sum,uv)=>sum+Object.keys(uv||{}).length,0);
+  const votedMembers=M.filter(m=>Object.keys(allVotes[m.id]||{}).length>0).length;
+  h+=`<div class="admin-card" style="margin-top:14px"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px">
+    <div class="sum-card"><div class="sum-em">👥</div><div class="sum-lbl">اعضای ثبت‌کرده</div><div class="sum-val small">${fmtNum(votedMembers)} / ${fmtNum(M.length)}</div></div>
+    <div class="sum-card"><div class="sum-em">🗳️</div><div class="sum-lbl">کل انتخاب‌ها</div><div class="sum-val">${fmtNum(totalVotes)}</div></div>
+  </div></div></div>`;
+  el.innerHTML=h;
 }
+
 function renderAdminReports(){
   const el=document.getElementById('adminReports');
   const bal=computeBalances();
@@ -2563,7 +2600,7 @@ function renderAdminCleanup(){
   const el=document.getElementById('adminCleanup');
   let h=`<div class="admin-card"><h4>🧹 مدیریت پاک‌سازی توسط مدیر</h4>
     <p style="font-size:11.5px;color:var(--muted);line-height:1.9;margin-bottom:16px">
-      به‌عنوان مدیر می‌توانید آرای هر عضو، هزینه‌ها یا پیشنهادهای غذایی آن‌ها را پاک کنید.
+      به‌عنوان مدیر می‌توانید انتخاب‌های هر عضو، هزینه‌ها یا پیشنهادهای غذایی آن‌ها را پاک کنید.
     </p>
   </div>`;
   M.forEach(m=>{
@@ -2597,7 +2634,7 @@ function renderAdminCleanup(){
   </div>`;
   el.innerHTML=h;
 }
-function adminClearVotes(mid){const m=memOf(mid);if(!m)return;if(!confirm(`آرای «${m.name}» پاک شوند؟`))return;delete allVotes[mid];uploadedFiles=uploadedFiles.filter(f=>f.memberId!==mid);saveTripData();renderAdminAll();notify('پاک شد','info');}
+function adminClearVotes(mid){const m=memOf(mid);if(!m)return;if(!confirm(`آرای «${m.name}» پاک شوند؟`))return;delete allVotes[mid];saveTripData();renderAdminAll();notify('پاک شد','info');}
 function adminClearExpenses(mid){const m=memOf(mid);if(!m)return;const cnt=expenses.filter(e=>e.by===mid).length;if(!confirm(`${cnt} هزینه «${m.name}» پاک شوند؟`))return;expenses=expenses.filter(e=>e.by!==mid);saveTripData();renderAdminAll();notify('حذف شد','info');}
 function adminClearFoods(mid){
   const m=memOf(mid);if(!m)return;let removed=0;
@@ -2614,7 +2651,7 @@ function adminClearAll(mid){
   const m=memOf(mid);if(!m)return;
   if(!confirm(`⚠️ همه اطلاعات «${m.name}» پاک شوند؟`))return;
   delete allVotes[mid];
-  uploadedFiles=uploadedFiles.filter(f=>f.memberId!==mid);
+  
   expenses=expenses.filter(e=>e.by!==mid);
   Object.keys(customFoods).forEach(k=>{
     customFoods[k]=customFoods[k].filter(f=>!f.d.includes(m.name));
@@ -2622,18 +2659,12 @@ function adminClearAll(mid){
   });
   saveTripData();renderAdminAll();notify('پاک شد','info');
 }
-function adminClearAllVotes(){if(!confirm('همه آرا پاک شوند؟'))return;allVotes={};uploadedFiles=[];myVotes={};saveTripData();renderAdminAll();notify('پاک شد','info');}
+function adminClearAllVotes(){if(!confirm('همه انتخاب‌ها پاک شوند؟'))return;allVotes={};if(CU)myVotes={};lotteryResults={};saveTripData();renderAdminAll();notify('همه انتخاب‌ها پاک شد','info');}
 function adminClearAllExpenses(){if(!confirm('همه هزینه‌ها پاک شوند؟'))return;expenses=[];saveTripData();renderAdminAll();notify('پاک شد','info');}
-function adminClearAllUploads(){if(!confirm('همه بارگذاری‌ها پاک شوند؟'))return;uploadedFiles=[];allVotes={};saveTripData();renderAdminAll();notify('پاک شد','info');}
+function adminClearAllUploads(){if(!confirm('این عملیات قدیمی است؛ همه انتخاب‌ها پاک شوند؟'))return;allVotes={};lotteryResults={};saveTripData();renderAdminAll();notify('همه انتخاب‌ها پاک شد','info');}
 function renderAdminSettings(){
   const el=document.getElementById('adminSettings');
-  let h=`<div class="admin-card"><h4>💾 پشتیبان‌گیری کامل</h4>
-    <p style="font-size:11.5px;color:var(--muted);line-height:1.9;margin-bottom:16px">از تمام سفرها یک فایل واحد تهیه کنید.</p>
-    <div class="action-row">
-      <button class="btn btn-palm btn-sm" onclick="exportBackup()">💾 دانلود پشتیبان</button>
-      <button class="btn btn-ocean btn-sm" onclick="document.getElementById('backupInput').click()">📂 بازیابی</button>
-    </div></div>
-  <div class="admin-card"><h4>🎡 بازی خانوادگی</h4>
+  let h=`<div class="admin-card"><h4>🎡 بازی خانوادگی</h4>
     <p style="font-size:11.5px;color:var(--muted);line-height:1.9;margin-bottom:14px">اگر خواستید بازی را از اول شروع کنید، شانس‌های ثبت‌شده سفر فعال پاک می‌شوند.</p>
     <button class="btn btn-sunset btn-sm" onclick="resetGame()">🔄 شروع دوباره گردونه</button>
   </div>
@@ -2703,13 +2734,12 @@ function deleteMember(id){
   const m=memOf(id);if(!m)return;
   if(!confirm(`عضو «${m.name}» حذف شود؟`))return;
   M=M.filter(x=>x.id!==id);delete allVotes[id];
-  uploadedFiles=uploadedFiles.filter(f=>f.memberId!==id);
-  saveTripData();renderMemberLogin();
+    saveTripData();renderMemberLogin();
   if(isAdminSession)renderAdminAll();
   notify(`«${m.name}» حذف شد`,'info');
 }
 
-/* ================= BACKUP / RESET ================= */
+/* ================= RESET / LEGACY EXPORT (unused for member sync) ================= */
 function exportBackup(){
   const backup={version:11,exportedAt:new Date().toISOString(),currency:'تومان',
     trips:trips.map(t=>{
@@ -2748,7 +2778,7 @@ function resetAll(){
   if(!confirm('⚠️ همه اطلاعات پاک می‌شوند!'))return;
   if(!confirm('مطمئنی؟ بازگشت‌پذیر نیست!'))return;
   Object.keys(localStorage).forEach(k=>{if(k.startsWith('safar_v11'))localStorage.removeItem(k);});
-  trips=[];currentTripId=null;M=[];allVotes={};customFoods={};uploadedFiles=[];expenses=[];myVotes={};
+  trips=[];currentTripId=null;M=[];allVotes={};customFoods={};uploadedFiles=[];expenses=[];myVotes={};gallery=[];galleryDeletedIds=[];gameSpins={};lotteryResults={};
   createDefaultTrip();loadTripData(currentTripId);
   renderMemberLogin();renderAdminAll();refreshLanding();
   notify('سیستم بازنشانی شد','info');
@@ -2894,7 +2924,7 @@ function renderGallery(){
   <div class="gallery-upload">
     <div style="font-size:38px;margin-bottom:8px">📷</div>
     <div style="font-size:14px;font-weight:900;margin-bottom:5px">عکس‌های سفر را اضافه کنید</div>
-    <div style="font-size:10.5px;color:var(--muted);margin-bottom:14px">عکس‌ها داخل همین نسخه سایت ذخیره می‌شوند؛ برای انتقال به گوشی دیگر از پشتیبان سفر استفاده کنید.</div>
+    <div style="font-size:10.5px;color:var(--muted);margin-bottom:14px">عکس‌ها مستقیم در گالری مشترک سفر ثبت می‌شوند و همه اعضا و مدیر آن‌ها را می‌بینند.</div>
     <input type="file" id="galleryInput" accept="image/*" multiple style="display:none" onchange="handleGalleryFiles(this.files)">
     <button class="btn btn-ocean" onclick="document.getElementById('galleryInput').click()">➕ انتخاب عکس</button>
   </div>`;
@@ -2919,27 +2949,37 @@ function compressImage(file){
     r.onload=e=>{
       const img=new Image();
       img.onload=()=>{
-        const max=1600,scale=Math.min(1,max/Math.max(img.width,img.height));
+        const max=1000,scale=Math.min(1,max/Math.max(img.width,img.height));
         const c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));
         const x=c.getContext('2d');x.drawImage(img,0,0,c.width,c.height);
-        resolve(c.toDataURL('image/jpeg',.78));
+        resolve(c.toDataURL('image/jpeg',.60));
       };img.onerror=reject;img.src=e.target.result;
     };r.onerror=reject;r.readAsDataURL(file);
   });
 }
 async function handleGalleryFiles(files){
-  if(!files?.length)return;
-  if(galleryUploading)return;
+  if(!files?.length||galleryUploading)return;
+  if(!supabaseConfigured()){notify('اتصال ابری آماده نیست؛ عکس ثبت نشد.','err');return;}
   galleryUploading=true;
+  const before=gallery.length;
   try{
-    for(const file of [...files].slice(0,12)){
+    for(const file of [...files].slice(0,8)){
       if(!file.type.startsWith('image/'))continue;
       const data=await compressImage(file);
       gallery.push({id:'g_'+Date.now()+'_'+Math.random().toString(36).slice(2),name:file.name.replace(/\.[^.]+$/,''),data,by:CU?.id||'admin',byName:CU?.name||'مدیر',date:new Date().toLocaleDateString('fa-IR')});
     }
-    saveTripData();renderGallery();notify('عکس‌ها به گالری اضافه شدند 📸','ok');
-  }catch(e){notify('این عکس قابل ذخیره‌سازی نبود؛ حجمش را کمتر کنید.','err');}
-  galleryUploading=false;
+    clearTimeout(supabaseSyncTimer);
+    const ok=await pushCloudState('gallery');
+    if(!ok)throw new Error('cloud-upload-failed');
+    saveTripData();renderGallery();if(isAdminSession)renderAdminGallery();
+    notify('عکس‌ها مستقیم در گالری مشترک ثبت شدند 📸 و همه می‌بینند.','ok');
+  }catch(e){
+    gallery.splice(before);
+    notify('ثبت عکس در فضای مشترک انجام نشد؛ حجم یا تعداد عکس‌ها زیاد است.','err');
+  }finally{
+    galleryUploading=false;
+    const input=document.getElementById('galleryInput');if(input)input.value='';
+  }
 }
 function openGalleryImage(i){
   const g=gallery[i];if(!g)return;
@@ -2950,8 +2990,8 @@ function downloadGallery(i){
   const g=gallery[i];if(!g)return;const a=document.createElement('a');a.href=g.data;a.download=`خاطره_${g.name||i}.jpg`;a.click();notify('عکس دانلود شد 📥','ok');
 }
 function deleteGallery(i){
-  if(!gallery[i])return;if(!confirm('این خاطره از گالری حذف شود؟'))return;
-  gallery.splice(i,1);saveTripData();renderGallery();notify('عکس حذف شد','info');
+  const g=gallery[i];if(!g)return;if(!confirm('این خاطره از گالری حذف شود؟'))return;
+  galleryDeletedIds.push(g.id);gallery.splice(i,1);saveTripData();renderGallery();notify('عکس حذف شد','info');
 }
 
 /* ================= ADMIN GALLERY ================= */
@@ -2979,7 +3019,7 @@ function renderAdminGallery(){
 function deleteAdminGallery(i){
   if(!gallery[i])return;
   if(!confirm('این عکس از گالری سفر حذف شود؟'))return;
-  gallery.splice(i,1);saveTripData();renderAdminGallery();renderGallery();notify('عکس حذف شد 🗑️','info');
+  const g=gallery[i];galleryDeletedIds.push(g.id);gallery.splice(i,1);saveTripData();renderAdminGallery();renderGallery();notify('عکس حذف شد 🗑️','info');
 }
 
 /* ================= FAMILY GAME ================= */
